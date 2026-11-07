@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জ্যামিতিক প্রমাণ: অ্যাপোলোনিয়াসের উপপাদ্য ও ভরকেন্দ্র</title>
+    <!-- MathJax CDN for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Hind Siliguri', 'Kalpurush', 'SolaimanLipi', sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .header h2 {
+            color: #1a5276;
+            margin-bottom: 8px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        /* বামপাশে স্থির জ্যামিতিক চিত্র */
+        .diagram-container {
+            flex: 1 1 380px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            text-align: center;
+        }
+        .diagram-container h3 {
+            margin-bottom: 15px;
+            color: #2e4053;
+            border-bottom: 2px solid #ebedef;
+            padding-bottom: 8px;
+        }
+        svg {
+            max-width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+        /* ডানপাশে প্রমাণ ও কন্ট্রোলস */
+        .proof-container {
+            flex: 2 1 550px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #1f618d;
+        }
+        .btn-reset {
+            background-color: #e74c3c;
+        }
+        .btn-reset:hover {
+            background-color: #c0392b;
+        }
+        .btn-prev {
+            background-color: #7f8c8d;
+        }
+        .btn-prev:hover {
+            background-color: #626567;
+        }
+        /* ধাপগুলোর স্টাইল */
+        .step {
+            display: none;
+            background: #fdfefe;
+            border-left: 5px solid #2980b9;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .step-title {
+            font-weight: bold;
+            color: #2471a3;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .equation {
+            margin: 8px 0;
+            overflow-x: auto;
+        }
+        .conclusion {
+            border-left-color: #27ae60;
+            background-color: #eafaf1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>উচ্চতর গণিত (নবম-দশম শ্রেণি): জ্যামিতি</h2>
+    <p><strong>প্রশ্ন:</strong> $\triangle ABC$ এর মধ্যমাত্রয় $G$ বিন্দুতে মিলিত হলে প্রমাণ কর যে, $AB^2 + BC^2 + CA^2 = 3(GA^2 + GB^2 + GC^2)$</p>
+</div>
+
+<div class="container">
+    <!-- বাম পাশের স্থায়ী জ্যামিতিক চিত্র (SVG) -->
+    <div class="diagram-container">
+        <h3>জ্যামিতিক চিত্র</h3>
+        <svg viewBox="0 0 360 320" width="340" height="300">
+            <!-- Triangle ABC -->
+            <polygon points="180,30 40,270 320,270" fill="#f8f9fa" stroke="#1b4f72" stroke-width="2.5" />
+            
+            <!-- Medians AD, BE, CF -->
+            <line x1="180" y1="30" x2="180" y2="270" stroke="#c0392b" stroke-width="2" />
+            <line x1="40" y1="270" x2="250" y2="150" stroke="#c0392b" stroke-width="2" />
+            <line x1="320" y1="270" x2="110" y2="150" stroke="#c0392b" stroke-width="2" />
+            
+            <!-- Vertices and Points -->
+            <circle cx="180" cy="30" r="4" fill="#2c3e50" />
+            <circle cx="40" cy="270" r="4" fill="#2c3e50" />
+            <circle cx="320" cy="270" r="4" fill="#2c3e50" />
+            <circle cx="180" cy="270" r="3.5" fill="#2c3e50" />
+            <circle cx="250" cy="150" r="3.5" fill="#2c3e50" />
+            <circle cx="110" cy="150" r="3.5" fill="#2c3e50" />
+            <circle cx="180" cy="190" r="4.5" fill="#e74c3c" />
+
+            <!-- Labels -->
+            <text x="175" y="20" font-size="16" font-weight="bold" fill="#1b4f72">A</text>
+            <text x="18" y="280" font-size="16" font-weight="bold" fill="#1b4f72">B</text>
+            <text x="330" y="280" font-size="16" font-weight="bold" fill="#1b4f72">C</text>
+            <text x="175" y="295" font-size="15" font-weight="bold" fill="#78281f">D</text>
+            <text x="258" y="150" font-size="15" font-weight="bold" fill="#78281f">E</text>
+            <text x="88" y="150" font-size="15" font-weight="bold" fill="#78281f">F</text>
+            <text x="190" y="195" font-size="16" font-weight="bold" fill="#b03a2e">G</text>
+        </svg>
+        <p style="font-size: 13px; color: #7f8c8d; margin-top: 10px;">চিত্র: $\triangle ABC$ এর মধ্যমাত্রয় $AD, BE, CF$ এবং ভরকেন্দ্র $G$</p>
+    </div>
+
+    <!-- ডান পাশের পর্যায়ক্রমিক প্রমাণ -->
+    <div class="proof-container">
+        <!-- কন্ট্রোল বোতামসমূহ -->
+        <div class="controls">
+            <button class="btn" id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ ▶</button>
+            <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀ পূর্বের ধাপ</button>
+            <button class="btn btn-reset" onclick="resetSteps()">পুনরায় শুরু ↺</button>
+        </div>
+
+        <div id="steps-wrapper">
+            <!-- ধাপ ১ -->
+            <div class="step" id="step1">
+                <div class="step-title">বিশেষ নির্বচন:</div>
+                <p>মনে করি, $\triangle ABC$ এর মধ্যমাত্রয় $AD, BE, CF$ পরস্পরকে $G$ বিন্দুতে ছেদ করেছে। সুতরাং $G$ হলো ত্রিভুজটির ভরকেন্দ্র।</p>
+                <p><strong>প্রমাণ করতে হবে যে,</strong> $AB^2 + BC^2 + CA^2 = 3(GA^2 + GB^2 + GC^2)$</p>
+            </div>
+
+            <!-- ধাপ ২ -->
+            <div class="step" id="step2">
+                <div class="step-title">প্রমাণ (ধাপ ১ - বাহু ও মধ্যমার সম্পর্ক):</div>
+                <p>অ্যাপোলোনিয়াসের উপপাদ্যের বিস্তৃত সিদ্ধান্ত অনুসারে ত্রিভুজের বাহু এবং মধ্যমাত্রয়ের মধ্যে সম্পর্কটি হলো—</p>
+                <div class="equation">
+                    $$3(AB^2 + BC^2 + CA^2) = 4(AD^2 + BE^2 + CF^2) \quad \dots\dots\text{ (i)}$$
+                </div>
+            </div>
+
+            <!-- ধাপ ৩ -->
+            <div class="step" id="step3">
+                <div class="step-title">প্রমাণ (ধাপ ২ - ভরকেন্দ্র দ্বারা মধ্যমার বিভাজন):</div>
+                <p>আমরা জানি, ত্রিভুজের ভরকেন্দ্র প্রতিটি মধ্যমাকে শীর্ষ থেকে $2:1$ অনুপাতে অন্তর্বিভক্ত করে।</p>
+                <div class="equation">
+                    $$\therefore \frac{GA}{GD} = \frac{2}{1}$$
+                    $$\implies \frac{GD}{GA} = \frac{1}{2} \quad \text{[ব্যস্তকরণ করে]}$$
+                    $$\implies \frac{GD + GA}{GA} = \frac{1 + 2}{2} \quad \text{[যোজন করে]}$$
+                    $$\implies \frac{AD}{GA} = \frac{3}{2} \quad [\because GD + GA = AD]$$
+                </div>
+            </div>
+
+            <!-- ধাপ ৪ -->
+            <div class="step" id="step4">
+                <div class="step-title">প্রমাণ (ধাপ ৩ - মধ্যমা ও ভরকেন্দ্রীয় দূরত্বের বর্গ):</div>
+                <p>বজ্রগুণন এবং উভয়পাশে বর্গ করে পাই,</p>
+                <div class="equation">
+                    $$2AD = 3GA$$
+                    $$\implies (2AD)^2 = (3GA)^2$$
+                    $$\implies 4AD^2 = 9GA^2 \quad \dots\dots\text{ (ii)}$$
+                </div>
+                <p>একইভাবে অপর মধ্যমাগুলোর ক্ষেত্রে পাওয়া যায়,</p>
+                <div class="equation">
+                    $$4BE^2 = 9GB^2 \quad \dots\dots\text{ (iii)}$$
+                    $$4CF^2 = 9GC^2 \quad \dots\dots\text{ (iv)}$$
+                </div>
+            </div>
+
+            <!-- ধাপ ৫ -->
+            <div class="step" id="step5">
+                <div class="step-title">প্রমাণ (ধাপ ৪ - সমীকরণসমূহ যোগ করা):</div>
+                <p>সমীকরণ $\text{(ii)} + \text{(iii)} + \text{(iv)}$ যোগ করে পাই,</p>
+                <div class="equation">
+                    $$4AD^2 + 4BE^2 + 4CF^2 = 9GA^2 + 9GB^2 + 9GC^2$$
+                    $$\implies 4(AD^2 + BE^2 + CF^2) = 9(GA^2 + GB^2 + GC^2) \quad \dots\dots\text{ (v)}$$
+                </div>
+            </div>
+
+            <!-- ধাপ ৬ -->
+            <div class="step conclusion" id="step6">
+                <div class="step-title">প্রমাণ (ধাপ ৫ - চূড়ান্ত প্রতিস্থাপন):</div>
+                <p>এখন, সমীকরণ $\text{(i)}$-এ সমীকরণ $\text{(v)}$-এর মান বসিয়ে পাই,</p>
+                <div class="equation">
+                    $$3(AB^2 + BC^2 + CA^2) = 9(GA^2 + GB^2 + GC^2)$$
+                    $$\implies AB^2 + BC^2 + CA^2 = \frac{9}{3}(GA^2 + GB^2 + GC^2)$$
+                    $$\mathbf{\therefore AB^2 + BC^2 + CA^2 = 3(GA^2 + GB^2 + GC^2) \quad \text{[প্রমাণিত]}}$$
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStep = 0;
+    const totalSteps = 6;
+
+    function showStep(index) {
+        for (let i = 1; i <= totalSteps; i++) {
+            const stepEl = document.getElementById(`step${i}`);
+            if (i <= index) {
+                stepEl.style.display = 'block';
+            } else {
+                stepEl.style.display = 'none';
+            }
+        }
+        // Auto scroll smoothly to latest visible step
+        if (index > 0) {
+            const currentStepEl = document.getElementById(`step${index}`);
+            currentStepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+            // Re-render LaTeX if needed
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        } else if (currentStep === 1) {
+            resetSteps();
+        }
+    }
+
+    function resetSteps() {
+        currentStep = 0;
+        showStep(currentStep);
+    }
+
+    // Keyboard navigation (Right Arrow = Next, Left Arrow = Previous)
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "ArrowRight") {
+            nextStep();
+        } else if (event.key === "ArrowLeft") {
+            prevStep();
+        }
+    });
+
+    // Start with step 1 visible
+    window.onload = function() {
+        nextStep();
+    };
+</script>
+
+</body>
+</html>
