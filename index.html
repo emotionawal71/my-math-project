@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>উপপাদ্য: বৃত্তের সমান সমান জ্যা কেন্দ্র থেকে সমদূরবর্তী</title>
+    
+    <!-- TikZ রেন্ডার করার জন্য TikZJax লাইব্রেরি -->
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+
+    <!-- গাণিতিক সংকেত সুন্দরভাবে প্রদর্শনের জন্য MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0284c7;
+            --accent: #b91c1c;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kalpurush', 'SolaimanLipi', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.8;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .statement-box {
+            background: #eff6ff;
+            border-left: 5px solid var(--secondary);
+            padding: 18px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            color: #0c4a6e;
+        }
+
+        /* চিত্র প্রদর্শনের ফ্রেম */
+        .diagram-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px dashed var(--border-color);
+            margin: 25px 0 35px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diagram-caption {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.35rem;
+            margin: 25px 0 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        /* প্রমাণের টেবিল */
+        .proof-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .proof-table th, .proof-table td {
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            vertical-align: top;
+            font-size: 1.05rem;
+        }
+
+        .proof-table th {
+            background: #f1f5f9;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .proof-table td:first-child {
+            width: 55%;
+        }
+
+        .proof-table td:last-child {
+            width: 45%;
+            color: #475569;
+            background: #fafafa;
+        }
+
+        .conclusion {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            color: #166534;
+            font-weight: bold;
+            font-size: 1.15rem;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        /* TikZ কোড স্নিপেট প্রদর্শন */
+        details {
+            margin-top: 30px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+        }
+
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+
+        pre {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>জ্যামিতিক উপপাদ্য প্রমাণ</h1>
+        <p>শ্রেণী: ৯ম-১০ম | বিষয়: সাধারণ গণিত (অধ্যায় ৮ - বৃত্ত)</p>
+    </header>
+
+    <!-- সাধারণ নির্বচন -->
+    <div class="statement-box">
+        <strong>সাধারণ নির্বচন:</strong> বৃত্তের সমান সমান জ্যা কেন্দ্র থেকে সমদূরবর্তী।
+    </div>
+
+    <!-- TikZ দ্বারা তৈরি জ্যামিতিক চিত্র -->
+    <div class="diagram-container">
+        <!-- সরাসরি ব্রাউজারে এক্সিকিউট হওয়া TikZ স্ক্রিপ্ট -->
+        <script type="text/tikz">
+            \begin{tikzpicture}[scale=1.1, line cap=round, line join=round]
+                % বৃত্ত অঙ্কন (কেন্দ্র (0,0), ব্যাসার্ধ 3cm)
+                \draw[thick, color=black] (0,0) circle (3cm);
+                
+                % বিন্দুসমূহের স্থানাঙ্ক নির্ধারণ
+                \coordinate (O) at (0,0);
+                \coordinate (E) at (0,-1.8);
+                \coordinate (A) at (-2.4,-1.8);
+                \coordinate (B) at (2.4,-1.8);
+                
+                \coordinate (F) at (1.8,0);
+                \coordinate (C) at (1.8,2.4);
+                \coordinate (D) at (1.8,-2.4);
+
+                % সমান জ্যা দুটি অঙ্কন (AB এবং CD)
+                \draw[very thick, color=blue!80!black] (A) -- (B);
+                \draw[very thick, color=blue!80!black] (C) -- (D);
+
+                % কেন্দ্র থেকে জ্যা-এর উপর অঙ্কিত লম্ব (OE এবং OF)
+                \draw[thick, color=red!80!black] (O) -- (E);
+                \draw[thick, color=red!80!black] (O) -- (F);
+
+                % ব্যাসার্ধ অঙ্কন (OA এবং OC) - ড্যাশড লাইন
+                \draw[thick, dashed, color=purple] (O) -- (A);
+                \draw[thick, dashed, color=purple] (O) -- (C);
+
+                % সমকোণ নির্দেশক চিহ্ন
+                \draw[thin] (0.2,-1.8) -- (0.2,-1.6) -- (0,-1.6);
+                \draw[thin] (1.8,0.2) -- (1.6,0.2) -- (1.6,0);
+
+                % বিন্দু এবং লেবেলিং
+                \filldraw[black] (O) circle (2pt) node[above left] {$O$};
+                \filldraw[black] (A) circle (1.5pt) node[below left] {$A$};
+                \filldraw[black] (B) circle (1.5pt) node[below right] {$B$};
+                \filldraw[black] (C) circle (1.5pt) node[above right] {$C$};
+                \filldraw[black] (D) circle (1.5pt) node[below right] {$D$};
+                \filldraw[black] (E) circle (1.5pt) node[below=2pt] {$E$};
+                \filldraw[black] (F) circle (1.5pt) node[right=2pt] {$F$};
+            \end{tikzpicture}
+        </script>
+        <div class="diagram-caption">চিত্র: \(O\) কেন্দ্রবিশিষ্ট বৃত্তে সমান জ্যা \(AB = CD\) এবং কেন্দ্র থেকে লম্ব দূরত্ব \(OE\) ও \(OF\)</div>
+    </div>
+
+    <!-- বিশেষ নির্বচন -->
+    <h2>বিশেষ নির্বচন</h2>
+    <p>
+        মনে করি, \(O\) বৃত্তের কেন্দ্র এবং \(AB\) ও \(CD\) বৃত্তটির দুটি সমান জ্যা। অর্থাৎ, \(AB = CD\)। 
+        কেন্দ্র \(O\) থেকে যথাক্রমে \(AB\) এবং \(CD\) জ্যা-এর ওপর \(OE\) এবং \(OF\) লম্ব আঁকা হলো। 
+        তাহলে, \(OE\) এবং \(OF\) যথাক্রমে কেন্দ্র থেকে \(AB\) এবং \(CD\) জ্যা-এর দূরত্ব নির্দেশ করে। 
+        <br>
+        <strong>প্রমাণ করতে হবে যে,</strong> কেন্দ্র থেকে জ্যা দুটি সমদূরবর্তী, অর্থাৎ \(OE = OF\)।
+    </p>
+
+    <!-- অঙ্কন -->
+    <h2>অঙ্কন</h2>
+    <p>
+        \(O, A\) এবং \(O, C\) যোগ করি।
+    </p>
+
+    <!-- প্রমাণ -->
+    <h2>প্রমাণ</h2>
+    <table class="proof-table">
+        <thead>
+            <tr>
+                <th>ধাপ ও প্রমাণ</th>
+                <th>যথার্থতা (কারণ)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <strong>ধাপ ১:</strong><br>
+                    যেহেতু \(OE \perp AB\) এবং \(OF \perp CD\)<br>
+                    \(\therefore AE = BE = \frac{1}{2}AB\)<br>
+                    এবং \(CF = DF = \frac{1}{2}CD\)
+                </td>
+                <td>
+                    [বৃত্তের কেন্দ্র থেকে ব্যাস ভিন্ন অন্য কোনো জ্যা-এর ওপর অঙ্কিত লম্ব ওই জ্যা-কে সমদ্বিখণ্ডিত করে।]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ধাপ ২:</strong><br>
+                    কিন্তু দেওয়া আছে, \(AB = CD\)<br>
+                    বা, \(\frac{1}{2}AB = \frac{1}{2}CD\)<br>
+                    \(\therefore AE = CF\)
+                </td>
+                <td>
+                    [উভয়পক্ষকে \(\frac{1}{2}\) দ্বারা গুণ করে]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ধাপ ৩:</strong><br>
+                    এখন, সমকোণী ত্রিভুজ \(\triangle OAE\) এবং সমকোণী ত্রিভুজ \(\triangle OCF\)-এর মধ্যে:<br>
+                    • অতিভুজ \(OA =\) অতিভুজ \(OC\)<br>
+                    • বাহু \(AE =\) বাহু \(CF\)<br><br>
+                    \(\therefore \triangle OAE \cong \triangle OCF\)
+                </td>
+                <td>
+                    <br>
+                    [উভয়েই একই বৃত্তের ব্যাসার্ধ]<br>
+                    [ধাপ ২ হতে প্রাপ্ত]<br><br>
+                    [সমকোণী ত্রিভুজের অতিভুজ-বাহু সর্বসমতা উপপাদ্য অনুযায়ী]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ধাপ ৪:</strong><br>
+                    সুতরাং, \(OE = OF\)
+                </td>
+                <td>
+                    [সর্বসম ত্রিভুজের অনুরূপ বাহু সমান]
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ধাপ ৫:</strong><br>
+                    কিন্তু \(OE\) এবং \(OF\) কেন্দ্র \(O\) থেকে যথাক্রমে \(AB\) এবং \(CD\) জ্যা-দ্বয়ের লম্ব দূরত্ব।
+                </td>
+                <td>
+                    [দূরত্বের জ্যামিতিক সংজ্ঞাবলি অনুসারে]
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- সিদ্ধান্ত -->
+    <div class="conclusion">
+        অতএব, বৃত্তের সমান সমান জ্যা কেন্দ্র থেকে সমদূরবর্তী। (প্রমাণিত)
+    </div>
+
+    <!-- মূল TikZ সোর্স কোড দেখার অংশ -->
+    <details>
+        <summary>ব্যবহৃত মূল TikZ কোডটি দেখতে এখানে ক্লিক করুন</summary>
+        <pre><code>\begin{tikzpicture}[scale=1.1, line cap=round, line join=round]
+    % বৃত্ত অঙ্কন
+    \draw[thick] (0,0) circle (3cm);
+    
+    % স্থানাঙ্ক
+    \coordinate (O) at (0,0);
+    \coordinate (E) at (0,-1.8);
+    \coordinate (A) at (-2.4,-1.8);
+    \coordinate (B) at (2.4,-1.8);
+    \coordinate (F) at (1.8,0);
+    \coordinate (C) at (1.8,2.4);
+    \coordinate (D) at (1.8,-2.4);
+
+    % জ্যা দুটি অঙ্কন
+    \draw[very thick, blue] (A) -- (B);
+    \draw[very thick, blue] (C) -- (D);
+
+    % লম্ব রেখা দুটি অঙ্কন
+    \draw[thick, red] (O) -- (E);
+    \draw[thick, red] (O) -- (F);
+
+    % ব্যাসার্ধ (অঙ্কন)
+    \draw[thick, dashed, purple] (O) -- (A);
+    \draw[thick, dashed, purple] (O) -- (C);
+
+    % সমকোণ সংকেত
+    \draw (0.2,-1.8) -- (0.2,-1.6) -- (0,-1.6);
+    \draw (1.8,0.2) -- (1.6,0.2) -- (1.6,0);
+
+    % বিন্দু লেবেল
+    \filldraw (O) circle (2pt) node[above left] {$O$};
+    \filldraw (A) circle (1.5pt) node[below left] {$A$};
+    \filldraw (B) circle (1.5pt) node[below right] {$B$};
+    \filldraw (C) circle (1.5pt) node[above right] {$C$};
+    \filldraw (D) circle (1.5pt) node[below right] {$D$};
+    \filldraw (E) circle (1.5pt) node[below] {$E$};
+    \filldraw (F) circle (1.5pt) node[right] {$F$};
+\end{tikzpicture}</code></pre>
+    </details>
+</div>
+
+</body>
+</html>
