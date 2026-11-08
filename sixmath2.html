@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ষষ্ঠ শ্রেণি গণিত - অধ্যায় ২: অনুপাত ও শতকরা</title>
+    <style>
+        :root {
+            --primary: #4338ca;
+            --primary-hover: #3730a3;
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-page: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-clr: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'SolaimanLipi', 'Kalpurush', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .quiz-card {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-clr);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--border-clr);
+            padding-bottom: 12px;
+        }
+
+        .header h3 {
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-top: 4px;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .progress-track {
+            flex-grow: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 6.66%;
+            background: linear-gradient(90deg, var(--secondary), var(--success));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .card-body {
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .anim-fade {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        /* অপশনগুলো পাশাপাশি রাখার জন্য অনুভূমিক স্টাইল */
+        .options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .option-btn {
+            flex: 1 1 calc(25% - 10px);
+            min-width: 130px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-clr);
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.25) !important;
+            border-color: var(--success) !important;
+            color: #34d399 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.25) !important;
+            border-color: var(--danger) !important;
+            color: #f87171 !important;
+        }
+
+        /* ব্যাখ্যা বক্স */
+        .explanation-box {
+            display: none;
+            background: rgba(0, 0, 0, 0.35);
+            border-left: 4px solid var(--secondary);
+            padding: 14px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .exp-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exp-content {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        /* কন্ট্রোল বাটনসমূহ */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 1px solid var(--border-clr);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-clr);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            .option-btn {
+                flex: 1 1 calc(50% - 10px);
+                font-size: 0.9rem;
+            }
+            .question-text {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-card">
+        <div class="header">
+            <h3>ষষ্ঠ শ্রেণি | গণিত প্রস্তুতি</h3>
+            <h1>অধ্যায় ২: অনুপাত ও শতকরা (MCQ)</h1>
+        </div>
+
+        <div class="progress-container">
+            <span id="qCount">প্রশ্ন: ১ / ১৫</span>
+            <div class="progress-track">
+                <div class="progress-bar" id="pBar"></div>
+            </div>
+            <span id="pText">৭%</span>
+        </div>
+
+        <div class="card-body anim-fade" id="cardBody">
+            <div class="question-text" id="qTitle">প্রশ্ন লোড হচ্ছে...</div>
+
+            <!-- অপশনগুলো আনুভূমিকভাবে সাজানো -->
+            <div class="options-grid" id="optionsBox"></div>
+
+            <!-- ব্যাখ্যা সেকশন -->
+            <div class="explanation-box" id="expBox">
+                <div class="exp-label">✓ সঠিক উত্তর ও সংক্ষিপ্ত ব্যাখ্যা:</div>
+                <div class="exp-content" id="expText">ব্যাখ্যা এখানে আসবে।</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn" onclick="prevQuestion()" disabled>❮ পূর্ববর্তী</button>
+            <button class="btn" id="showAnsBtn" onclick="revealAnswer()">উত্তর দেখুন</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">পরবর্তী ❯</button>
+        </div>
+    </div>
+
+    <script>
+        const mcqData = [
+            {
+                q: "১. অনুপাত কী ধরনের রাশি?",
+                opts: ["(ক) সমজাতীয় রাশি", "(খ) অসমজাতীয় রাশি", "(গ) এককযুক্ত রাশি", "(ঘ) কাল্পনিক রাশি"],
+                ans: 0,
+                exp: "অনুপাত হলো দুটি সমজাতীয় রাশির তুলনা। সমজাতীয় হওয়ায় অনুপাতের কোনো একক থাকে না।"
+            },
+            {
+                q: "২. ৩ : ৫ অনুপাতটির পূর্ব রাশি কোনটি?",
+                opts: ["(ক) ৫", "(খ) ৩", "(গ) ৮", "(ঘ) ১৫"],
+                ans: 1,
+                exp: "অনুপাতের প্রথম পদকে পূর্ব রাশি এবং দ্বিতীয় পদকে উত্তর রাশি বলে। এখানে প্রথম রাশি হলো ৩।"
+            },
+            {
+                q: "৩. কোনো অনুপাতের পূর্ব রাশি উত্তর রাশি অপেক্ষা ছোট হলে তাকে কী বলে?",
+                opts: ["(ক) গুরু অনুপাত", "(খ) লঘু অনুপাত", "(গ) একক অনুপাত", "(ঘ) বিপরীত অনুপাত"],
+                ans: 1,
+                exp: "যে সরল অনুপাতের পূর্ব রাশি উত্তর রাশি থেকে ছোট (যেমন: ২ : ৫), তাকে লঘু অনুপাত বলে।"
+            },
+            {
+                q: "৪. ৭ : ৪ অনুপাতটি কী ধরনের অনুপাত?",
+                opts: ["(ক) লঘু অনুপাত", "(খ) একক অনুপাত", "(গ) গুরু অনুপাত", "(ঘ) ব্যস্ত অনুপাত"],
+                ans: 2,
+                exp: "যে অনুপাতের পূর্ব রাশি উত্তর রাশি অপেক্ষা বড় (৭ > ৪), তাকে গুরু অনুপাত বলে।"
+            },
+            {
+                q: "৫. ১ : ১ অনুপাতটিকে কী বলা হয়?",
+                opts: ["(ক) লঘু অনুপাত", "(খ) গুরু অনুপাত", "(গ) একক অনুপাত", "(ঘ) মিশ্র অনুপাত"],
+                ans: 2,
+                exp: "যে সরল অনুপাতের পূর্ব রাশি ও উত্তর রাশি সমান হয়, তাকে একক অনুপাত বলে।"
+            },
+            {
+                q: "৬. ৫ : ৭ অনুপাতটির বিপরীত (ব্যস্ত) অনুপাত কোনটি?",
+                opts: ["(ক) ৫ : ৫", "(খ) ৭ : ৫", "(গ) ৭ : ৭", "(ঘ) ১০ : ১৪"],
+                ans: 1,
+                exp: "পূর্ব রাশিকে উত্তর রাশি এবং উত্তর রাশিকে পূর্ব রাশি বানালে ব্যস্ত অনুপাত পাওয়া যায়। অতএব, ৫ : ৭ এর ব্যস্ত অনুপাত ৭ : ৫।"
+            },
+            {
+                q: "৭. ২ : ৩ এবং ৪ : ৫ এর মিশ্র অনুপাত কত?",
+                opts: ["(ক) ৬ : ৮", "(খ) ৮ : ১৫", "(গ) ১৫ : ৮", "(ঘ) ৮ : ১০"],
+                ans: 1,
+                exp: "পূর্ব রাশিগুলোর গুণফল = ২ × ৪ = ৮ এবং উত্তর রাশিগুলোর গুণফল = ৩ × ৫ = ১৫। সুতরাং মিশ্র অনুপাত ৮ : ১৫।"
+            },
+            {
+                q: "৮. শতকরা বলতে প্রকৃত অর্থে কী বোঝায়?",
+                opts: ["(ক) প্রতি হাজারে", "(খ) প্রতি শতে বা একশত ভাগের মধ্যে", "(গ) প্রতি দশকে", "(ঘ) প্রতি ভাগে"],
+                ans: 1,
+                exp: "শতকরা হলো এমন একটি ভগ্নাংশ যার হর সর্বদা ১০০। অর্থাৎ প্রতি শতে বা ১০০ ভাগের মধ্যে কত তা নির্দেশ করে।"
+            },
+            {
+                q: "৯. ৩/৪ কে শতকরায় প্রকাশ করলে কত হবে?",
+                opts: ["(ক) ২৫%", "(খ) ৫০%", "(গ) ৭৫%", "(ঘ) ৮০%"],
+                ans: 2,
+                exp: "(৩/৪) × ১০০% = ৩ × ২৫% = ৭৫%।"
+            },
+            {
+                q: "১০. ২৫% কে সাধারণ ভগ্নাংশে প্রকাশ করলে কোনটি সঠিক?",
+                opts: ["(ক) ১/২", "(খ) ১/৪", "(গ) ১/৫", "(ঘ) ৩/৪"],
+                ans: 1,
+                exp: "২৫% = ২৫/১০০ = ১/৪ (লব ও হরকে ২৫ দ্বারা ভাগ করে)।"
+            },
+            {
+                q: "১১. ০.৭৫ কে শতকরায় রূপান্তর করলে কত হবে?",
+                opts: ["(ক) ৭.৫%", "(খ) ৭৫%", "(গ) ০.৭৫%", "(ঘ) ৭৫০%"],
+                ans: 1,
+                exp: "০.৭৫ = ৭৫/১০০ = ৭৫%।"
+            },
+            {
+                q: "১২. ২০০ টাকার ১৫% কত টাকা?",
+                opts: ["(ক) ১৫ টাকা", "(খ) ২৫ টাকা", "(গ) ৩০ টাকা", "(ঘ) ৪৫ টাকা"],
+                ans: 2,
+                exp: "২০০ টাকার ১৫% = ২০০ × (১৫/১০০) = ২ × ১৫ = ৩০ টাকা।"
+            },
+            {
+                q: "১৩. একটি শ্রেণিতে মোট ৫০ জন শিক্ষার্থীর মধ্যে ৬০% ছাত্রী হলে ছাত্রী সংখ্যা কত?",
+                opts: ["(ক) ২৫ জন", "(খ) ৩০ জন", "(গ) ৩৫ জন", "(ঘ) ৪০ জন"],
+                ans: 1,
+                exp: "ছাত্রী সংখ্যা = ৫০ এর ৬০% = ৫০ × (৬০/১০০) = ৩০ জন।"
+            },
+            {
+                q: "১৪. ৪ : ৯ = ১২ : ক হলে, 'ক' এর মান কত?",
+                opts: ["(ক) ১৮", "(খ) ২৪", "(গ) ২৭", "(ঘ) ৩৬"],
+                ans: 2,
+                exp: "৪/৯ = ১২/ক ⟹ ৪ × ক = ৯ × ১২ ⟹ ৪ × ক = ১০৮ ⟹ ক = ১০৮ ÷ ৪ = ২৭।"
+            },
+            {
+                q: "১৫. ৫০ নম্বরের পরীক্ষায় একজন শিক্ষার্থী ৪০ নম্বর পেলে তার শতকরা প্রাপ্ত নম্বর কত?",
+                opts: ["(ক) ৭০%", "(খ) ৭৫%", "(গ) ৮০%", "(ঘ) ৮৫%"],
+                ans: 2,
+                exp: "শতকরা প্রাপ্ত নম্বর = (৪০/৫০) × ১০০% = ৪০ × ২% = ৮০%।"
+            }
+        ];
+
+        let currentIndex = 0;
+        let isAnswered = false;
+
+        const qTitle = document.getElementById("qTitle");
+        const optionsBox = document.getElementById("optionsBox");
+        const expBox = document.getElementById("expBox");
+        const expText = document.getElementById("expText");
+        const qCount = document.getElementById("qCount");
+        const pText = document.getElementById("pText");
+        const pBar = document.getElementById("pBar");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const cardBody = document.getElementById("cardBody");
+
+        const toBn = n => n.toString().replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+
+        function loadQuestion() {
+            isAnswered = false;
+            expBox.style.display = "none";
+
+            cardBody.classList.remove("anim-fade");
+            void cardBody.offsetWidth; // re-trigger animation
+            cardBody.classList.add("anim-fade");
+
+            const item = mcqData[currentIndex];
+            qTitle.innerText = item.q;
+            optionsBox.innerHTML = "";
+
+            item.opts.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx);
+                optionsBox.appendChild(btn);
+            });
+
+            // Progress Info
+            const currentNo = currentIndex + 1;
+            const total = mcqData.length;
+            const percent = Math.round((currentNo / total) * 100);
+
+            qCount.innerText = `প্রশ্ন: ${toBn(currentNo)} / ${toBn(total)}`;
+            pText.innerText = `${toBn(percent)}%`;
+            pBar.style.width = `${percent}%`;
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.innerText = (currentIndex === total - 1) ? "সমাপ্ত ↺" : "পরবর্তী ❯";
+        }
+
+        function selectOption(selectedIdx) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const correctIdx = mcqData[currentIndex].ans;
+            const buttons = optionsBox.querySelectorAll(".option-btn");
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === correctIdx) {
+                    btn.classList.add("correct");
+                } else if (idx === selectedIdx) {
+                    btn.classList.add("wrong");
+                }
+            });
+
+            revealAnswer();
+        }
+
+        function revealAnswer() {
+            const correctIdx = mcqData[currentIndex].ans;
+            const buttons = optionsBox.querySelectorAll(".option-btn");
+            buttons.forEach((btn, idx) => {
+                if (idx === correctIdx) btn.classList.add("correct");
+            });
+
+            expText.innerHTML = `<strong>উত্তর: ${mcqData[currentIndex].opts[correctIdx]}</strong><br>${mcqData[currentIndex].exp}`;
+            expBox.style.display = "block";
+        }
+
+        function nextQuestion() {
+            if (currentIndex < mcqData.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            loadQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
