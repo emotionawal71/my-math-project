@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>জ্যামিতিক অঙ্কন অ্যানিমেশন - সম্পাদ্য ৭</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0284c7;
+      --accent: #dc2626;
+      --highlight: #16a34a;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Hind Siliguri', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .problem-statement {
+      font-size: 15px;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary);
+      margin-bottom: 14px;
+    }
+
+    .svg-container {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 460px;
+    }
+
+    .step-card {
+      margin-top: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-height: 72px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-size: 15.5px;
+    }
+
+    .step-desc {
+      font-size: 14.5px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #172554;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.btn-secondary {
+      background: #475569;
+    }
+
+    button.btn-secondary:hover {
+      background: #334155;
+    }
+
+    button.btn-accent {
+      background: var(--secondary);
+    }
+
+    button.btn-accent:hover {
+      background: #0369a1;
+    }
+
+    /* SVG Graphical Styles */
+    .element-hidden {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .element-visible {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .main-line {
+      stroke: #1e293b;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+    }
+
+    .construction-line {
+      stroke: #0284c7;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .helper-line {
+      stroke: #64748b;
+      stroke-width: 1.8;
+      stroke-dasharray: 4, 3;
+    }
+
+    .arc {
+      stroke: #d97706;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .result-triangle {
+      stroke: var(--accent);
+      stroke-width: 2.8;
+      stroke-linejoin: round;
+      fill: rgba(220, 38, 38, 0.08);
+      transition: opacity 0.6s ease;
+    }
+
+    .point {
+      fill: var(--primary);
+    }
+
+    .label {
+      font-size: 14.5px;
+      font-style: italic;
+      font-weight: 600;
+      fill: #0f172a;
+    }
+
+    .sub-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      fill: #0284c7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>জ্যামিতিক অঙ্কন অ্যানিমেশন</h1>
+    <div class="problem-statement">
+      <strong>সাধারণ নির্বচন:</strong> ত্রিভুজের ভূমি, ভূমিসংলগ্ন একটি স্থূলকোণ ও অপর দুই বাহুর অন্তর দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।
+    </div>
+  </header>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 820 460" id="geomSvg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#1e293b"/>
+        </marker>
+        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+        </marker>
+      </defs>
+
+      <!-- প্রদত্ত উপাত্তসমূহ (উপরে বামে) -->
+      <g id="given-data">
+        <rect x="25" y="15" width="220" height="135" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="3,3" />
+        <text x="35" y="34" class="label" font-size="13" fill="#475569">প্রদত্ত উপাত্ত:</text>
+        
+        <!-- ভূমি a -->
+        <line x1="45" y1="55" x2="195" y2="55" stroke="#0f172a" stroke-width="2.5" />
+        <text x="35" y="59" class="label">a</text>
+
+        <!-- অন্তর d -->
+        <line x1="45" y1="85" x2="125" y2="85" stroke="#0f172a" stroke-width="2.5" />
+        <text x="35" y="89" class="label">d</text>
+
+        <!-- স্থূলকোণ x (১০২ ডিগ্রি) -->
+        <path d="M 115 130 L 55 130 L 38 100" stroke="#0f172a" stroke-width="2" fill="none" />
+        <path d="M 75 130 A 20 20 0 0 0 47 115" stroke="#d97706" stroke-width="1.6" fill="none" />
+        <text x="68" y="122" class="label">x</text>
+      </g>
+
+      <!-- ধাপ ১: রশ্মি BE ও BC = a কর্তন -->
+      <!-- B(350, 310), C(520, 310) -->
+      <g id="step1-el" class="element-hidden">
+        <line x1="330" y1="310" x2="680" y2="310" class="main-line" marker-end="url(#arrow)" />
+        <circle cx="350" cy="310" r="3.5" class="point" />
+        <circle cx="520" cy="310" r="3.5" class="point" />
+        <path d="M 515 302 L 525 318" stroke="#dc2626" stroke-width="2" />
+        <text x="330" y="325" class="label">B</text>
+        <text x="525" y="328" class="label">C</text>
+        <text x="675" y="328" class="label">E</text>
+        <text x="430" y="328" class="sub-label">a</text>
+      </g>
+
+      <!-- ধাপ ২: C বিন্দুতে ∠BCF = ∠x অঙ্কন -->
+      <!-- F অভিমুখে ভেক্টর: (0.2079, -0.9781) -->
+      <g id="step2-el" class="element-hidden">
+        <line x1="520" y1="310" x2="579" y2="35" class="construction-line" marker-end="url(#arrow-blue)" />
+        <path d="M 480 310 A 40 40 0 0 1 528 271" class="arc" />
+        <text x="575" y="30" class="label">F</text>
+      </g>
+
+      <!-- ধাপ ৩: FC কে G পর্যন্ত বর্ধিতকরণ -->
+      <g id="step3-el" class="element-hidden">
+        <line x1="520" y1="310" x2="495" y2="425" class="construction-line" marker-end="url(#arrow-blue)" />
+        <text x="480" y="425" class="label">G</text>
+      </g>
+
+      <!-- ধাপ ৪: CG হতে CD = d কর্তন -->
+      <!-- CD = 80px => D(503, 388) -->
+      <g id="step4-el" class="element-hidden">
+        <path d="M 495 385 L 512 391" stroke="#dc2626" stroke-width="2.2" />
+        <circle cx="503" cy="388" r="3.5" class="point" />
+        <text x="515" y="392" class="label">D</text>
+        <text x="520" y="355" class="sub-label">d</text>
+      </g>
+
+      <!-- ধাপ ৫: B, D যোগ করি -->
+      <g id="step5-el" class="element-hidden">
+        <line x1="350" y1="310" x2="503" y2="388" class="main-line" />
+      </g>
+
+      <!-- ধাপ ৬: ∠CDB এর সমান করে ∠DBA আঁকি; A বিন্দু নির্ধারণ -->
+      <!-- A(572, 64) বিন্দুতে ছেদ করে, যার ফলে AD = AB = 332px -->
+      <g id="step6-el" class="element-hidden">
+        <!-- D বিন্দুতে কোণের চাপ -->
+        <path d="M 480 376 A 30 30 0 0 1 508 360" class="arc" />
+        <!-- B বিন্দুতে কোণের চাপ -->
+        <path d="M 372 321 A 30 30 0 0 0 368 286" class="arc" />
+        <!-- BA রশ্মি -->
+        <line x1="350" y1="310" x2="572" y2="64" stroke="#dc2626" stroke-width="2.4" />
+        <circle cx="572" cy="64" r="4" fill="#dc2626" />
+        <text x="582" y="70" class="label">A</text>
+      </g>
+
+      <!-- ধাপ ৭: ত্রিভুজ সম্পন্নকরণ ও ফলাফল প্রদর্শন -->
+      <g id="step7-el" class="element-hidden">
+        <!-- উদ্দিষ্ট ত্রিভুজ ABC -->
+        <polygon points="350,310 520,310 572,64" class="result-triangle" />
+        <!-- প্রমাণ সহায়ক রেখা AD ড্যাশড -->
+        <line x1="572" y1="64" x2="503" y2="388" class="helper-line" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="step-card">
+    <div class="step-title" id="stepIndicator">প্রস্তুতি ধাপ</div>
+    <div class="step-desc" id="stepDescription">
+      শুরু করতে "পরবর্তী ধাপ" বাটনে চাপুন। দেওয়া আছে ভূমি a, ভূমিসংলগ্ন স্থূলকোণ ∠x ও দুই বাহুর অন্তর d।
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" class="btn-secondary" onclick="prevStep()" disabled>পূর্ববর্তী ধাপ</button>
+    <button id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ</button>
+    <button id="autoBtn" class="btn-accent" onclick="toggleAutoPlay()">অটো-প্লে</button>
+    <button id="resetBtn" class="btn-secondary" onclick="resetAll()">পুনরায় শুরু</button>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 7;
+  let autoPlayTimer = null;
+
+  const stepsData = [
+    {
+      title: "ধাপ ০: সাধারণ ও বিশেষ নির্বচন",
+      desc: "মনে করি, একটি ত্রিভুজের ভূমি a, ভূমিসংলগ্ন একটি স্থূলকোণ ∠x ও অপর দুই বাহুর অন্তর d দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।"
+    },
+    {
+      title: "ধাপ ১: ভূমি কেটে নেওয়া",
+      desc: "যেকোনো রশ্মি BE নিই এবং BE থেকে ভূমি a এর সমান করে BC অংশ কেটে নিই (BC = a)।"
+    },
+    {
+      title: "ধাপ ২: স্থূলকোণ অঙ্কন",
+      desc: "BC রেখাংশের C বিন্দুতে প্রদত্ত ∠x এর সমান করে স্থূলকোণ ∠BCF আঁকি।"
+    },
+    {
+      title: "ধাপ ৩: বিপরীত দিকে রশ্মি বর্ধিতকরণ",
+      desc: "FC রশ্মিকে বিপরীত দিকে G পর্যন্ত বর্ধিত করি (অর্থাৎ F, C, G একই সরলরেখায় অবস্থিত)।"
+    },
+    {
+      title: "ধাপ ৪: অন্তর d এর সমান অংশ কর্তন",
+      desc: "বর্ধিত রশ্মি CG থেকে অপর দুই বাহুর অন্তর d এর সমান করে CD অংশ কেটে নিই (CD = d)।"
+    },
+    {
+      title: "ধাপ ৫: B ও D সংযোগ",
+      desc: "B ও D বিন্দু দুটি সরলরেখা দ্বারা যোগ করি।"
+    },
+    {
+      title: "ধাপ ৬: সমান কোণ এঁকে শীর্ষবিন্দু A নির্ধারণ",
+      desc: "BD রেখাংশের B বিন্দুতে ∠CDB এর সমান করে ∠DBA আঁকি। BA রশ্মিটি পূর্বের CF রশ্মিকে A বিন্দুতে ছেদ করে।"
+    },
+    {
+      title: "ধাপ ৭: উদ্দিষ্ট ত্রিভুজ সম্পন্ন",
+      desc: "তাহলে, △ABC-ই উদ্দিষ্ট ত্রিভুজ। [প্রমাণ: যেহেতু ∠ADB = ∠DBA, তাই △ABD-তে AD = AB। কিন্তু AD = AC + CD = AC + d; সুতরাং AB = AC + d বা AB - AC = d]।"
+    }
+  ];
+
+  function updateView() {
+    document.getElementById("stepIndicator").innerText = stepsData[currentStep].title;
+    document.getElementById("stepDescription").innerText = stepsData[currentStep].desc;
+
+    for (let i = 1; i <= totalSteps; i++) {
+      const el = document.getElementById("step" + i + "-el");
+      if (el) {
+        if (i <= currentStep) {
+          el.classList.remove("element-hidden");
+          el.classList.add("element-visible");
+        } else {
+          el.classList.remove("element-visible");
+          el.classList.add("element-hidden");
+        }
+      }
+    }
+
+    document.getElementById("prevBtn").disabled = (currentStep === 0);
+    document.getElementById("nextBtn").disabled = (currentStep === totalSteps);
+
+    if (currentStep === totalSteps && autoPlayTimer) {
+      toggleAutoPlay();
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateView();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateView();
+    }
+  }
+
+  function resetAll() {
+    if (autoPlayTimer) toggleAutoPlay();
+    currentStep = 0;
+    updateView();
+  }
+
+  function toggleAutoPlay() {
+    const autoBtn = document.getElementById("autoBtn");
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+      autoBtn.innerText = "অটো-প্লে";
+      autoBtn.classList.remove("btn-secondary");
+      autoBtn.classList.add("btn-accent");
+    } else {
+      if (currentStep === totalSteps) currentStep = 0;
+      autoBtn.innerText = "থামুন";
+      autoBtn.classList.remove("btn-accent");
+      autoBtn.classList.add("btn-secondary");
+      updateView();
+      autoPlayTimer = setInterval(() => {
+        if (currentStep < totalSteps) {
+          nextStep();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 2500);
+    }
+  }
+
+  // প্রারম্ভিক অবস্থা চালু
+  updateView();
+</script>
+
+</body>
+</html>
