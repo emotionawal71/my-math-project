@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ষষ্ঠ শ্রেণি: অনুপাত ও শতকরা MCQ কুইজ</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Hind Siliguri', 'Segoe UI', sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      margin: 0;
+      padding: 20px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .quiz-card {
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 800px;
+      padding: 24px 28px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .header h2 {
+      margin: 0 0 6px 0;
+      color: #0f172a;
+      font-size: 22px;
+    }
+    .header p {
+      margin: 0;
+      color: #64748b;
+      font-size: 15px;
+    }
+    .progress-bar-container {
+      width: 100%;
+      background-color: #e2e8f0;
+      height: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      width: 5%;
+      transition: width 0.3s ease;
+    }
+    .q-number {
+      font-size: 15px;
+      color: #2563eb;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .question-title {
+      font-size: 19px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    /* অপশনগুলো পাশাপাশি প্রদর্শনের গ্রিড স্টাইল */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 550px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .option-btn {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 16px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      color: #334155;
+    }
+    .option-btn:hover:not([disabled]) {
+      background: #eff6ff;
+      border-color: #3b82f6;
+    }
+    .option-btn.correct {
+      background: #dcfce7 !important;
+      border-color: #16a34a !important;
+      color: #15803d !important;
+      font-weight: bold;
+    }
+    .option-btn.wrong {
+      background: #fee2e2 !important;
+      border-color: #dc2626 !important;
+      color: #b91c1c !important;
+    }
+    .prefix {
+      font-weight: bold;
+      margin-right: 10px;
+      color: #475569;
+    }
+    .explanation-card {
+      display: none;
+      background: #f0fdf4;
+      border-left: 5px solid #16a34a;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      animation: expandBox 0.35s ease;
+    }
+    @keyframes expandBox {
+      from { opacity: 0; transform: scaleY(0.9); }
+      to { opacity: 1; transform: scaleY(1); }
+    }
+    .explanation-title {
+      font-weight: bold;
+      color: #166534;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+    .explanation-text {
+      font-size: 15px;
+      color: #14532d;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .footer-ctrls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+    }
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    /* সমাপ্তি ফলাফল কার্ড */
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 30px 10px;
+    }
+    .result-screen h3 {
+      font-size: 26px;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .result-score {
+      font-size: 40px;
+      font-weight: bold;
+      color: #2563eb;
+      margin-bottom: 18px;
+    }
+    .result-msg {
+      font-size: 18px;
+      color: #475569;
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-card" id="quizContainer">
+  <div class="header">
+    <h2>ষষ্ঠ শ্রেণি: গণিত কুইজ</h2>
+    <p>অধ্যায়: অনুপাত ও শতকরা (২০টি বহুনির্বাচনি প্রশ্ন)</p>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div id="qaBox">
+    <div class="q-number" id="qNumber">প্রশ্ন ১ / ২০</div>
+    <div class="question-title" id="qTitle">...</div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+
+    <div class="explanation-card" id="expBox">
+      <div class="explanation-title">✓ সঠিক উত্তর ও সংক্ষিপ্ত ব্যাখ্যা:</div>
+      <p class="explanation-text" id="expText"></p>
+    </div>
+
+    <div class="footer-ctrls">
+      <span id="scoreTracker" style="font-size: 15px; font-weight: bold; color: #475569;">স্কোর: ০</span>
+      <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>পরবর্তী প্রশ্ন &rarr;</button>
+    </div>
+  </div>
+
+  <div class="result-screen" id="resultBox">
+    <h3>অনুশীলন সম্পন্ন হয়েছে!</h3>
+    <div class="result-score" id="finalScore">০ / ২০</div>
+    <p class="result-msg" id="finalMsg">আপনার মূল্যায়ন প্রস্তুত হচ্ছে...</p>
+    <button class="btn" onclick="restartQuiz()">পুনরায় পরীক্ষা দিন</button>
+  </div>
+</div>
+
+<script>
+  const questionsData = [
+    {
+      q: "অনুপাত কী ধরনের রাশি?",
+      options: ["একজাতীয় রাশি", "ভিন্নজাতীয় রাশি", "মিশ্র রাশি", "কাল্পনিক রাশি"],
+      ans: 0,
+      exp: "অনুপাত হলো দুটি সমজাতীয় বা একজাতীয় রাশির মধ্যে তুলনা। তাই এর নিজস্ব কোনো একক থাকে না।"
+    },
+    {
+      q: "অনুপাতের গাণিতিক প্রতীক কোনটি?",
+      options: [";", ":", "::", "="],
+      ans: 1,
+      exp: "অনুপাত প্রকাশ করতে কোলন (:) প্রতীক ব্যবহার করা হয়।"
+    },
+    {
+      q: "৩ : ৫ অনুপাতটিতে পূর্ব রাশি কোনটি?",
+      options: ["৫", "৮", "৩", "১৫"],
+      ans: 2,
+      exp: "অনুপাতের প্রথম রাশিটিকে পূর্ব রাশি বলা হয়। এখানে পূর্ব রাশি হলো ৩।"
+    },
+    {
+      q: "৭ : ৯ অনুপাতের উত্তর রাশি কোনটি?",
+      options: ["৭", "৯", "২", "৬৩"],
+      ans: 1,
+      exp: "অনুপাতের দ্বিতীয় রাশিটিকে উত্তর রাশি বলা হয়। এখানে উত্তর রাশি হলো ৯।"
+    },
+    {
+      q: "যে অনুপাতের পূর্ব রাশি উত্তর রাশি থেকে ছোট, তাকে কী বলে?",
+      options: ["গুরু অনুপাত", "লঘু অনুপাত", "একক অনুপাত", "ব্যস্ত অনুপাত"],
+      ans: 1,
+      exp: "পূর্ব রাশি উত্তর রাশি অপেক্ষা ছোট হলে (যেমন: ২ : ৫) তাকে লঘু অনুপাত বলা হয়।"
+    },
+    {
+      q: "নিচের কোনটি গুরু অনুপাত?",
+      options: ["৩ : ৪", "৫ : ৮", "৭ : ৩", "১ : ২"],
+      ans: 2,
+      exp: "গুরু অনুপাতের পূর্ব রাশি উত্তর রাশি অপেক্ষা বড় হয়। এখানে ৭ : ৩ একটি গুরু অনুপাত।"
+    },
+    {
+      q: "কোন অনুপাতের পূর্ব ও উত্তর রাশি উভয়ই সমান হলে তাকে কী বলে?",
+      options: ["লঘু অনুপাত", "একক অনুপাত", "মিশ্র অনুপাত", "দ্বিগুণানুপাত"],
+      ans: 1,
+      exp: "যে অনুপাতের উভয় রাশি সমান (যেমন: ১ : ১ বা ৫ : ৫) তাকে একক অনুপাত বলে।"
+    },
+    {
+      q: "৪ : ৭ অনুপাতটির ব্যস্ত অনুপাত কোনটি?",
+      options: ["৭ : ৪", "৮ : ১৪", "৪ : ১৪", "৭ : ৮"],
+      ans: 0,
+      exp: "পূর্ব রাশিকে উত্তর রাশি এবং উত্তর রাশিকে পূর্ব রাশি বানিয়ে ব্যস্ত অনুপাত পাওয়া যায়। ৪ : ৭ এর ব্যস্ত অনুপাত হলো ৭ : ৪।"
+    },
+    {
+      q: "১২ : ১৬ অনুপাতটির সরলীকৃত বা লঘিষ্ঠ রূপ কোনটি?",
+      options: ["৬ : ৭", "৩ : ৪", "৪ : ৩", "২ : ৩"],
+      ans: 1,
+      exp: "১২ ও ১৬ উভয়কে গরিষ্ঠ সাধারণ গুণনীয়ক ৪ দ্বারা ভাগ করলে পাওয়া যায় ৩ : ৪।"
+    },
+    {
+      q: "শতকরা এমন একটি ভগ্নাংশ যার হর সর্বদা কত থাকে?",
+      options: ["১০", "১", "১০০", "১০০০"],
+      ans: 2,
+      exp: "শতকরা শব্দের অর্থ প্রতি শতে। শতকরা একটি ভগ্নাংশ যার হর সর্বদা ১০০ থাকে।"
+    },
+    {
+      q: "৩/৪ কে শতকরায় প্রকাশ করলে কত হবে?",
+      options: ["৫০%", "৬০%", "৭৫%", "৮০%"],
+      ans: 2,
+      exp: "৩/৪ = (৩ গুণ ১০০) / ৪ = ৩০০ / ৪ = ৭৫%।"
+    },
+    {
+      q: "২৫% কে সাধারণ ভগ্নাংশে রূপান্তর করলে কত হবে?",
+      options: ["১/২", "১/৪", "১/৫", "৩/৪"],
+      ans: 1,
+      exp: "২৫% = ২৫/১০০ = ১/৪।"
+    },
+    {
+      q: "০.৩৫ কে শতকরায় প্রকাশ করলে কত পাওয়া যায়?",
+      options: ["৩.৫%", "৩৫%", "০.৩৫%", "৩৫০%"],
+      ans: 1,
+      exp: "০.৩৫ গুণ ১০০% = ৩৫%।"
+    },
+    {
+      q: "২০০ টাকার ৪০% কত টাকা?",
+      options: ["৫০ টাকা", "৭০ টাকা", "৮০ টাকা", "১০০ টাকা"],
+      ans: 2,
+      exp: "২০০ এর ৪০% = ২০০ গুণ (৪০/১০০) = ৮০ টাকা।"
+    },
+    {
+      q: "৬০ জন শিক্ষার্থীর মধ্যে ১৫ জন অনুপস্থিত থাকলে, অনুপস্থিত শিক্ষার্থীর শতকরা হার কত?",
+      options: ["১৫%", "২০%", "২৫%", "৩০%"],
+      ans: 2,
+      exp: "শতকরা হার = (১৫ / ৬০) গুণ ১০০% = (১ / ৪) গুণ ১০০% = ২৫%।"
+    },
+    {
+      q: "৫ : ১০ এবং ১০ : ২০ অনুপাত দুটি পরস্পর কী রূপ অনুপাত?",
+      options: ["অসমতুল অনুপাত", "সমতুল অনুপাত", "ব্যস্ত অনুপাত", "গুরু অনুপাত"],
+      ans: 1,
+      exp: "উভয় অনুপাতকে লঘিষ্ঠ রূপ দিলে ১ : ২ হয়, তাই এরা সমতুল অনুপাত।"
+    },
+    {
+      q: "একটি কলম ২০ টাকায় কিনে ২৫ টাকায় বিক্রি করলে লাভ কত টাকা?",
+      options: ["৩ টাকা", "৪ টাকা", "৫ টাকা", "১০ টাকা"],
+      ans: 2,
+      exp: "লাভ = বিক্রয়মূল্য - ক্রয়মূল্য = ২৫ - ২০ = ৫ টাকা।"
+    },
+    {
+      q: "১/৫ অংশকে শতকরায় প্রকাশ করলে কত শতাংশ হয়?",
+      options: ["১০%", "১৫%", "২০%", "২৫%"],
+      ans: 2,
+      exp: "(১/৫) গুণ ১০০% = ২০%।"
+    },
+    {
+      q: "৫০ পয়সা ও ২ টাকার অনুপাত কত?",
+      options: ["১ : ৪", "২৫ : ১", "৫০ : ২", "২ : ৫০"],
+      ans: 0,
+      exp: "২ টাকা = ২০০ পয়সা। সুতরাং অনুপাত = ৫০ : ২০০ = ১ : ৪।"
+    },
+    {
+      q: "কোনো সংখ্যার ৫০% সমান ৩০ হলে, পুরো সংখ্যাটি কত?",
+      options: ["৪০", "৫০", "৬০", "৭০"],
+      ans: 2,
+      exp: "৫০% বা অর্ধেক হলো ৩০, সুতরাং সম্পূর্ণ সংখ্যাটি হলো ৩০ গুণ ২ = ৬০।"
+    }
+  ];
+
+  let currentIdx = 0;
+  let score = 0;
+  let answered = false;
+
+  const prefixLabels = ["(ক)", "(খ)", "(গ)", "(ঘ)"];
+
+  function loadQuestion() {
+    answered = false;
+    document.getElementById("nextBtn").disabled = true;
+    document.getElementById("expBox").style.display = "none";
+
+    const data = questionsData[currentIdx];
+    document.getElementById("qNumber").innerText = "প্রশ্ন " + toBengaliNumeral(currentIdx + 1) + " / ২০";
+    document.getElementById("qTitle").innerText = data.q;
+
+    const progressPct = ((currentIdx + 1) / questionsData.length) * 100;
+    document.getElementById("progressBar").style.width = progressPct + "%";
+
+    const optGrid = document.getElementById("optionsGrid");
+    optGrid.innerHTML = "";
+
+    data.options.forEach((optText, i) => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.innerHTML = `<span class="prefix">${prefixLabels[i]}</span> <span>${optText}</span>`;
+      btn.onclick = () => selectOption(i);
+      optGrid.appendChild(btn);
+    });
+  }
+
+  function selectOption(chosenIdx) {
+    if (answered) return;
+    answered = true;
+
+    const data = questionsData[currentIdx];
+    const buttons = document.querySelectorAll(".option-btn");
+
+    buttons.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === data.ans) {
+        btn.classList.add("correct");
+      }
+    });
+
+    if (chosenIdx === data.ans) {
+      score++;
+      document.getElementById("scoreTracker").innerText = "স্কোর: " + toBengaliNumeral(score);
+    } else {
+      buttons[chosenIdx].classList.add("wrong");
+    }
+
+    document.getElementById("expText").innerText = data.exp;
+    document.getElementById("expBox").style.display = "block";
+    document.getElementById("nextBtn").disabled = false;
+  }
+
+  function nextQuestion() {
+    if (currentIdx < questionsData.length - 1) {
+      currentIdx++;
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    document.getElementById("qaBox").style.display = "none";
+    document.getElementById("progressBar").style.width = "100%";
+    const resultBox = document.getElementById("resultBox");
+    resultBox.style.display = "block";
+
+    document.getElementById("finalScore").innerText = toBengaliNumeral(score) + " / ২০";
+
+    let message = "";
+    if (score >= 18) {
+      message = "অসাধারণ! অনুপাত ও শতকরা অধ্যায়ে তোমার প্রস্তুতি অত্যন্ত চমৎকার।";
+    } else if (score >= 12) {
+      message = "ভালো হয়েছে! তবে কিছু নিয়মে আরও একটু অনুশীলন প্রয়োজন।";
+    } else {
+      message = "অনুশীলন বাড়াতে হবে। মূল পাঠ্যবইয়ের নিয়মগুলো আবার ভালো করে রিভিশন দাও।";
+    }
+    document.getElementById("finalMsg").innerText = message;
+  }
+
+  function restartQuiz() {
+    currentIdx = 0;
+    score = 0;
+    document.getElementById("scoreTracker").innerText = "স্কোর: ০";
+    document.getElementById("resultBox").style.display = "none";
+    document.getElementById("qaBox").style.display = "block";
+    loadQuestion();
+  }
+
+  function toBengaliNumeral(num) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(digit => bengaliDigits[parseInt(digit)] || digit).join('');
+  }
+
+  // Initial load
+  loadQuestion();
+</script>
+
+</body>
+</html>
