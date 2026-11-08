@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বৃত্তের উপপাদ্য - অ্যানিমেশন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --accent: #e11d48;
+            --secondary: #059669;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header h2 {
+            font-size: 1.15rem;
+            color: #38bdf8;
+            line-height: 1.4;
+        }
+
+        /* SVG Canvas */
+        .canvas-area {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111827;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* SVG Element Styles & Animations */
+        .geo-element {
+            transition: all 0.6s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            stroke-dasharray: 400;
+            stroke-dashoffset: 400;
+        }
+
+        .visible {
+            opacity: 1;
+            stroke-dashoffset: 0;
+        }
+
+        .highlight {
+            stroke: #fbbf24 !important;
+            stroke-width: 4 !important;
+        }
+
+        /* Explanation Box */
+        .info-card {
+            padding: 15px;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #f43f5e;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .step-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-prev {
+            background: #334155;
+            color: white;
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Point Labels */
+        .label {
+            fill: #f8fafc;
+            font-weight: bold;
+            font-size: 16px;
+            transition: opacity 0.4s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>উপপাদ্য: বৃত্তের কেন্দ্র থেকে ব্যাসভিন্ন কোনো জ্যা-এর উপর অঙ্কিত লম্ব ঐ জ্যা-কে সমদ্বিখণ্ডিত করে।</h2>
+    </div>
+
+    <!-- জ্যামিতিক অ্যানিমেশন এরিয়া -->
+    <div class="canvas-area">
+        <svg viewBox="0 0 320 260">
+            <!-- বৃত্ত -->
+            <circle cx="160" cy="130" r="100" fill="none" stroke="#475569" stroke-width="2.5" />
+            
+            <!-- জ্যা AB -->
+            <line id="chord-ab" class="geo-element" x1="80" y1="190" x2="240" y2="190" stroke="#38bdf8" stroke-width="3" />
+            
+            <!-- AD ও DB অংশ হাইলাইট করার জন্য দুটি ভাগ -->
+            <line id="seg-ad" class="geo-element hidden" x1="80" y1="190" x2="160" y2="190" stroke="#10b981" stroke-width="4" />
+            <line id="seg-db" class="geo-element hidden" x1="160" y1="190" x2="240" y2="190" stroke="#10b981" stroke-width="4" />
+
+            <!-- কেন্দ্র O -->
+            <circle id="point-o" cx="160" cy="130" r="4" fill="#fbbf24" />
+
+            <!-- লম্ব OD -->
+            <line id="line-od" class="geo-element hidden" x1="160" y1="130" x2="160" y2="190" stroke="#f43f5e" stroke-width="3" />
+
+            <!-- সমকোণ চিহ্ন -->
+            <path id="right-angle" class="geo-element hidden" d="M 150 190 L 150 180 L 160 180" fill="none" stroke="#fbbf24" stroke-width="2"/>
+
+            <!-- অঙ্কন: OA এবং OB -->
+            <line id="line-oa" class="geo-element hidden" x1="160" y1="130" x2="80" y2="190" stroke="#a855f7" stroke-width="2" stroke-dasharray="4,4" />
+            <line id="line-ob" class="geo-element hidden" x1="160" y1="130" x2="240" y2="190" stroke="#a855f7" stroke-width="2" stroke-dasharray="4,4" />
+
+            <!-- বিন্দু সমূহের নাম -->
+            <text x="160" y="120" text-anchor="middle" class="label">O</text>
+            <text x="65" y="195" text-anchor="middle" class="label">A</text>
+            <text x="255" y="195" text-anchor="middle" class="label">B</text>
+            <text id="lbl-d" x="160" y="210" text-anchor="middle" class="label hidden">D</text>
+        </svg>
+    </div>
+
+    <!-- বর্ণনার বক্স -->
+    <div class="info-card">
+        <div id="step-tag" class="step-tag">ধাপ ১: বিশেষ নির্বচন</div>
+        <div id="step-desc" class="step-desc">
+            মনে করি, <strong>O</strong> কেন্দ্রবিশিষ্ট বৃত্তে <strong>AB</strong> একটি ব্যাস নয় এমন জ্যা।
+        </div>
+    </div>
+
+    <!-- কন্ট্রোল বাটন -->
+    <div class="controls">
+        <button id="btn-prev" class="btn-prev" onclick="prevStep()" disabled>আগের ধাপ</button>
+        <button id="btn-next" class="btn-next" onclick="nextStep()">পরের ধাপ ➔</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = 0;
+
+    const steps = [
+        {
+            tag: "ধাপ ১: বিশেষ নির্বচন",
+            desc: "মনে করি, <strong>O</strong> কেন্দ্রবিশিষ্ট বৃত্তে <strong>AB</strong> ব্যাস নয় এমন একটি জ্যা।",
+            action: () => {
+                hideAll();
+            }
+        },
+        {
+            tag: "ধাপ ২: লম্ব অঙ্কন",
+            desc: "বৃত্তের কেন্দ্র <strong>O</strong> থেকে <strong>AB</strong> জ্যা-এর উপর <strong>OD</strong> লম্ব আঁকি।<br>প্রমাণ করতে হবে যে, <strong>AD = BD</strong> (অর্থাৎ D বিন্দু AB-এর মধ্যবিন্দু)।",
+            action: () => {
+                show("line-od");
+                show("lbl-d");
+                show("right-angle");
+                hide("line-oa");
+                hide("line-ob");
+            }
+        },
+        {
+            tag: "ধাপ ৩: অঙ্কন",
+            desc: "<strong>O, A</strong> এবং <strong>O, B</strong> যোগ করি।<br>ফলে দুটি সমকোণী ত্রিভুজ <strong>△OAD</strong> এবং <strong>△OBD</strong> গঠিত হলো।",
+            action: () => {
+                show("line-od");
+                show("lbl-d");
+                show("right-angle");
+                show("line-oa");
+                show("line-ob");
+                removeHighlight("line-oa", "line-ob");
+            }
+        },
+        {
+            tag: "ধাপ ৪: প্রমাণ (সর্বসমতা)",
+            desc: "এখন, △OAD ও △OBD সমকোণী ত্রিভুজদ্বয়ে:<br>১. অতিভুজ <strong>OA = OB</strong> (একই বৃত্তের ব্যাসার্ধ)<br>২. সাধারণ বাহু <strong>OD = OD</strong><br>৩. ∠ODA = ∠ODB = ৯০°",
+            action: () => {
+                show("line-oa");
+                show("line-ob");
+                highlight("line-oa");
+                highlight("line-ob");
+                hide("seg-ad");
+                hide("seg-db");
+            }
+        },
+        {
+            tag: "ধাপ ৫: চূড়ান্ত সিদ্ধান্ত",
+            desc: "সমকোণী ত্রিভুজের <em>অতিভুজ-বাহু উপপাদ্য</em> অনুসারে,<br><strong>△OAD ≅ △OBD</strong> (ত্রিভুজদ্বয় সর্বসম)।<br>অতএব, <strong>AD = BD</strong>। <br><span style='color:#10b981; font-weight:bold;'>সুতরাং, OD লম্ব AB জ্যা-কে সমদ্বিখণ্ডিত করে। (প্রমাণিত)</span>",
+            action: () => {
+                removeHighlight("line-oa", "line-ob");
+                show("seg-ad");
+                show("seg-db");
+            }
+        }
+    ];
+
+    function show(id) {
+        const el = document.getElementById(id);
+        el.classList.remove('hidden');
+        el.classList.add('visible');
+    }
+
+    function hide(id) {
+        const el = document.getElementById(id);
+        el.classList.add('hidden');
+        el.classList.remove('visible');
+    }
+
+    function highlight(...ids) {
+        ids.forEach(id => document.getElementById(id).classList.add('highlight'));
+    }
+
+    function removeHighlight(...ids) {
+        ids.forEach(id => document.getElementById(id).classList.remove('highlight'));
+    }
+
+    function hideAll() {
+        hide("line-od");
+        hide("lbl-d");
+        hide("right-angle");
+        hide("line-oa");
+        hide("line-ob");
+        hide("seg-ad");
+        hide("seg-db");
+        removeHighlight("line-oa", "line-ob");
+    }
+
+    function updateUI() {
+        // টেক্সট আপডেট
+        document.getElementById("step-tag").innerText = steps[currentStep].tag;
+        document.getElementById("step-desc").innerHTML = steps[currentStep].desc;
+
+        // অ্যানিমেশন আপডেট
+        steps[currentStep].action();
+
+        // বাটন সক্রিয়/নিষ্ক্রিয় করা
+        document.getElementById("btn-prev").disabled = (currentStep === 0);
+        
+        const nextBtn = document.getElementById("btn-next");
+        if (currentStep === steps.length - 1) {
+            nextBtn.innerText = "আবার দেখুন ↺";
+        } else {
+            nextBtn.innerText = "পরের ধাপ ➔";
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+        } else {
+            currentStep = 0; // রিস্টার্ট
+        }
+        updateUI();
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            updateUI();
+        }
+    }
+
+    // প্রথম লোড
+    updateUI();
+</script>
+
+</body>
+</html>
