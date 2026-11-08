@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ষষ্ঠ শ্রেণি গণিত - ৮ম অধ্যায়: তথ্য ও উপাত্ত কুইজ</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --success: #2ec4b6;
+            --danger: #e71d36;
+            --bg: #f4f7fe;
+            --card-bg: #ffffff;
+            --text: #2b2d42;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'SolaimanLipi', 'Kalpurush';
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* হেডার ও স্কোর বোর্ড */
+        .quiz-header {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: #ffffff;
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
+            margin-bottom: 25px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .quiz-header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .score-board {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 5px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* কার্ড স্টাইল ও অ্যানিমেশন */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.6s forwards ease-out;
+        }
+
+        .q-title {
+            font-size: 16.5px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+        }
+
+        .q-badge {
+            background-color: #e0e7ff;
+            color: var(--primary);
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        /* পাশাপাশি অপশন বাটন (Horizontal Layout) */
+        .options-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .option-btn {
+            flex: 1 1 calc(25% - 10px);
+            min-width: 140px;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            padding: 10px 8px;
+            border-radius: 8px;
+            font-size: 14.5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.25s ease;
+            user-select: none;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+        /* সঠিক ও ভুল অ্যানিমেশন স্টেট */
+        .option-btn.correct {
+            background-color: var(--success) !important;
+            border-color: var(--success) !important;
+            color: #ffffff !important;
+            animation: pulse 0.5s ease;
+        }
+
+        .option-btn.wrong {
+            background-color: var(--danger) !important;
+            border-color: var(--danger) !important;
+            color: #ffffff !important;
+            animation: shake 0.4s ease;
+        }
+
+        .option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        /* ব্যাখ্যা বক্স */
+        .explanation-box {
+            display: none;
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #166534;
+            margin-top: 10px;
+            line-height: 1.5;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .explanation-box.wrong-exp {
+            background: #fef2f2;
+            border-left-color: var(--danger);
+            color: #991b1b;
+        }
+
+        /* CSS Keyframe অ্যানিমেশনসমূহ */
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .option-btn {
+                flex: 1 1 calc(50% - 10px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h1>৮ম অধ্যায়: তথ্য ও উপাত্ত (MCQ কুইজ)</h1>
+        <p>সঠিক উত্তর নির্বাচন করুন এবং তাৎক্ষণিক ব্যাখ্যা দেখুন</p>
+        <div class="score-board">মোট স্কোর: <span id="score">০</span> / ১০</div>
+    </div>
+
+    <!-- প্রশ্ন তালিকা স্ক্রিপ্ট দ্বারা স্বয়ংক্রিয়ভাবে তৈরি হবে -->
+    <div id="quiz-list"></div>
+</div>
+
+<script>
+    // প্রশ্ন, পাশাপাশি অপশন ও সংক্ষিপ্ত ব্যাখ্যার ডাটাবেজ
+    const quizData = [
+        {
+            q: "সরাসরি উৎস থেকে সংগৃহীত উপাত্তকে কী বলা হয়?",
+            options: ["(ক) মাধ্যমিক উপাত্ত", "(খ) প্রাথমিক উপাত্ত", "(গ) বিন্যস্ত উপাত্ত", "(ঘ) প্রচুরক"],
+            ans: 1,
+            exp: "যে উপাত্ত অনুসন্ধানকারী সরাসরি উৎস থেকে নিজে সংগ্রহ করেন, তাকে প্রাথমিক বা প্রত্যক্ষ উপাত্ত বলে।"
+        },
+        {
+            q: "৫, ৭, ৩, ৯, ৪, ৮ সংখ্যাগুলোর উপাত্ত কোন ধরনের?",
+            options: ["(ক) বিন্যস্ত", "(খ) অবিন্যস্ত", "(গ) মাধ্যমিক", "(ঘ) গুণগত"],
+            ans: 1,
+            exp: "সংখ্যাগুলো ছোট থেকে বড় বা বড় থেকে ছোট কোনো ক্রমানুসারেই সাজানো নেই। তাই এগুলো অবিন্যস্ত উপাত্ত।"
+        },
+        {
+            q: "৮, ১২, ১৬, ২০ উপাত্তগুলোর গড় কত?",
+            options: ["(ক) ১২", "(খ) ১৪", "(গ) ১৫", "(ঘ) ১৬"],
+            ans: 1,
+            exp: "গড় = সংখ্যাগুলোর যোগফল ÷ মোট সংখ্যা = (৮ + ১২ + ১৬ + ২০) ÷ ৪ = ৫৬ ÷ ৪ = ১৪।"
+        },
+        {
+            q: "৬, ৮, ১০, ১২, ১৪ উপাত্তগুলোর মধ্যক কোনটি?",
+            options: ["(ক) ৮", "(খ) ১০", "(গ) ১২", "(ঘ) ১৪"],
+            ans: 1,
+            exp: "উপাত্তগুলো ক্রমানুসারে সাজানো আছে এবং মোট সংখ্যা ৫টি (বিজোড়)। তাই ঠিক মাঝের ৩য় পদটি অর্থাৎ ১০ হলো মধ্যক।"
+        },
+        {
+            q: "৪, ৫, ৮, ৬, ৭, ৯ উপাত্তগুলোর মধ্যক কত?",
+            options: ["(ক) ৬", "(খ) ৬.৫", "(গ) ৭", "(ঘ) ৭.৫"],
+            ans: 1,
+            exp: "মানের ক্রমানুসারে সাজালে পাই: ৪, ৫, ৬, ৭, ৮, ৯। এখানে মোট সংখ্যা ৬টি (জোড়)। সুতরাং মধ্যক = মাঝের দুটি পদের গড় = (৬ + ৭) ÷ ২ = ১৩ ÷ ২ = ৬.৫।"
+        },
+        {
+            q: "৫, ৮, ৫, ৯, ১২, ৫, ৭ উপাত্তগুলোর প্রচুরক কত?",
+            options: ["(ক) ৫", "(খ) ৭", "(গ) ৮", "(ঘ) ৯"],
+            ans: 0,
+            exp: "প্রদত্ত উপাত্তগুলোর মধ্যে '৫' সংখ্যাটি সর্বাধিক ৩ বার রয়েছে। তাই প্রচুরক হলো ৫।"
+        },
+        {
+            q: "৩, ৭, ৯, ১২, ১৫ সংখ্যাগুলোর প্রচুরক কোনটি?",
+            options: ["(ক) ৩", "(খ) ৯", "(গ) ১৫", "(ঘ) প্রচুরক নেই"],
+            ans: 3,
+            exp: "উপাত্তগুলোর মধ্যে কোনো সংখ্যাই একাধিকবার পুনরাবৃত্তি হয়নি। তাই এখানে কোনো প্রচুরক নেই।"
+        },
+        {
+            q: "উপাত্তসমূহ মানের ক্রমানুসারে সাজালে ঠিক মাঝামাঝি মানকে কী বলে?",
+            options: ["(ক) গড়", "(খ) পরিসর", "(গ) মধ্যক", "(ঘ) প্রচুরক"],
+            ans: 2,
+            exp: "উপাত্তগুলোকে মানের ঊর্ধ্বক্রম বা অধঃক্রম অনুসারে সাজালে ঠিক মাঝের মানটিকে মধ্যক বলে।"
+        },
+        {
+            q: "ট্যালির ক্ষেত্রে ৪টি খাড়া দাগ দিয়ে আড়াআড়ি ১টি দাগ দিলে মোট কত নির্দেশ করে?",
+            options: ["(ক) ৪", "(খ) ৫", "(গ) ৬", "(ঘ) ১০"],
+            ans: 1,
+            exp: "গণনাসংখ্যাকে সহজে প্রকাশের জন্য ৪টি খাড়া দাগ দিয়ে আড়াআড়ি একটি দাগ টেনে ৫ এর গুচ্ছ বা বান্ডিল তৈরি করা হয়।"
+        },
+        {
+            q: "অন্য কোনো সংস্থা বা মাধ্যম থেকে প্রাপ্ত উপাত্তকে কী বলা হয়?",
+            options: ["(ক) প্রাথমিক উপাত্ত", "(খ) অবিন্যস্ত উপাত্ত", "(গ) মাধ্যমিক উপাত্ত", "(ঘ) প্রচুরক"],
+            ans: 2,
+            exp: "উপাত্ত যখন সরাসরি উৎস থেকে সংগ্রহ না করে কোনো রেকর্ড, রেজিস্টার বা অন্য মাধ্যম থেকে নেওয়া হয়, তাকে মাধ্যমিক বা পরোক্ষ উপাত্ত বলে।"
+        }
+    ];
+
+    const banglaNumerals = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
+    let userScore = 0;
+
+    function renderQuiz() {
+        const quizList = document.getElementById('quiz-list');
+        quizList.innerHTML = '';
+
+        quizData.forEach((item, qIndex) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.style.animationDelay = `${qIndex * 0.1}s`;
+
+            let optionsHtml = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer(${qIndex}, ${optIndex}, this)">${opt}</button>`;
+            });
+
+            card.innerHTML = `
+                <div class="q-title">
+                    <span class="q-badge">${banglaNumerals[qIndex]}</span>
+                    <span>${item.q}</span>
+                </div>
+                <div class="options-row" id="opts-${qIndex}">
+                    ${optionsHtml}
+                </div>
+                <div class="explanation-box" id="exp-${qIndex}">
+                    <strong>ব্যাখ্যা:</strong> ${item.exp}
+                </div>
+            `;
+            quizList.appendChild(card);
+        });
+    }
+
+    function checkAnswer(qIndex, selectedOptIndex, btn) {
+        const parent = document.getElementById(`opts-${qIndex}`);
+        const allBtns = parent.querySelectorAll('.option-btn');
+        const expBox = document.getElementById(`exp-${qIndex}`);
+        const correctIndex = quizData[qIndex].ans;
+
+        // সমস্ত বাটন নিষ্ক্রিয় করা
+        allBtns.forEach(button => button.classList.add('disabled'));
+
+        if (selectedOptIndex === correctIndex) {
+            btn.classList.add('correct');
+            userScore++;
+            document.getElementById('score').innerText = banglaNumerals[userScore - 1];
+            expBox.classList.remove('wrong-exp');
+        } else {
+            btn.classList.add('wrong');
+            allBtns[correctIndex].classList.add('correct'); // সঠিক উত্তরটি প্রদর্শন
+            expBox.classList.add('wrong-exp');
+        }
+
+        // অ্যানিমেশন সহ ব্যাখ্যা প্রকাশ
+        expBox.style.display = 'block';
+    }
+
+    // কুইজ লোড
+    renderQuiz();
+</script>
+
+</body>
+</html>
