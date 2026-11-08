@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সমবাহু ত্রিভুজ অঙ্কন অ্যানিমেশন - সম্পাদ্য ৬</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0284c7;
+      --accent: #dc2626;
+      --highlight: #16a34a;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Hind Siliguri', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .problem-statement {
+      font-size: 15px;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary);
+      margin-bottom: 14px;
+    }
+
+    .svg-container {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 440px;
+    }
+
+    .step-card {
+      margin-top: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-height: 70px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-size: 15.5px;
+    }
+
+    .step-desc {
+      font-size: 14.5px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #172554;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.btn-secondary {
+      background: #475569;
+    }
+
+    button.btn-secondary:hover {
+      background: #334155;
+    }
+
+    button.btn-accent {
+      background: var(--secondary);
+    }
+
+    button.btn-accent:hover {
+      background: #0369a1;
+    }
+
+    /* SVG এলিমেন্ট স্টাইল */
+    .element-hidden {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .element-visible {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .main-line {
+      stroke: #1e293b;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+    }
+
+    .parallel-line {
+      stroke: #0284c7;
+      stroke-width: 2;
+    }
+
+    .arc {
+      stroke: #d97706;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .result-triangle {
+      stroke: var(--accent);
+      stroke-width: 2.8;
+      stroke-linejoin: round;
+      fill: rgba(220, 38, 38, 0.08);
+      transition: opacity 0.6s ease;
+    }
+
+    .point {
+      fill: var(--primary);
+    }
+
+    .label {
+      font-size: 14.5px;
+      font-style: italic;
+      font-weight: 600;
+      fill: #0f172a;
+    }
+
+    .sub-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      fill: #0369a1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>জ্যামিতিক অঙ্কন অ্যানিমেশন</h1>
+    <div class="problem-statement">
+      <strong>সাধারণ নির্বচন:</strong> সমবাহু ত্রিভুজের পরিসীমা দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।
+    </div>
+  </header>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 840 450" id="geomSvg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#1e293b"/>
+        </marker>
+        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+        </marker>
+      </defs>
+
+      <!-- প্রদত্ত পরিসীমা p -->
+      <g id="given-data">
+        <text x="50" y="32" class="label" font-size="14" fill="#475569">প্রদত্ত পরিসীমা p :</text>
+        <line x1="50" y1="50" x2="410" y2="50" stroke="#0f172a" stroke-width="2.6" />
+        <text x="40" y="55" class="label">p</text>
+      </g>
+
+      <!-- ধাপ ১: রশ্মি PM এবং PQ = p অংশ কর্তন -->
+      <g id="step1-el" class="element-hidden">
+        <line x1="50" y1="360" x2="460" y2="360" class="main-line" marker-end="url(#arrow)" />
+        <circle cx="50" cy="360" r="3.5" class="point" />
+        <circle cx="410" cy="360" r="3.5" class="point" />
+        <path d="M 405 352 L 415 368" stroke="#dc2626" stroke-width="2" />
+        <text x="35" y="375" class="label">P</text>
+        <text x="405" y="385" class="label">Q</text>
+        <text x="455" y="380" class="label">M</text>
+      </g>
+
+      <!-- ধাপ ২: P বিন্দুতে সূক্ষ্মকোণী রশ্মি ও ৩টি সমান চাপ -->
+      <g id="step2-el" class="element-hidden">
+        <!-- সূক্ষ্মকোণী রশ্মি (কোণ প্রায় ৩৮ ডিগ্রি) -->
+        <line x1="50" y1="360" x2="330" y2="140" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" />
+        
+        <!-- ৩টি সমান অংশ কাটার দাগ (দূরত্ব ৮০px করে) -->
+        <!-- অংশ ১: (113, 310) -->
+        <path d="M 103 318 L 123 302" class="arc" />
+        <circle cx="113" cy="310" r="3" fill="#d97706" />
+
+        <!-- অংশ ২: (176, 260) -->
+        <path d="M 166 268 L 186 252" class="arc" />
+        <circle cx="176" cy="260" r="3" fill="#d97706" />
+
+        <!-- অংশ ৩: (239, 210) -->
+        <path d="M 229 218 L 249 202" class="arc" />
+        <circle cx="239" cy="210" r="3" fill="#d97706" />
+      </g>
+
+      <!-- ধাপ ৩: পরিসীমা p-কে সমত্রিখণ্ডিতকরণ -->
+      <g id="step3-el" class="element-hidden">
+        <!-- শেষ বিন্দু (239, 210) এর সাথে Q(410, 360) সংযোগ -->
+        <line x1="239" y1="210" x2="410" y2="360" stroke="#475569" stroke-width="1.8" />
+        
+        <!-- সমান্তরাল রেখা ১: (176, 260) থেকে (290, 360) -->
+        <line x1="176" y1="260" x2="290" y2="360" class="parallel-line" />
+        <!-- সমান্তরাল রেখা ২: (113, 310) থেকে (170, 360) -->
+        <line x1="113" y1="310" x2="170" y2="360" class="parallel-line" />
+
+        <!-- সেকশন বিন্দুসমূহ -->
+        <circle cx="170" cy="360" r="3" fill="#0284c7" />
+        <circle cx="290" cy="360" r="3" fill="#0284c7" />
+
+        <!-- ভাগগুলোর লেবেল p1, p2, p3 -->
+        <text x="100" y="380" class="sub-label">p₁</text>
+        <text x="220" y="380" class="sub-label">p₂</text>
+        <text x="340" y="380" class="sub-label">p₃</text>
+      </g>
+
+      <!-- ধাপ ৪: যেকোনো রশ্মি AD হতে AB = p1 কর্তন -->
+      <g id="step4-el" class="element-hidden">
+        <line x1="510" y1="360" x2="790" y2="360" class="main-line" marker-end="url(#arrow)" />
+        <circle cx="510" cy="360" r="3.5" class="point" />
+        <!-- p1 এর দৈর্ঘ্য = ১২০ px; B বিন্দু = 510 + 120 = 630 -->
+        <path d="M 625 352 L 635 368" stroke="#dc2626" stroke-width="2" />
+        <circle cx="630" cy="360" r="3.5" class="point" />
+        <text x="495" y="375" class="label">A</text>
+        <text x="625" y="385" class="label">B</text>
+        <text x="785" y="380" class="label">D</text>
+        <text x="562" y="380" class="sub-label">p₁</text>
+      </g>
+
+      <!-- ধাপ ৫: A ও B থেকে p2 ও p3 এর সমান ব্যাসার্ধে বৃত্তচাপ (C বিন্দু নির্ধারণ) -->
+      <g id="step5-el" class="element-hidden">
+        <!-- C বিন্দুর স্থানাঙ্ক: x = 570, y = 360 - 120*sqrt(3)/2 = 360 - 103.9 = 256 -->
+        <!-- A(510, 360) থেকে বৃত্তচাপ (ব্যাসার্ধ ১২০) -->
+        <path d="M 552 245 A 120 120 0 0 1 588 270" class="arc" />
+        <!-- B(630, 360) থেকে বৃত্তচাপ (ব্যাসার্ধ ১২০) -->
+        <path d="M 588 245 A 120 120 0 0 0 552 270" class="arc" />
+        
+        <circle cx="570" cy="256" r="3.5" class="point" />
+        <text x="565" y="244" class="label">C</text>
+      </g>
+
+      <!-- ধাপ ৬: C, A এবং C, B যোগ করে সমবাহু ত্রিভুজ সম্পন্নকরণ -->
+      <g id="step6-el" class="element-hidden">
+        <polygon points="510,360 630,360 570,256" class="result-triangle" />
+        <text x="525" y="305" class="sub-label">p₂</text>
+        <text x="605" y="305" class="sub-label">p₃</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="step-card">
+    <div class="step-title" id="stepIndicator">প্রস্তুতি ধাপ</div>
+    <div class="step-desc" id="stepDescription">
+      শুরু করতে "পরবর্তী ধাপ" বাটনে চাপুন। দেওয়া আছে সমবাহু ত্রিভুজের পরিসীমা p।
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" class="btn-secondary" onclick="prevStep()" disabled>পূর্ববর্তী ধাপ</button>
+    <button id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ</button>
+    <button id="autoBtn" class="btn-accent" onclick="toggleAutoPlay()">অটো-প্লে</button>
+    <button id="resetBtn" class="btn-secondary" onclick="resetAll()">পুনরায় শুরু</button>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 6;
+  let autoPlayTimer = null;
+
+  const stepsData = [
+    {
+      title: "ধাপ ০: সাধারণ ও বিশেষ নির্বচন",
+      desc: "মনে করি, কোনো সমবাহু ত্রিভুজের পরিসীমা p দেওয়া আছে। ত্রিভুজটি আঁকতে হবে (যেহেতু সমবাহু ত্রিভুজের ৩টি বাহু সমান, তাই পরিসীমা p-কে ৩টি সমান অংশে ভাগ করতে হবে)।"
+    },
+    {
+      title: "ধাপ ১: পরিসীমা কেটে নেওয়া",
+      desc: "যেকোনো রশ্মি PM নিই এবং PM থেকে পরিসীমা p এর সমান করে PQ অংশ কেটে নিই (অর্থাৎ PQ = p)।"
+    },
+    {
+      title: "ধাপ ২: ত্রিখণ্ডক রশ্মি ও সমদূরবর্তী চাপ",
+      desc: "PQ রেখার P বিন্দুতে যেকোনো সূক্ষ্মকোণ করে একটি রশ্মি আঁকি। সেই রশ্মিতে যেকোনো সুবিধাজনক মাপ নিয়ে পরপর ৩টি সমান অংশ কাটি।"
+    },
+    {
+      title: "ধাপ ৩: পরিসীমা p কে সমত্রিখণ্ডিত করা",
+      desc: "রশ্মির ৩য় বিন্দুটির সাথে Q যোগ করি। এরপর অপর দুটি বিন্দু দিয়ে এই সংযোজক রেখার সমান্তরাল দুটি রেখা আঁকি যা PQ-কে সমত্রিখণ্ডিত করে। ফলে p₁ = p₂ = p₃ এবং p = p₁ + p₂ + p₃।"
+    },
+    {
+      title: "ধাপ ৪: ত্রিভুজের ভূমি নেওয়া",
+      desc: "যেকোনো রশ্মি AD নিই। AD হতে এক-তৃতীয়াংশ p₁ এর সমান করে AB অংশ কেটে নিই (AB = p₁)।"
+    },
+    {
+      title: "ধাপ ৫: বৃত্তচাপ দ্বারা শীর্ষবিন্দু C নির্ণয়",
+      desc: "A ও B বিন্দুকে কেন্দ্র করে যথাক্রমে p₂ ও p₃ (যা প্রত্যেকে p₁ এর সমান) এর সমান ব্যাসার্ধ নিয়ে AD এর একই পাশে দুটি বৃত্তচাপ আঁকি। বৃত্তচাপ দুটি পরস্পরকে C বিন্দুতে ছেদ করে।"
+    },
+    {
+      title: "ধাপ ৬: ত্রিভুজ সম্পন্নকরণ",
+      desc: "C, A এবং C, B যোগ করি। তাহলে, △ABC-ই উদ্দিষ্ট সমবাহু ত্রিভুজ (যার প্রতি বাহু = p/৩ এবং পরিসীমা = p)।"
+    }
+  ];
+
+  function updateView() {
+    // বর্ণনা আপডেট
+    document.getElementById("stepIndicator").innerText = stepsData[currentStep].title;
+    document.getElementById("stepDescription").innerText = stepsData[currentStep].desc;
+
+    // SVG এলিমেন্ট সক্রিয় বা লুকানো
+    for (let i = 1; i <= totalSteps; i++) {
+      const el = document.getElementById("step" + i + "-el");
+      if (el) {
+        if (i <= currentStep) {
+          el.classList.remove("element-hidden");
+          el.classList.add("element-visible");
+        } else {
+          el.classList.remove("element-visible");
+          el.classList.add("element-hidden");
+        }
+      }
+    }
+
+    // বাটন অবস্থা
+    document.getElementById("prevBtn").disabled = (currentStep === 0);
+    document.getElementById("nextBtn").disabled = (currentStep === totalSteps);
+
+    if (currentStep === totalSteps && autoPlayTimer) {
+      toggleAutoPlay();
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateView();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateView();
+    }
+  }
+
+  function resetAll() {
+    if (autoPlayTimer) toggleAutoPlay();
+    currentStep = 0;
+    updateView();
+  }
+
+  function toggleAutoPlay() {
+    const autoBtn = document.getElementById("autoBtn");
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+      autoBtn.innerText = "অটো-প্লে";
+      autoBtn.classList.remove("btn-secondary");
+      autoBtn.classList.add("btn-accent");
+    } else {
+      if (currentStep === totalSteps) currentStep = 0;
+      autoBtn.innerText = "থামুন";
+      autoBtn.classList.remove("btn-accent");
+      autoBtn.classList.add("btn-secondary");
+      updateView();
+      autoPlayTimer = setInterval(() => {
+        if (currentStep < totalSteps) {
+          nextStep();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 2500);
+    }
+  }
+
+  // প্রারম্ভিক অবস্থা লোড
+  updateView();
+</script>
+
+</body>
+</html>
