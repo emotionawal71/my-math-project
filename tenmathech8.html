@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বৃত্তে অন্তর্লিখিত চতুর্ভুজ উপপাদ্য</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #1a365d;
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+        .canvas-area {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+        svg {
+            width: 100%;
+            height: auto;
+            background: #fafafa;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .info-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid #2b6cb0;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            text-align: left;
+            min-height: 90px;
+            font-size: 0.95rem;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        button {
+            padding: 10px 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-next { background: #3182ce; color: white; }
+        .btn-prev { background: #e2e8f0; color: #4a5568; }
+        .btn-reset { background: #e53e3e; color: white; }
+        button:active { transform: scale(0.96); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Animation classes */
+        .highlight-line { stroke: #e53e3e; stroke-width: 3; stroke-dasharray: 4; animation: dash 1s infinite linear; }
+        .angle-arc { fill: none; stroke-width: 3; stroke-linecap: round; }
+        @keyframes dash { to { stroke-dashoffset: -8; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>বৃত্তে অন্তর্লিখিত চতুর্ভুজের বিপরীত কোণদ্বয়ের সমষ্টি দুই সমকোণ</h2>
+
+    <div class="canvas-area">
+        <svg viewBox="0 0 320 320">
+            <!-- বৃত্ত -->
+            <circle cx="160" cy="160" r="120" stroke="#4a5568" stroke-width="2.5" fill="none" />
+            
+            <!-- কেন্দ্র ও নাম -->
+            <circle cx="160" cy="160" r="4" fill="#1a202c" />
+            <text x="165" y="155" font-weight="bold" fill="#1a202c">O</text>
+
+            <!-- অঙ্কন লাইন (OA ও OC) -->
+            <line id="lineOA" x1="160" y1="160" x2="80" y2="75" stroke="#718096" stroke-width="2" stroke-dasharray="4" style="display:none;" />
+            <line id="lineOC" x1="160" y1="160" x2="245" y2="240" stroke="#718096" stroke-width="2" stroke-dasharray="4" style="display:none;" />
+
+            <!-- চাপ এবং কোণের হাইলাইট অংশ -->
+            <path id="reflexAOC" d="M 80 75 A 120 120 0 0 1 245 240" fill="none" stroke="#ed8936" stroke-width="4" style="display:none;"/>
+            <path id="normAOC" d="M 80 75 A 120 120 0 0 0 245 240" fill="none" stroke="#48bb78" stroke-width="4" style="display:none;"/>
+
+            <!-- চতুর্ভুজ ABCD -->
+            <polygon id="quad" points="80,75 55,200 245,240 260,110" stroke="#2b6cb0" stroke-width="3" fill="rgba(66, 153, 225, 0.05)" />
+
+            <!-- শীর্ষবিন্দুসমূহ -->
+            <circle cx="80" cy="75" r="4" fill="#2b6cb0" />
+            <text x="65" y="70" font-weight="bold">A</text>
+
+            <circle cx="55" cy="200" r="4" fill="#2b6cb0" />
+            <text x="35" y="210" font-weight="bold">B</text>
+
+            <circle cx="245" cy="240" r="4" fill="#2b6cb0" />
+            <text x="255" y="255" font-weight="bold">C</text>
+
+            <circle cx="260" cy="110" r="4" fill="#2b6cb0" />
+            <text x="270" y="110" font-weight="bold">D</text>
+
+            <!-- কোণ হাইলাইট -->
+            <path id="angleB" d="M 68 185 A 25 25 0 0 0 85 208" fill="none" stroke="#ed8936" stroke-width="4" style="display:none;"/>
+            <path id="angleD" d="M 235 115 A 25 25 0 0 0 250 135" fill="none" stroke="#48bb78" stroke-width="4" style="display:none;"/>
+        </svg>
+    </div>
+
+    <!-- বিবরণ বক্স -->
+    <div class="info-box" id="infoText">
+        স্বাগতম! উপপাদ্যটির প্রমাণ অ্যানিমেশনের মাধ্যমে দেখতে <b>"পরবর্তী ধাপ"</b> বাটনে চাপুন।
+    </div>
+
+    <!-- বাটনসমূহ -->
+    <div class="btn-group">
+        <button class="btn-prev" id="btnPrev" onclick="prevStep()" disabled>পূর্ববর্তী</button>
+        <button class="btn-next" id="btnNext" onclick="nextStep()">পরবর্তী ধাপ</button>
+        <button class="btn-reset" onclick="resetSteps()">পুনরায়</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = 0;
+
+    const steps = [
+        {
+            text: "<b>সাধারণ নির্বচন:</b> বৃত্তে অন্তর্লিখিত চতুর্ভুজের যে কোনো দুটি বিপরীত কোণের সমষ্টি দুই সমকোণ (বা ১৮০°)।",
+            action: () => {
+                hideAll();
+            }
+        },
+        {
+            text: "<b>বিশেষ নির্বচন:</b> মনে করি, O কেন্দ্রবিশিষ্ট একটি বৃত্তে <b>ABCD</b> একটি চতুর্ভুজ অন্তর্লিখিত হয়েছে।<br>প্রমাণ করতে হবে যে: <b>∠ABC + ∠ADC = ২ সমকোণ</b>।",
+            action: () => {
+                hideAll();
+                document.getElementById('quad').style.stroke = "#2b6cb0";
+            }
+        },
+        {
+            text: "<b>অঙ্কন:</b> O এর সাথে A এবং C বিন্দু যোগ করি। ফলে O বিন্দুতে কেন্দ্রস্থ কোণ তৈরি হলো।",
+            action: () => {
+                hideAll();
+                document.getElementById('lineOA').style.display = 'block';
+                document.getElementById('lineOC').style.display = 'block';
+            }
+        },
+        {
+            text: "<b>প্রমাণ (ধাপ ১):</b> একই চাপ <b>ADC</b>-এর উপর দণ্ডায়মান কেন্দ্রস্থ <b>প্রবৃদ্ধ ∠AOC = ২(বৃত্তস্থ ∠ABC)</b>।<br><small style='color:#ed8936;'>[আমরা জানি, কেন্দ্রস্থ কোণ বৃত্তস্থ কোণের দ্বিগুণ]</small>",
+            action: () => {
+                hideAll();
+                document.getElementById('lineOA').style.display = 'block';
+                document.getElementById('lineOC').style.display = 'block';
+                document.getElementById('reflexAOC').style.display = 'block';
+                document.getElementById('angleB').style.display = 'block';
+            }
+        },
+        {
+            text: "<b>প্রমাণ (ধাপ ২):</b> আবার, একই চাপ <b>ABC</b>-এর উপর দণ্ডায়মান কেন্দ্রস্থ <b>∠AOC = ২(বৃত্তস্থ ∠ADC)</b>।",
+            action: () => {
+                hideAll();
+                document.getElementById('lineOA').style.display = 'block';
+                document.getElementById('lineOC').style.display = 'block';
+                document.getElementById('normAOC').style.display = 'block';
+                document.getElementById('angleD').style.display = 'block';
+            }
+        },
+        {
+            text: "<b>প্রমাণ (ধাপ ৩):</b> সমীকরণ দুটি যোগ করে পাই,<br>প্রবৃদ্ধ ∠AOC + ∠AOC = ২(∠ABC + ∠ADC)<br>বা, ৪ সমকোণ = ২(∠ABC + ∠ADC) <small>[যেহেতু কেন্দ্রের মোট কোণ ৩৬০° বা ৪ সমকোণ]</small>",
+            action: () => {
+                hideAll();
+                document.getElementById('lineOA').style.display = 'block';
+                document.getElementById('lineOC').style.display = 'block';
+                document.getElementById('reflexAOC').style.display = 'block';
+                document.getElementById('normAOC').style.display = 'block';
+                document.getElementById('angleB').style.display = 'block';
+                document.getElementById('angleD').style.display = 'block';
+            }
+        },
+        {
+            text: "<b>উপসংহার:</b> অতএব, <b>∠ABC + ∠ADC = ২ সমকোণ (বা ১৮০°)</b>।<br>অনুরূপভাবে প্রমাণ করা যায় যে, ∠BAD + ∠BCD = ২ সমকোণ। <br><b style='color:green;'>[প্রমাণিত]</b>",
+            action: () => {
+                hideAll();
+                document.getElementById('quad').style.stroke = "#38a169";
+                document.getElementById('angleB').style.display = 'block';
+                document.getElementById('angleD').style.display = 'block';
+            }
+        }
+    ];
+
+    function hideAll() {
+        document.getElementById('lineOA').style.display = 'none';
+        document.getElementById('lineOC').style.display = 'none';
+        document.getElementById('reflexAOC').style.display = 'none';
+        document.getElementById('normAOC').style.display = 'none';
+        document.getElementById('angleB').style.display = 'none';
+        document.getElementById('angleD').style.display = 'none';
+        document.getElementById('quad').style.stroke = "#2b6cb0";
+    }
+
+    function updateView() {
+        document.getElementById('infoText').innerHTML = steps[currentStep].text;
+        steps[currentStep].action();
+
+        document.getElementById('btnPrev').disabled = (currentStep === 0);
+        document.getElementById('btnNext').disabled = (currentStep === steps.length - 1);
+    }
+
+    function nextStep() {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            updateView();
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            updateView();
+        }
+    }
+
+    function resetSteps() {
+        currentStep = 0;
+        updateView();
+    }
+</script>
+
+</body>
+</html>
