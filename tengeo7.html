@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সমকোণী ত্রিভুজ অঙ্কন - ইন্টারঅ্যাক্টিভ সম্পাদ্য</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SolaimanLipi', sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 12px;
+    }
+    .container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 840px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+    }
+    .header {
+      background: #0f766e;
+      color: #ffffff;
+      padding: 16px;
+      text-align: center;
+    }
+    .header h2 {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+    .header p {
+      font-size: 0.95rem;
+      color: #ccfbf1;
+    }
+    .slider-panel {
+      background: #f8fafc;
+      padding: 12px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: #334155;
+      font-weight: bold;
+    }
+    .slider-group input[type="range"] {
+      cursor: pointer;
+    }
+    .svg-wrapper {
+      width: 100%;
+      background: #fafafa;
+      display: flex;
+      justify-content: center;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 430px;
+    }
+    .explanation-box {
+      padding: 14px 20px;
+      background: #f0fdfa;
+      border-left: 5px solid #0f766e;
+      margin: 12px 20px 4px;
+      border-radius: 4px;
+      min-height: 72px;
+    }
+    .explanation-box h4 {
+      color: #0f766e;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .explanation-box p {
+      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 18px;
+      gap: 8px;
+    }
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 9px 16px;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover:not(:disabled) {
+      background: #115e59;
+      transform: translateY(-1px);
+    }
+    button:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #64748b;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #475569;
+    }
+    .step-text {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #475569;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>সম্পাদ্য: সমকোণী ত্রিভুজ অঙ্কন</h2>
+    <p>সমকোণী ত্রিভুজের অতিভুজ ও অপর দুই বাহুর সমষ্টি দেওয়া আছে। ত্রিভুজটি আঁক।</p>
+  </div>
+
+  <!-- স্লাইডার কন্ট্রোল -->
+  <div class="slider-panel">
+    <div class="slider-group">
+      <label>অতিভুজ (a):</label>
+      <input type="range" id="sliderA" min="150" max="230" value="190">
+      <span id="valA">190</span>
+    </div>
+    <div class="slider-group">
+      <label>বাহুদ্বয়ের সমষ্টি (b):</label>
+      <input type="range" id="sliderB" min="230" max="300" value="260">
+      <span id="valB">260</span>
+    </div>
+  </div>
+
+  <!-- জ্যামিতিক চিত্র (SVG) -->
+  <div class="svg-wrapper">
+    <svg viewBox="0 0 700 420" id="geomCanvas">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#475569"/>
+        </marker>
+      </defs>
+
+      <!-- শীর্ষ উপাত্ত -->
+      <g id="givenData">
+        <line id="lineA" x1="80" y1="35" x2="270" y2="35" stroke="#0f766e" stroke-width="2.5"/>
+        <text x="65" y="40" font-size="16" font-style="italic" font-weight="bold" fill="#0f172a">a</text>
+        <text x="285" y="40" font-size="13" fill="#64748b">অতিভুজ a</text>
+
+        <line id="lineB" x1="80" y1="70" x2="340" y2="70" stroke="#334155" stroke-width="2.5"/>
+        <text x="65" y="75" font-size="16" font-style="italic" font-weight="bold" fill="#0f172a">b</text>
+        <text x="355" y="75" font-size="13" fill="#64748b">সমষ্টি b</text>
+      </g>
+
+      <line x1="30" y1="95" x2="670" y2="95" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+      <!-- ধাপ ১: রেখা MN ও MC = b -->
+      <g id="step1Group" class="hidden">
+        <line x1="100" y1="330" x2="570" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="575" y="335" font-size="15" font-weight="bold" fill="#334155">N</text>
+        <line id="segMC" x1="110" y1="330" x2="370" y2="330" stroke="#0f766e" stroke-width="3"/>
+        <circle cx="110" cy="330" r="4.5" fill="#0f766e"/>
+        <circle id="dotC" cx="370" cy="330" r="4.5" fill="#0f766e"/>
+        <text x="98" y="355" font-size="16" font-weight="bold" fill="#0f172a">M</text>
+        <text id="labelC" x="370" y="355" font-size="16" font-weight="bold" fill="#0f172a">C</text>
+        <text id="labelBVal" x="235" y="355" font-size="14" font-style="italic" font-weight="bold" fill="#0f766e">b</text>
+      </g>
+
+      <!-- ধাপ ২: ∠NMP = 45° কোণ -->
+      <g id="step2Group" class="hidden">
+        <line x1="110" y1="330" x2="370" y2="70" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="380" y="75" font-size="15" font-weight="bold" fill="#334155">P</text>
+        <path d="M 150 330 A 40 40 0 0 0 138 302" fill="none" stroke="#0284c7" stroke-width="2"/>
+        <text x="150" y="315" font-size="13" font-weight="bold" fill="#0284c7">45°</text>
+      </g>
+
+      <!-- ধাপ ৩: C কেন্দ্রিক বৃত্তচাপ -->
+      <g id="step3Group" class="hidden">
+        <path id="arcA" d="" fill="none" stroke="#e11d48" stroke-width="2" stroke-dasharray="5 4"/>
+        <circle id="dotA" cx="0" cy="0" r="4.5" fill="#e11d48"/>
+        <text id="labelA" x="0" y="0" font-size="16" font-weight="bold" fill="#0f172a">A</text>
+      </g>
+
+      <!-- ধাপ ৪: AC যোগ ও অতিভুজ -->
+      <g id="step4Group" class="hidden">
+        <line id="lineAC" x1="0" y1="0" x2="0" y2="0" stroke="#0f766e" stroke-width="2.5"/>
+        <text id="labelHyp" x="0" y="0" font-size="14" font-style="italic" font-weight="bold" fill="#0f766e">a</text>
+      </g>
+
+      <!-- ধাপ ৫: AB লম্ব অঙ্কন -->
+      <g id="step5Group" class="hidden">
+        <line id="lineAB" x1="0" y1="0" x2="0" y2="0" stroke="#0f766e" stroke-width="2.5"/>
+        <circle id="dotB" cx="0" cy="0" r="4.5" fill="#0f766e"/>
+        <text id="labelB" x="0" y="0" font-size="16" font-weight="bold" fill="#0f172a">B</text>
+        <path id="rightAngleMark" d="" fill="none" stroke="#0f766e" stroke-width="1.8"/>
+      </g>
+
+      <!-- ধাপ ৬: সম্পন্ন ত্রিভুজ হাইলাইট -->
+      <g id="step6Group" class="hidden">
+        <polygon id="triPoly" points="" fill="rgba(15, 118, 110, 0.2)" stroke="#0f766e" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ধাপ অনুযায়ী ব্যাখ্যা -->
+  <div class="explanation-box">
+    <h4 id="stepHeading">সাধারণ নির্বচন</h4>
+    <p id="stepDetail">মনে করি, একটি সমকোণী ত্রিভুজের অতিভুজ a এবং অপর দুই বাহুর সমষ্টি b দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।</p>
+  </div>
+
+  <!-- কন্ট্রোল বোতামসমূহ -->
+  <div class="controls">
+    <button id="btnPrev" class="btn-secondary" onclick="stepChange(-1)" disabled>পূর্ববর্তী ধাপ</button>
+    <span class="step-text" id="stepCounter">ধাপ: ০ / ৬</span>
+    <div>
+      <button class="btn-secondary" onclick="resetSteps()">শুরু থেকে</button>
+      <button id="btnNext" onclick="stepChange(1)">পরবর্তী ধাপ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 6;
+
+  const M_x = 110;
+  const M_y = 330;
+
+  const stepInfo = [
+    {
+      title: "সাধারণ নির্বচন ও প্রদত্ত উপাত্ত",
+      detail: "মনে করি, একটি সমকোণী ত্রিভুজের অতিভুজ a এবং অপর দুই বাহুর সমষ্টি b দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (১)",
+      detail: "যেকোনো একটি সরলরেখা MN নিই। MN হতে অপর দুই বাহুর সমষ্টির সমান করে MC = b অংশ কেটে নিই।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (২)",
+      detail: "M বিন্দুতে রেখাংশ MN-এর সাথে ∠NMP = 45° কোণ আঁকি।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (৩)",
+      detail: "C বিন্দুকে কেন্দ্র করে অতিভুজ a-এর সমান ব্যাসার্ধ নিয়ে একটি বৃত্তচাপ আঁকি। বৃত্তচাপটি MP রশ্মিকে A বিন্দুতে ছেদ করে।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (৪)",
+      detail: "A ও C বিন্দু যোগ করি। ফলে অতিভুজ AC = a উৎপন্ন হলো।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (৫)",
+      detail: "A বিন্দু হতে রেখাংশ MN-এর ওপর AB লম্ব আঁকি।"
+    },
+    {
+      title: "অঙ্কন - ধাপ (৬) ও সমাপ্তি",
+      detail: "যেহেতু ∠AMB = 45° এবং ∠ABM = 90°, সেহেতু MB = AB। ফলে BC + AB = BC + MB = MC = b। অতএব, ΔABC-ই উদ্দিষ্ট সমকোণী ত্রিভুজ।"
+    }
+  ];
+
+  function calculateGeometry() {
+    let a = parseFloat(document.getElementById("sliderA").value);
+    let b = parseFloat(document.getElementById("sliderB").value);
+
+    // গাণিতিক বৈধতা পরীক্ষা: a < b এবং a >= b / sqrt(2)
+    const minA = Math.ceil(b / Math.SQRT2) + 2;
+    if (a < minA) {
+      a = minA;
+      document.getElementById("sliderA").value = a;
+    }
+    if (a >= b) {
+      b = a + 10;
+      document.getElementById("sliderB").value = b;
+    }
+
+    document.getElementById("valA").innerText = a;
+    document.getElementById("valB").innerText = b;
+
+    // প্রদত্ত রেখাংশের দৈর্ঘ্য আপডেট
+    document.getElementById("lineA").setAttribute("x2", 80 + a);
+    document.getElementById("lineB").setAttribute("x2", 80 + b);
+
+    // C বিন্দুর স্থানাঙ্ক
+    const C_x = M_x + b;
+    const C_y = M_y;
+
+    document.getElementById("segMC").setAttribute("x2", C_x);
+    document.getElementById("dotC").setAttribute("cx", C_x);
+    document.getElementById("labelC").setAttribute("x", C_x - 5);
+    document.getElementById("labelBVal").setAttribute("x", M_x + b / 2);
+
+    // A বিন্দুর স্থানাঙ্ক গণনা:
+    // MP রশ্মি বরাবর দূরত্ব t হলে: x = M_x + t*cos(45°), y = M_y - t*sin(45°)
+    // (x - C_x)^2 + y^2 = a^2 সমাধান করে ছোট t নির্ণয়:
+    const cos45 = Math.SQRT1_2;
+    const sin45 = Math.SQRT1_2;
+    const term = Math.sqrt(Math.max(0, 2 * a * a - b * b));
+    const t = (b - term) / Math.SQRT2;
+
+    const A_x = M_x + t * cos45;
+    const A_y = M_y - t * sin45;
+
+    // বৃত্তচাপ আপডেট
+    const arcD = "M " + (C_x - a) + " " + C_y + " A " + a + " " + a + " 0 0 1 " + (A_x + 30) + " " + (A_y - 25);
+    document.getElementById("arcA").setAttribute("d", arcD);
+
+    // A বিন্দুর উপাদান
+    document.getElementById("dotA").setAttribute("cx", A_x);
+    document.getElementById("dotA").setAttribute("cy", A_y);
+    document.getElementById("labelA").setAttribute("x", A_x - 22);
+    document.getElementById("labelA").setAttribute("y", A_y - 8);
+
+    // AC রেখা
+    document.getElementById("lineAC").setAttribute("x1", A_x);
+    document.getElementById("lineAC").setAttribute("y1", A_y);
+    document.getElementById("lineAC").setAttribute("x2", C_x);
+    document.getElementById("lineAC").setAttribute("y2", C_y);
+    document.getElementById("labelHyp").setAttribute("x", (A_x + C_x) / 2 + 10);
+    document.getElementById("labelHyp").setAttribute("y", (A_y + C_y) / 2 - 8);
+
+    // AB লম্ব (B বিন্দুর স্থানাঙ্ক: x = A_x, y = M_y)
+    const B_x = A_x;
+    const B_y = M_y;
+
+    document.getElementById("lineAB").setAttribute("x1", A_x);
+    document.getElementById("lineAB").setAttribute("y1", A_y);
+    document.getElementById("lineAB").setAttribute("x2", B_x);
+    document.getElementById("lineAB").setAttribute("y2", B_y);
+
+    document.getElementById("dotB").setAttribute("cx", B_x);
+    document.getElementById("dotB").setAttribute("cy", B_y);
+    document.getElementById("labelB").setAttribute("x", B_x - 6);
+    document.getElementById("labelB").setAttribute("y", B_y + 25);
+
+    // সমকোণ চিহ্ন
+    const sq = 12;
+    const raPath = "M " + B_x + " " + (B_y - sq) + " L " + (B_x + sq) + " " + (B_y - sq) + " L " + (B_x + sq) + " " + B_y;
+    document.getElementById("rightAngleMark").setAttribute("d", raPath);
+
+    // ত্রিভুজ হাইলাইট
+    const pts = A_x + "," + A_y + " " + B_x + "," + B_y + " " + C_x + "," + C_y;
+    document.getElementById("triPoly").setAttribute("points", pts);
+  }
+
+  function renderStep() {
+    document.getElementById("stepHeading").innerText = stepInfo[currentStep].title;
+    document.getElementById("stepDetail").innerText = stepInfo[currentStep].detail;
+
+    const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬'];
+    document.getElementById("stepCounter").innerText = "ধাপ: " + bnDigits[currentStep] + " / ৬";
+
+    for (let i = 1; i <= totalSteps; i++) {
+      const g = document.getElementById("step" + i + "Group");
+      if (g) {
+        if (i <= currentStep) {
+          g.classList.remove("hidden");
+        } else {
+          g.classList.add("hidden");
+        }
+      }
+    }
+
+    document.getElementById("btnPrev").disabled = (currentStep === 0);
+    document.getElementById("btnNext").disabled = (currentStep === totalSteps);
+  }
+
+  function stepChange(delta) {
+    currentStep += delta;
+    if (currentStep < 0) currentStep = 0;
+    if (currentStep > totalSteps) currentStep = totalSteps;
+    renderStep();
+  }
+
+  function resetSteps() {
+    currentStep = 0;
+    renderStep();
+  }
+
+  document.getElementById("sliderA").addEventListener("input", calculateGeometry);
+  document.getElementById("sliderB").addEventListener("input", calculateGeometry);
+
+  // প্রারম্ভিক লোড
+  calculateGeometry();
+  renderStep();
+</script>
+
+</body>
+</html>
