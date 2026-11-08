@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>জ্যামিতিক অঙ্কন অ্যানিমেশন - সম্পাদ্য</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0284c7;
+      --accent: #dc2626;
+      --highlight: #16a34a;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Hind Siliguri', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .problem-statement {
+      font-size: 15px;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary);
+      margin-bottom: 14px;
+    }
+
+    .svg-container {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 440px;
+    }
+
+    .step-card {
+      margin-top: 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-height: 70px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .step-desc {
+      font-size: 14.5px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      font-size: 14.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: #172554;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.btn-secondary {
+      background: #475569;
+    }
+
+    button.btn-secondary:hover {
+      background: #334155;
+    }
+
+    button.btn-accent {
+      background: var(--secondary);
+    }
+
+    button.btn-accent:hover {
+      background: #0369a1;
+    }
+
+    /* SVG Graphical Styles */
+    .element-hidden {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .element-visible {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .base-ray {
+      stroke: #334155;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+    }
+
+    .construction-line {
+      stroke: #64748b;
+      stroke-width: 1.8;
+      stroke-dasharray: 4, 3;
+    }
+
+    .result-triangle {
+      stroke: var(--accent);
+      stroke-width: 3;
+      stroke-linejoin: round;
+      fill: rgba(220, 38, 38, 0.08);
+      transition: opacity 0.6s ease;
+    }
+
+    .alt-triangle {
+      stroke: var(--highlight);
+      stroke-width: 2.5;
+      stroke-linejoin: round;
+      fill: rgba(22, 163, 74, 0.08);
+      stroke-dasharray: 6, 4;
+      transition: opacity 0.6s ease;
+    }
+
+    .arc {
+      stroke: #d97706;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .point {
+      fill: var(--primary);
+    }
+
+    .label {
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 600;
+      fill: #0f172a;
+    }
+
+    .given-label {
+      font-size: 13px;
+      fill: #475569;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>জ্যামিতিক অঙ্কন অ্যানিমেশন</h1>
+    <div class="problem-statement">
+      <strong>সাধারণ নির্বচন:</strong> ত্রিভুজের ভূমিসংলগ্ন একটি কোণ ∠x, উচ্চতা h ও অপর দুই বাহুর সমষ্টি a দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।
+    </div>
+  </header>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 820 480" id="geomSvg">
+      <defs>
+        <!-- তীরচিহ্নের মার্কার -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+        </marker>
+        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7"/>
+        </marker>
+      </defs>
+
+      <!-- প্রদত্ত উপাত্তসমূহ (উপরে বামে) -->
+      <g id="given-data">
+        <rect x="25" y="15" width="220" height="105" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="3,3" />
+        <text x="35" y="32" class="given-label" font-weight="bold">প্রদত্ত উপাত্ত:</text>
+        
+        <!-- সমষ্টি a -->
+        <line x1="45" y1="52" x2="195" y2="52" stroke="#0f172a" stroke-width="2.5" />
+        <text x="35" y="56" class="label">a</text>
+        
+        <!-- উচ্চতা h -->
+        <line x1="45" y1="80" x2="140" y2="80" stroke="#0f172a" stroke-width="2.2" />
+        <text x="35" y="84" class="label">h</text>
+        
+        <!-- কোণ x -->
+        <path d="M 90 108 L 45 108 L 78 86" stroke="#0f172a" stroke-width="2" fill="none" />
+        <path d="M 62 108 A 17 17 0 0 0 70 96" stroke="#d97706" stroke-width="1.6" fill="none" />
+        <text x="35" y="112" class="label">x</text>
+      </g>
+
+      <!-- ধাপ ১: রশ্মি BP -->
+      <g id="step1-el" class="element-hidden">
+        <line x1="160" y1="420" x2="700" y2="420" class="base-ray" marker-end="url(#arrow)" />
+        <circle cx="160" cy="420" r="3.5" class="point" />
+        <text x="142" y="435" class="label">B</text>
+        <text x="690" y="440" class="label">P</text>
+      </g>
+
+      <!-- ধাপ ২: কোণ ∠PBM = ∠x -->
+      <g id="step2-el" class="element-hidden">
+        <line x1="160" y1="420" x2="490" y2="90" class="base-ray" marker-end="url(#arrow)" />
+        <path d="M 210 420 A 50 50 0 0 0 195.3 384.6" class="arc" />
+        <path d="M 195.3 384.6 A 35 35 0 0 0 202 400" stroke="#d97706" stroke-width="1.4" fill="none" />
+        <text x="475" y="82" class="label">M</text>
+        <text x="210" y="405" class="label">x</text>
+      </g>
+
+      <!-- ধাপ ৩: BN = a অংশ কাটি -->
+      <g id="step3-el" class="element-hidden">
+        <!-- N বিন্দু B(160, 420) হতে 45 ডিগ্রিতে 320px দূরত্বে (386, 194) -->
+        <path d="M 378 186 L 394 202" stroke="#dc2626" stroke-width="2.2" />
+        <circle cx="386" cy="194" r="3.5" fill="#dc2626" />
+        <text x="370" y="180" class="label" fill="#dc2626">N</text>
+        <text x="260" y="290" class="label">a</text>
+      </g>
+
+      <!-- ধাপ ৪: BQ লম্ব আঁকি -->
+      <g id="step4-el" class="element-hidden">
+        <line x1="160" y1="420" x2="160" y2="130" class="base-ray" marker-end="url(#arrow)" />
+        <!-- লম্বের বৃত্তচাপসমূহ -->
+        <path d="M 190 420 A 30 30 0 0 0 130 420" class="arc" />
+        <path d="M 145 394 A 30 30 0 0 0 175 394" class="arc" />
+        <path d="M 150 370 L 170 370" class="arc" />
+        <text x="142" y="130" class="label">Q</text>
+      </g>
+
+      <!-- ধাপ ৫: BQ হতে BD = h কাটি -->
+      <g id="step5-el" class="element-hidden">
+        <!-- D বিন্দু y = 420 - 120 = 300 -->
+        <path d="M 152 300 L 168 300" stroke="#dc2626" stroke-width="2.2" />
+        <circle cx="160" cy="300" r="3.5" fill="#dc2626" />
+        <text x="142" y="305" class="label">D</text>
+        <text x="170" y="365" class="label">h</text>
+      </g>
+
+      <!-- ধাপ ৬: D বিন্দুতে সমান্তরাল DF আঁকি যা BM কে A বিন্দুতে ছেদ করে -->
+      <g id="step6-el" class="element-hidden">
+        <!-- সমান্তরাল আঁকার চাপ -->
+        <path d="M 160 330 A 30 30 0 0 1 190 300" class="arc" />
+        <line x1="150" y1="300" x2="620" y2="300" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow-blue)" />
+        <!-- A বিন্দু হলো (280, 300) -->
+        <circle cx="280" cy="300" r="4" fill="#0284c7" />
+        <text x="280" y="285" class="label">A</text>
+        <text x="615" y="315" class="label">F</text>
+      </g>
+
+      <!-- ধাপ ৭: A কে কেন্দ্র করে AN এর সমান ব্যাসার্ধে বৃত্তচাপ যা C ও C' বিন্দুতে ছেদ করে -->
+      <g id="step7-el" class="element-hidden">
+        <!-- AN = 150px. বৃত্তচাপ y=420 এ x = 280 +- 90 এ ছেদ করে -> C(190, 420), C'(370, 420) -->
+        <path d="M 165 428 A 150 150 0 0 0 395 428" stroke="#d97706" stroke-width="2.2" stroke-dasharray="6,4" fill="none" />
+        <circle cx="190" cy="420" r="3.5" class="point" />
+        <circle cx="370" cy="420" r="3.5" class="point" />
+        <text x="194" y="440" class="label">C</text>
+        <text x="375" y="440" class="label">C'</text>
+      </g>
+
+      <!-- ধাপ ৮: A,C এবং A,C' যোগ করি এবং উদ্দিষ্ট ত্রিভুজ দৃশ্যমান করি -->
+      <g id="step8-el" class="element-hidden">
+        <!-- প্রধান ত্রিভুজ ABC -->
+        <polygon points="160,420 280,300 190,420" class="result-triangle" />
+        
+        <!-- বিকল্প ত্রিভুজ ABC' -->
+        <polygon points="160,420 280,300 370,420" class="alt-triangle" />
+        
+        <line x1="280" y1="300" x2="190" y2="420" stroke="#dc2626" stroke-width="2.5" />
+        <line x1="280" y1="300" x2="370" y2="420" stroke="#16a34a" stroke-width="2" stroke-dasharray="4,3" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="step-card">
+    <div class="step-title" id="stepIndicator">প্রস্তুতি ধাপ</div>
+    <div class="step-desc" id="stepDescription">
+      শুরু করতে "পরবর্তী ধাপ" বাটনে চাপুন। প্রদত্ত উপাত্ত: কোণ ∠x, উচ্চতা h ও দুই বাহুর সমষ্টি a।
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" class="btn-secondary" onclick="prevStep()" disabled>পূর্ববর্তী ধাপ</button>
+    <button id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ</button>
+    <button id="autoBtn" class="btn-accent" onclick="toggleAutoPlay()">অটো-প্লে</button>
+    <button id="resetBtn" class="btn-secondary" onclick="resetAll()">পুনরায় শুরু</button>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 8;
+  let autoPlayTimer = null;
+
+  const stepsData = [
+    {
+      title: "ধাপ ০: প্রদত্ত উপাত্ত পরিচিতি",
+      desc: "মনে করি, কোনো ত্রিভুজের ভূমিসংলগ্ন একটি কোণ ∠x, উচ্চতা h এবং অপর দুই বাহুর সমষ্টি a দেওয়া আছে। ত্রিভুজটি আঁকতে হবে।"
+    },
+    {
+      title: "ধাপ ১: রশ্মি অঙ্কন",
+      desc: "যেকোনো একটি সরলরেখা বা রশ্মি BP নিই।"
+    },
+    {
+      title: "ধাপ ২: কোণ অঙ্কন",
+      desc: "BP রশ্মির B বিন্দুতে প্রদত্ত ∠x এর সমান করে ∠PBM কোণ আঁকি।"
+    },
+    {
+      title: "ধাপ ৩: সমষ্টি a এর সমান অংশ কর্তন",
+      desc: "BM রশ্মি হতে দুই বাহুর সমষ্টি a এর সমান করে BN অংশ কেটে নিই (অর্থাৎ BN = a)।"
+    },
+    {
+      title: "ধাপ ৪: লম্ব অঙ্কন",
+      desc: "আবার, BP রেখার B বিন্দুতে BQ লম্ব আঁকি (BQ ⊥ BP)।"
+    },
+    {
+      title: "ধাপ ৫: উচ্চতা h কেটে নেওয়া",
+      desc: "BQ লম্ব রশ্মি হতে উচ্চতা h এর সমান করে BD অংশ কেটে নিই (অর্থাৎ BD = h)।"
+    },
+    {
+      title: "ধাপ ৬: সমান্তরাল রেখা টেনে শীর্ষবিন্দু A নির্ধারণ",
+      desc: "D বিন্দু দিয়ে BP এর সমান্তরাল করে DF রশ্মি আঁকি। DF রশ্মিটি BM রশ্মিকে A বিন্দুতে ছেদ করে।"
+    },
+    {
+      title: "ধাপ ৭: বৃত্তচাপ দ্বারা ভূমি ছেদ",
+      desc: "A বিন্দুকে কেন্দ্র করে AN এর সমান ব্যাসার্ধ নিয়ে একটি বৃত্তচাপ আঁকি। বৃত্তচাপটি ভূমি BP-কে C এবং C' বিন্দুতে ছেদ করে।"
+    },
+    {
+      title: "ধাপ ৮: ত্রিভুজ সম্পন্নকরণ",
+      desc: "A, C এবং A, C' যোগ করি। তাহলে, △ABC অথবা △ABC' উভয়ই উদ্দিষ্ট ত্রিভুজ (যেহেতু AC = AN, তাই BA + AC = BA + AN = BN = a)।"
+    }
+  ];
+
+  function updateView() {
+    // বর্ণনা হালনাগাদ
+    document.getElementById("stepIndicator").innerText = stepsData[currentStep].title;
+    document.getElementById("stepDescription").innerText = stepsData[currentStep].desc;
+
+    // SVG এলিমেন্ট দৃশ্যমান করা
+    for (let i = 1; i <= totalSteps; i++) {
+      const el = document.getElementById("step" + i + "-el");
+      if (el) {
+        if (i <= currentStep) {
+          el.classList.remove("element-hidden");
+          el.classList.add("element-visible");
+        } else {
+          el.classList.remove("element-visible");
+          el.classList.add("element-hidden");
+        }
+      }
+    }
+
+    // বাটন সক্রিয়/নিষ্ক্রিয় অবস্থা
+    document.getElementById("prevBtn").disabled = (currentStep === 0);
+    document.getElementById("nextBtn").disabled = (currentStep === totalSteps);
+
+    if (currentStep === totalSteps && autoPlayTimer) {
+      toggleAutoPlay();
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateView();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateView();
+    }
+  }
+
+  function resetAll() {
+    if (autoPlayTimer) toggleAutoPlay();
+    currentStep = 0;
+    updateView();
+  }
+
+  function toggleAutoPlay() {
+    const autoBtn = document.getElementById("autoBtn");
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+      autoBtn.innerText = "অটো-প্লে";
+      autoBtn.classList.remove("btn-secondary");
+      autoBtn.classList.add("btn-accent");
+    } else {
+      if (currentStep === totalSteps) currentStep = 0;
+      autoBtn.innerText = "থামুন";
+      autoBtn.classList.remove("btn-accent");
+      autoBtn.classList.add("btn-secondary");
+      updateView();
+      autoPlayTimer = setInterval(() => {
+        if (currentStep < totalSteps) {
+          nextStep();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 2500);
+    }
+  }
+
+  // প্রারম্ভিক অবস্থা
+  updateView();
+</script>
+
+</body>
+</html>
