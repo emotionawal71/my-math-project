@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি: বাগানের রাস্তার ক্ষেত্রফল ও ইটের সংখ্যা নির্ণয়</title>
+  <style>
+    :root {
+      --primary: #1b5e20;
+      --primary-light: #4c8c4a;
+      --accent: #e65100;
+      --bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --text: #263238;
+      --road-color: #ffe082;
+      --road-active: #ffb300;
+      --garden-color: #a5d6a7;
+      --overlap-color: #d84315;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Noto Sans Bengali', sans-serif, Arial;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .presentation-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 950px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Progress Bar */
+    .progress-container {
+      background: #e0e0e0;
+      height: 6px;
+      width: 100%;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 8%;
+      transition: width 0.3s ease;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), #2e7d32);
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Main Content Layout */
+    .content-area {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      min-height: 420px;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .content-area {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Visual Diagram Section */
+    .diagram-panel {
+      background: #fafafa;
+      border: 2px dashed #cfd8dc;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      position: relative;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.08));
+    }
+
+    /* Slide Content Section */
+    .explanation-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 15px;
+    }
+
+    .slide-step-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e8f5e9;
+      padding-bottom: 6px;
+    }
+
+    .slide-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #37474f;
+    }
+
+    .highlight-box {
+      background: #e8f5e9;
+      border-left: 5px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 12px 0;
+      font-weight: 500;
+    }
+
+    .math-callout {
+      background: #fff3e0;
+      border-left: 5px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 12px 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #bf360c;
+    }
+
+    /* Controls */
+    .footer {
+      background: #f1f5f4;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      background: #b0bec5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #78909c;
+    }
+    .btn-secondary:hover {
+      background: #607d8b;
+    }
+
+    /* Animation Classes */
+    .road-len, .road-wid, .road-cross {
+      transition: all 0.5s ease;
+    }
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="presentation-card">
+  <!-- Top Progress Indicator -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Header Section -->
+  <div class="header">
+    <h2 id="topicTitle">পরিমিতি: বাগানের রাস্তা ও ইটের হিসাব</h2>
+    <span class="badge" id="slideBadge">স্লাইড: ১ / ১৩</span>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-area">
+    <!-- SVG Interactive Diagram -->
+    <div class="diagram-panel">
+      <svg id="gardenSvg" viewBox="0 0 520 380">
+        <!-- Background Grid Marker -->
+        <defs>
+          <pattern id="brickPattern" width="16" height="8" patternUnits="userSpaceOnUse">
+            <rect width="16" height="8" fill="#d7ccc8" stroke="#8d6e63" stroke-width="0.8"/>
+          </pattern>
+        </defs>
+
+        <!-- Garden Base -->
+        <rect id="gardenBase" x="70" y="60" width="380" height="260" rx="4" fill="var(--garden-color)" stroke="#2e7d32" stroke-width="3"/>
+        
+        <!-- Roads -->
+        <!-- Length-wise Road (horizontal) -->
+        <rect id="lenRoad" x="70" y="178" width="380" height="24" fill="var(--road-color)" stroke="#f57f17" stroke-width="1.5" opacity="0"/>
+        
+        <!-- Width-wise Road (vertical) -->
+        <rect id="widRoad" x="248" y="60" width="24" height="260" fill="var(--road-color)" stroke="#f57f17" stroke-width="1.5" opacity="0"/>
+        
+        <!-- Common Intersected Center Road -->
+        <rect id="crossRoad" x="248" y="178" width="24" height="24" fill="var(--overlap-color)" opacity="0"/>
+
+        <!-- Dimension Labels -->
+        <!-- Length Label -->
+        <g id="lenLabelGroup" opacity="0">
+          <line x1="70" y1="40" x2="450" y2="40" stroke="#37474f" stroke-width="1.5" marker-start="url(#dot)" marker-end="url(#dot)"/>
+          <text x="260" y="32" fill="#263238" font-size="15" font-weight="bold" text-anchor="middle">দৈর্ঘ্য = ১৫০ মিটার</text>
+        </g>
+
+        <!-- Width Label -->
+        <g id="widLabelGroup" opacity="0">
+          <line x1="45" y1="60" x2="45" y2="320" stroke="#37474f" stroke-width="1.5"/>
+          <text x="35" y="195" fill="#263238" font-size="15" font-weight="bold" text-anchor="middle" transform="rotate(-90 35 195)">প্রস্থ = ১০০ মিটার</text>
+        </g>
+
+        <!-- Road Width Callouts -->
+        <g id="roadWidthLabel" opacity="0">
+          <text x="458" y="195" fill="#e65100" font-size="13" font-weight="bold">৩ মি. চওড়া</text>
+        </g>
+
+        <!-- Bricks Visual overlay on road (For Q3) -->
+        <rect id="brickOverlay" x="70" y="178" width="380" height="24" fill="url(#brickPattern)" opacity="0"/>
+        <rect id="brickOverlay2" x="248" y="60" width="24" height="260" fill="url(#brickPattern)" opacity="0"/>
+      </svg>
+      <div id="diagramCaption" style="font-size: 0.85rem; color: #546e7a; margin-top: 6px;">চিত্র: আয়তাকার ফুল বাগান ও রাস্তা</div>
+    </div>
+
+    <!-- Explanation Text Panel -->
+    <div class="explanation-panel">
+      <div class="slide-step-title" id="stepTitle">উদ্দীপক পরিচিতি</div>
+      <div class="slide-body fade-in" id="stepContent">
+        একটি আয়তাকার ফুলের বাগানের পরিমাপ দেওয়া হলো:
+        <div class="highlight-box">
+          • বাগানের দৈর্ঘ্য = ১৫০ মিটার<br>
+          • বাগানের প্রস্থ = ১০০ মিটার<br>
+          • ঠিক মাঝ বরাবর দৈর্ঘ্য ও প্রস্থ বরাবর ৩ মিটার চওড়া রাস্তা আছে।
+        </div>
+        আমরা ধাপে ধাপে ক, খ এবং গ এর পূর্ণাঙ্গ সমাধান দেখব।
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Buttons -->
+  <div class="footer">
+    <button class="btn btn-secondary" id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী</button>
+    <div style="font-weight: 500; color: #546e7a;" id="navHint">সামনে যেতে 'পরবর্তী' চাপুন</div>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">পরবর্তী →</button>
+  </div>
+</div>
+
+<script>
+  // Slide Data Array (Total 13 interactive slides)
+  const slides = [
+    {
+      title: "উদ্দীপক পরিচিতি",
+      content: `
+        একটি আয়তাকার ফুলের বাগানের তথ্য দেওয়া আছে:
+        <div class="highlight-box">
+          • বাগানের দৈর্ঘ্য = ১৫০ মিটার<br>
+          • বাগানের প্রস্থ = ১০০ মিটার<br>
+          • বাগানের ঠিক মাঝ দিয়ে ৩ মিটার চওড়া দৈর্ঘ্য ও প্রস্থ বরাবর রাস্তা আছে।
+        </div>
+        শিক্ষার্থীরা প্রায়শই মাঝের সাধারণ অংশটি দুইবার হিসাব করে ভুল করে। চলো অ্যানিমেশনের সাহায্যে সহজ সমাধান দেখি।
+      `,
+      action: () => {
+        setOpacity('lenRoad', 0);
+        setOpacity('widRoad', 0);
+        setOpacity('crossRoad', 0);
+        setOpacity('lenLabelGroup', 0);
+        setOpacity('widLabelGroup', 0);
+        setOpacity('roadWidthLabel', 0);
+        setOpacity('brickOverlay', 0);
+        setOpacity('brickOverlay2', 0);
+      }
+    },
+    {
+      title: "প্রশ্ন (ক): বাগানের প্রাথমিক রূপ",
+      content: `
+        <b>প্রশ্ন (ক):</b> উপরের তথ্যটি চিত্রের সাহায্যে সংক্ষিপ্ত বর্ণনা দাও।<br><br>
+        প্রথমে আমরা একটি আয়তাকার বাগান বিবেচনা করি যার:<br>
+        • দৈর্ঘ্য = ১৫০ মিটার<br>
+        • প্রস্থ = ১০০ মিটার
+        <div class="highlight-box">
+          সবুজ ক্ষেত্রটি আমাদের মূল আয়তাকার বাগান নির্দেশ করছে।
+        </div>
+      `,
+      action: () => {
+        setOpacity('lenRoad', 0);
+        setOpacity('widRoad', 0);
+        setOpacity('crossRoad', 0);
+        setOpacity('lenLabelGroup', 1);
+        setOpacity('widLabelGroup', 1);
+        setOpacity('roadWidthLabel', 0);
+        setOpacity('brickOverlay', 0);
+        setOpacity('brickOverlay2', 0);
+      }
+    },
+    {
+      title: "প্রশ্ন (ক): ৩ মিটার চওড়া রাস্তা সংযোজন",
+      content: `
+        বাগান পরিচর্যা করার জন্য ঠিক মাঝ দিয়ে দৈর্ঘ্য ও প্রস্থ বরাবর <b>৩ মিটার চওড়া</b> দুটি রাস্তা আঁকা হলো।<br><br>
+        <div class="highlight-box">
+          <b>বর্ণনা:</b> চিত্রে বাগানের দৈর্ঘ্য ১৫০ মিটার এবং প্রস্থ ১০০ মিটার। মাঝ বরাবর আড়াআড়ি ও লম্বালম্বিভাবে ৩ মিটার চওড়া রাস্তা দেখানো হয়েছে।
+        </div>
+        (ক-এর উত্তর সম্পন্ন হলো)
+      `,
+      action: () => {
+        setOpacity('lenRoad', 0.85);
+        setOpacity('widRoad', 0.85);
+        setOpacity('crossRoad', 0);
+        setOpacity('lenLabelGroup', 1);
+        setOpacity('widLabelGroup', 1);
+        setOpacity('roadWidthLabel', 1);
+        setColor('lenRoad', 'var(--road-color)');
+        setColor('widRoad', 'var(--road-color)');
+      }
+    },
+    {
+      title: "প্রশ্ন (খ): সমাধান পরিকল্পনা",
+      content: `
+        <b>প্রশ্ন (খ):</b> রাস্তার ক্ষেত্রফল নির্ণয় কর।<br><br>
+        <b>পরিকল্পনা:</b><br>
+        ১. দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল বের করব।<br>
+        ২. প্রস্থ বরাবর রাস্তার ক্ষেত্রফল বের করব।<br>
+        ৩. দুই রাস্তার মাঝের সাধারণ ছেদবিন্দুর ক্ষেত্রফল একবার বাদ দেব।
+        <div class="math-callout">
+          মোট ক্ষেত্রফল = দৈর্ঘ্য বরাবর রাস্তা + প্রস্থ বরাবর রাস্তা - সাধারণ অংশ
+        </div>
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-color)');
+        setColor('widRoad', 'var(--road-color)');
+        setOpacity('crossRoad', 0);
+      }
+    },
+    {
+      title: "ধাপ ১: দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল",
+      content: `
+        দৈর্ঘ্য বরাবর রাস্তাটির দৈর্ঘ্য বাগানের দৈর্ঘ্যের সমান অর্থাৎ <b>১৫০ মিটার</b> এবং চওড়া <b>৩ মিটার</b>।<br><br>
+        ∴ দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল:<br>
+        = দৈর্ঘ্য × চওড়া<br>
+        = ১৫০ × ৩ বর্গমিটার
+        <div class="math-callout">
+          = ৪৫০ বর্গমিটার
+        </div>
+      `,
+      action: () => {
+        setOpacity('lenRoad', 1);
+        setColor('lenRoad', 'var(--road-active)');
+        setColor('widRoad', 'var(--road-color)');
+        setOpacity('crossRoad', 0);
+      }
+    },
+    {
+      title: "ধাপ ২: প্রস্থ বরাবর রাস্তার ক্ষেত্রফল",
+      content: `
+        প্রস্থ বরাবর রাস্তাটির দৈর্ঘ্য বাগানের প্রস্থের সমান অর্থাৎ <b>১০০ মিটার</b> এবং চওড়া <b>৩ মিটার</b>।<br><br>
+        ∴ প্রস্থ বরাবর রাস্তার ক্ষেত্রফল:<br>
+        = প্রস্থ × চওড়া<br>
+        = ১০০ × ৩ বর্গমিটার
+        <div class="math-callout">
+          = ৩০০ বর্গমিটার
+        </div>
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-color)');
+        setColor('widRoad', 'var(--road-active)');
+        setOpacity('crossRoad', 0);
+      }
+    },
+    {
+      title: "ধাপ ৩: উভয় রাস্তার সম্মিলিত যোগফল",
+      content: `
+        যদি আমরা দুটি রাস্তার ক্ষেত্রফল যোগ করি:<br><br>
+        রাস্তাদ্বয়ের আপাত ক্ষেত্রফল:<br>
+        = ৪৫০ + ৩০০ বর্গমিটার
+        <div class="math-callout">
+          = ৭৫০ বর্গমিটার
+        </div>
+        <i>কিন্তু লক্ষ্য করো, মাঝের বর্গাকার অংশটি উভয় রাস্তার মধ্যেই দুইবার গণনা করা হয়েছে!</i>
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-active)');
+        setColor('widRoad', 'var(--road-active)');
+        setOpacity('crossRoad', 0);
+      }
+    },
+    {
+      title: "ধাপ ৪: মাঝখানের সাধারণ (ছেদকৃত) অংশ",
+      content: `
+        ঠিক বাগানের কেন্দ্রে রাস্তা দুটি পরস্পরকে ছেদ করেছে (লাল চিহ্নিত বর্গাকার অংশ)।<br><br>
+        এই সাধারণ অংশের দৈর্ঘ্য = ৩ মিটার এবং প্রস্থ = ৩ মিটার।<br>
+        ∴ সাধারণ অংশের ক্ষেত্রফল:<br>
+        = ৩ × ৩ বর্গমিটার
+        <div class="math-callout">
+          = ৯ বর্গমিটার
+        </div>
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-color)');
+        setColor('widRoad', 'var(--road-color)');
+        setOpacity('crossRoad', 1);
+      }
+    },
+    {
+      title: "ধাপ ৫: রাস্তার প্রকৃত ক্ষেত্রফল (খ-এর উত্তর)",
+      content: `
+        যেহেতু সাধারণ অংশটি দুবার যোগ হয়েছিল, তাই এটি একবার বিয়োগ করতে হবে:<br><br>
+        ∴ রাস্তার প্রকৃত ক্ষেত্রফল:<br>
+        = (৭৫০ - ৯) বর্গমিটার
+        <div class="math-callout">
+          = ৭৪১ বর্গমিটার
+        </div>
+        <b>উত্তর (খ): ৭৪১ বর্গমিটার।</b>
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-active)');
+        setColor('widRoad', 'var(--road-active)');
+        setOpacity('crossRoad', 0.5);
+      }
+    },
+    {
+      title: "প্রশ্ন (গ): ইটের মাপ ও এককে রূপান্তর",
+      content: `
+        <b>প্রশ্ন (গ):</b> রাস্তাটি পাকা করতে ২৫ সে.মি. দৈর্ঘ্য এবং ১২.৫ সে.মি. প্রস্থবিশিষ্ট কয়টি ইটের প্রয়োজন হবে?<br><br>
+        ইটের মাপ সেন্টিমিটারে দেওয়া আছে, একে মিটারে রূপান্তর করি [১ মিটার = ১০০ সে.মি.]:<br>
+        • প্রতিটি ইটের দৈর্ঘ্য = ২৫ সে.মি. = (২৫ ÷ ১০০) মি. = <b>০.২৫ মিটার</b><br>
+        • প্রতিটি ইটের প্রস্থ = ১২.৫ সে.মি. = (১২.৫ ÷ ১০০) মি. = <b>০.১২৫ মিটার</b>
+      `,
+      action: () => {
+        setOpacity('brickOverlay', 0);
+        setOpacity('brickOverlay2', 0);
+        setOpacity('crossRoad', 0);
+      }
+    },
+    {
+      title: "ধাপ ৬: একটি ইটের ক্ষেত্রফল নির্ণয়",
+      content: `
+        প্রতিটি ইটের পৃষ্ঠতলের ক্ষেত্রফল:<br>
+        = দৈর্ঘ্য × প্রস্থ<br>
+        = ০.২৫ মিটার × ০.১২৫ মিটার
+        <div class="math-callout">
+          = ০.০৩১২৫ বর্গমিটার
+        </div>
+        রাস্তাটি পাকা করতে প্রতি ০.০৩১২৫ বর্গমিটারে একটি করে ইট লাগবে।
+      `,
+      action: () => {
+        setOpacity('brickOverlay', 0.3);
+        setOpacity('brickOverlay2', 0.3);
+      }
+    },
+    {
+      title: "ধাপ ৭: প্রয়োজনীয় ইটের মোট সংখ্যা (গ-এর উত্তর)",
+      content: `
+        রাস্তার মোট ক্ষেত্রফলকে একটি ইটের ক্ষেত্রফল দিয়ে ভাগ করলে ইটের সংখ্যা পাওয়া যাবে:<br><br>
+        প্রয়োজনীয় ইটের সংখ্যা:<br>
+        = রাস্তার মোট ক্ষেত্রফল ÷ একটি ইটের ক্ষেত্রফল<br>
+        = ৭৪১ ÷ ০.০৩১২৫ টি
+        <div class="math-callout">
+          = ২৩,৭১২ টি ইট
+        </div>
+        <b>উত্তর (গ): ২৩,৭১২ টি।</b>
+      `,
+      action: () => {
+        setOpacity('brickOverlay', 0.85);
+        setOpacity('brickOverlay2', 0.85);
+      }
+    },
+    {
+      title: "সারসংক্ষেপ ও একনজরে ফলাফল",
+      content: `
+        <div class="highlight-box">
+          <b>(ক) চিত্র:</b> বাগানের দৈর্ঘ্য ১৫০ মি., প্রস্থ ১০০ মি. এবং রাস্তা ৩ মি.।<br><br>
+          <b>(খ) রাস্তার ক্ষেত্রফল:</b><br>
+          (১৫০ × ৩) + (১০০ × ৩) - (৩ × ৩)<br>
+          = ৪৫০ + ৩০০ - ৯ = <b>৭৪১ বর্গমিটার</b><br><br>
+          <b>(গ) প্রয়োজনীয় ইট:</b><br>
+          ৭৪১ ÷ (০.২৫ × ০.১২৫) = <b>২৩,৭১২ টি</b>
+        </div>
+        অভিনন্দন! সমস্যাটি সফলভাবে শেষ হয়েছে।
+      `,
+      action: () => {
+        setColor('lenRoad', 'var(--road-active)');
+        setColor('widRoad', 'var(--road-active)');
+        setOpacity('crossRoad', 0.8);
+        setOpacity('brickOverlay', 0.6);
+        setOpacity('brickOverlay2', 0.6);
+      }
+    }
+  ];
+
+  let currentSlide = 0;
+  const totalSlides = slides.length;
+
+  function toBengaliNumerals(n) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return n.toString().split('').map(d => bengaliDigits[d] || d).join('');
+  }
+
+  function setOpacity(elementId, val) {
+    const el = document.getElementById(elementId);
+    if(el) el.style.opacity = val;
+  }
+
+  function setColor(elementId, colorVal) {
+    const el = document.getElementById(elementId);
+    if(el) el.setAttribute('fill', colorVal);
+  }
+
+  function renderSlide() {
+    const s = slides[currentSlide];
+    document.getElementById('stepTitle').innerText = s.title;
+    
+    const contentBox = document.getElementById('stepContent');
+    contentBox.innerHTML = s.content;
+    contentBox.classList.remove('fade-in');
+    void contentBox.offsetWidth; // Trigger reflow for animation
+    contentBox.classList.add('fade-in');
+
+    document.getElementById('slideBadge').innerText = 
+      "স্লাইড: " + toBengaliNumerals(currentSlide + 1) + " / " + toBengaliNumerals(totalSlides);
+
+    const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+    document.getElementById('progressBar').style.width = progressPercent + "%";
+
+    // Controls status
+    document.getElementById('prevBtn').disabled = (currentSlide === 0);
+    if (currentSlide === totalSlides - 1) {
+      document.getElementById('nextBtn').innerText = "পুনরায় শুরু";
+    } else {
+      document.getElementById('nextBtn').innerText = "পরবর্তী →";
+    }
+
+    // Run custom svg visual updates
+    if (s.action) {
+      s.action();
+    }
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides - 1) {
+      currentSlide++;
+    } else {
+      currentSlide = 0;
+    }
+    renderSlide();
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      renderSlide();
+    }
+  }
+
+  // Keyboard Navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'Space') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      prevSlide();
+    }
+  });
+
+  // Initialize First Slide
+  renderSlide();
+</script>
+</body>
+</html>
