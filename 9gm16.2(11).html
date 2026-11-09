@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ট্রাপিজিয়াম সংক্রান্ত পরিমিতি সমাধান</title>
+  <style>
+    :root {
+      --primary-color: #0d6efd;
+      --accent-color: #198754;
+      --bg-color: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .presentation-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 750px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+      color: white;
+      padding: 18px 24px;
+      text-align: center;
+    }
+
+    .header h2 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #e9ecef;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #ffc107;
+      width: 12.5%;
+      transition: width 0.4s ease;
+    }
+
+    .svg-container {
+      text-align: center;
+      padding: 15px 10px 5px;
+      background: #fdfdfd;
+      border-bottom: 1px solid #eef2f5;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .content-area {
+      min-height: 220px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background-color: #e7f1ff;
+      color: var(--primary-color);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .slide-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 6px;
+    }
+
+    .slide-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .highlight-box {
+      background: #f8f9fa;
+      border-left: 4px solid var(--primary-color);
+      padding: 12px 16px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .result-box {
+      background: #e8f5e9;
+      border-left: 4px solid var(--accent-color);
+      padding: 14px 18px;
+      margin-top: 10px;
+      border-radius: 6px;
+      color: #2e7d32;
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-prev {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      background-color: #5a6268;
+    }
+
+    .btn-next {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background-color: #0b5ed7;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .step-counter {
+      font-weight: 600;
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+
+    .math-eq {
+      font-size: 1.15rem;
+      font-family: Cambria, 'Times New Roman', serif;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    <div class="header">
+      <h2>শ্রেণি: ৯ম-১০ম | বিষয়: গণিত (পরিমিতি)</h2>
+      <p>অনুশীলনী ১৬.২ (সমস্যা নং ১১ সমাধান)</p>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- ট্রাপিজিয়ামের ডায়াগ্রাম -->
+    <div class="svg-container">
+      <svg width="340" height="150" viewBox="0 0 340 150">
+        <!-- ট্রাপিজিয়াম শেপ -->
+        <polygon points="90,30 250,30 290,120 50,120" fill="#e7f1ff" stroke="#0d6efd" stroke-width="2"/>
+        
+        <!-- লম্ব উচ্চতা h -->
+        <line x1="90" y1="30" x2="90" y2="120" stroke="#dc3545" stroke-width="2" stroke-dasharray="4,4"/>
+        
+        <!-- সমকোণের চিহ্ন -->
+        <rect x="90" y="108" width="12" height="12" fill="none" stroke="#dc3545" stroke-width="1.5"/>
+
+        <!-- লেবেলসমূহ -->
+        <text x="170" y="24" fill="#0d6efd" font-size="14" font-weight="bold" text-anchor="middle">সমান্তরাল বাহু (b)</text>
+        <text x="170" y="140" fill="#0d6efd" font-size="14" font-weight="bold" text-anchor="middle">সমান্তরাল বাহু (a)</text>
+        <text x="100" y="80" fill="#dc3545" font-size="14" font-weight="bold">h = 24 সে.মি.</text>
+      </svg>
+    </div>
+
+    <!-- স্লাইড কনটেন্ট -->
+    <div class="content-area">
+      
+      <!-- Slide 1 -->
+      <div class="slide active">
+        <span class="slide-badge">ধাপ ১</span>
+        <div class="slide-title">প্রশ্ন পরিচিতি</div>
+        <div class="slide-body">
+          একটি ট্রাপিজিয়ামের সমান্তরাল বাহু দুইটির দৈর্ঘ্যের অন্তর ৮ সে.মি. এবং এদের লম্ব দূরত্ব ২৪ সে.মি.। যদি ট্রাপিজিয়ামের ক্ষেত্রফল ৩১২ বর্গ সে.মি. হয়, তবে বাহু দুইটির দৈর্ঘ্য নির্ণয় করতে হবে।
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ২</span>
+        <div class="slide-title">চলক ধরে নেওয়া ও প্রদত্ত মান</div>
+        <div class="slide-body">
+          ধরি, ট্রাপিজিয়ামটির সমান্তরাল বাহু দুটি যথাক্রমে <strong>a</strong> এবং <strong>b</strong> (যেখানে a &gt; b)।<br>
+          দেওয়া আছে,<br>
+          • বাহুদ্বয়ের লম্ব দূরত্ব, <strong>h = ২৪ সে.মি.</strong><br>
+          • ট্রাপিজিয়ামের ক্ষেত্রফল = <strong>৩১২ বর্গ সে.মি.</strong>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৩</span>
+        <div class="slide-title">ক্ষেত্রফলের সূত্র প্রয়োগ</div>
+        <div class="slide-body">
+          আমরা জানি, ট্রাপিজিয়ামের ক্ষেত্রফল:<br>
+          <div class="highlight-box math-eq">
+            ক্ষেত্রফল = (১/২) × (সমান্তরাল বাহুদ্বয়ের যোগফল) × লম্ব দূরত্ব<br>
+            ক্ষেত্রফল = (১/২) × (a + b) × h
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৪</span>
+        <div class="slide-title">মান বসিয়ে সমীকরণ গঠন</div>
+        <div class="slide-body">
+          প্রশ্নমতে,<br>
+          <div class="highlight-box math-eq">
+            ৩১২ = (১/২) × (a + b) × ২৪<br>
+            বা, ৩১২ = (a + b) × ১২<br>
+            বা, a + b = ৩১২ / ১২
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৫</span>
+        <div class="slide-title">১ম ও ২য় সমীকরণ নির্ধারণ</div>
+        <div class="slide-body">
+          ভাগ করে পাই,<br>
+          <strong>a + b = ২৬</strong> ................ (i)<br><br>
+          প্রশ্নে বলা হয়েছে বাহুদ্বয়ের অন্তর ৮ সে.মি.,<br>
+          সুতরাং, <strong>a - b = ৮</strong> ................ (ii)
+        </div>
+      </div>
+
+      <!-- Slide 6 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৬</span>
+        <div class="slide-title">'a' এর মান নির্ণয়</div>
+        <div class="slide-body">
+          সমীকরণ (i) ও (ii) যোগ করে পাই:<br>
+          <div class="highlight-box math-eq">
+            (a + b) + (a - b) = ২৬ + ৮<br>
+            বা, ২a = ৩৪<br>
+            বা, a = ৩৪ / ২<br>
+            <strong>∴ a = ১৭ সে.মি.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৭</span>
+        <div class="slide-title">'b' এর মান নির্ণয়</div>
+        <div class="slide-body">
+          সমীকরণ (i) থেকে (ii) বিয়োগ করে পাই:<br>
+          <div class="highlight-box math-eq">
+            (a + b) - (a - b) = ২৬ - ৮<br>
+            বা, ২b = ১৮<br>
+            বা, b = ১৮ / ২<br>
+            <strong>∴ b = ৯ সে.মি.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8 -->
+      <div class="slide">
+        <span class="slide-badge">ধাপ ৮</span>
+        <div class="slide-title">চূড়ান্ত উত্তর</div>
+        <div class="slide-body">
+          সমান্তরাল বাহু দুইটির দৈর্ঘ্য নির্ধারিত হয়েছে।
+          <div class="result-box">
+            উত্তর: সমান্তরাল বাহু দুইটির দৈর্ঘ্য ১৭ সে.মি. এবং ৯ সে.মি.।
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- কন্ট্রোল বাটন -->
+    <div class="footer">
+      <button class="btn btn-prev" id="prevBtn" onclick="changeSlide(-1)" disabled>পূর্ববর্তী ধাপ</button>
+      <div class="step-counter" id="stepCounter">ধাপ ১ / ৮</div>
+      <button class="btn btn-next" id="nextBtn" onclick="changeSlide(1)">পরবর্তী ধাপ</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+    const stepCounter = document.getElementById('stepCounter');
+
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    function toBengali(num) {
+      return num.toString().split('').map(d => bengaliDigits[d] || d).join('');
+    }
+
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        slide.classList.remove('active');
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        }
+      });
+
+      // প্রোগ্রেস বার আপডেট
+      const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = progressPercent + '%';
+
+      // ধাপ কাউন্টার আপডেট
+      stepCounter.innerText = `ধাপ ${toBengali(currentSlide + 1)} / ${toBengali(totalSlides)}`;
+
+      // বাটন নিয়ন্ত্রণ
+      prevBtn.disabled = (currentSlide === 0);
+      if (currentSlide === totalSlides - 1) {
+        nextBtn.innerText = 'সমাপ্ত';
+        nextBtn.disabled = true;
+      } else {
+        nextBtn.innerText = 'পরবর্তী ধাপ';
+        nextBtn.disabled = false;
+      }
+    }
+
+    function changeSlide(direction) {
+      currentSlide += direction;
+      if (currentSlide < 0) currentSlide = 0;
+      if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+      updateSlide();
+    }
+  </script>
+</body>
+</html>
