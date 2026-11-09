@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>উচ্চতর গণিত - অধ্যায় ১৪ (সম্ভাবনা সৃজনশীল সমাধান)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0284c7;
+            --accent: #16a34a;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SolaimanLipi', 'Hind Siliguri', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 22px 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 23px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14.5px;
+            opacity: 0.9;
+        }
+
+        /* Stem Card */
+        .stem-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            line-height: 1.7;
+        }
+
+        .stem-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .questions-box {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* Navigation Tabs */
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-muted);
+        }
+
+        .tab-btn.active {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        /* Section Area */
+        .solution-section {
+            display: none;
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .solution-section.active {
+            display: block;
+        }
+
+        /* Step Card Animation */
+        .step {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 15px;
+        }
+
+        .step.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-heading {
+            color: var(--primary);
+            font-size: 16.5px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            background-color: #e0f2fe;
+            color: var(--secondary);
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .calc-box {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            margin: 10px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* SVG Box */
+        .svg-container {
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        svg {
+            display: block;
+            margin: auto;
+            min-width: 760px;
+        }
+
+        /* Button Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 14.5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #0369a1;
+        }
+
+        .action-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .step-indicator {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>উচ্চতর গণিত — সৃজনশীল প্রশ্নের সমাধান</h1>
+        <p>অধ্যায় ১৪: সম্ভাবনা (মুদ্রা নিক্ষেপ ও প্রোবাবিলিটি ট্রি)</p>
+    </div>
+
+    <!-- উদ্দীপক ও প্রশ্ন -->
+    <div class="stem-card">
+        <div class="stem-title">উদ্দীপক:</div>
+        <div>একটি দুই টাকার মুদ্রা চার বার নিক্ষেপ করা হলো। (এর শাপলার পিঠকে L এবং প্রাথমিক শিক্ষার শিশুর পিঠকে C বিবেচনা করো)</div>
+        <div class="questions-box">
+            <strong>প্রশ্নসমূহ:</strong><br>
+            <strong>ক)</strong> যদি মুদ্রাটিকে চারবারের পরিবর্তে দুইবার নিক্ষেপ করা হয় তবে একটি L আসার সম্ভাবনা এবং একটি C না আসার সম্ভাবনা কত?<br>
+            <strong>খ)</strong> সম্ভাব্য ঘটনার Probability tree অঙ্কন করো এবং নমুনাক্ষেত্রটি লেখো।<br>
+            <strong>গ)</strong> দেখাও যে, মুদ্রাটি n সংখ্যক বার নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা 2^n হয়।
+        </div>
+    </div>
+
+    <!-- ট্যাব মেনু -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('secA')">প্রশ্ন (ক) সমাধান</button>
+        <button class="tab-btn" onclick="switchTab('secB')">প্রশ্ন (খ) সমাধান (ট্রি)</button>
+        <button class="tab-btn" onclick="switchTab('secC')">প্রশ্ন (গ) প্রমাণ</button>
+    </div>
+
+    <!-- ==================== সমাধান ক ==================== -->
+    <div id="secA" class="solution-section active">
+        <div class="step step-1 visible">
+            <div class="step-heading"><span class="badge">ধাপ ১</span> দুইবার নিক্ষেপের নমুনা ক্ষেত্র গঠন</div>
+            <div class="calc-box">
+                মুদ্রাটি চারবারের পরিবর্তে দুইবার নিক্ষেপ করা হলে সম্ভাব্য ফলাফলগুলো হবে:<br>
+                নমুনা ক্ষেত্র, <strong>S = {LL, LC, CL, CC}</strong><br>
+                মোট ফলাফল সংখ্যা, n(S) = ৪।
+            </div>
+        </div>
+
+        <div class="step step-2">
+            <div class="step-heading"><span class="badge">ধাপ ২</span> একটি L আসার সম্ভাবনা নির্ণয়</div>
+            <div class="calc-box">
+                'একটি L' আসার অনুকূল ফলাফলগুলো হলো: <strong>{LC, CL}</strong><br>
+                অনুকূল ফলাফলের সংখ্যা = ২।<br><br>
+                অতএব, <strong>P(একটি L আসার সম্ভাবনা) = অনুকূল ফলাফল / মোট ফলাফল = ২/৪ = ১/২</strong>।
+            </div>
+        </div>
+
+        <div class="step step-3">
+            <div class="step-heading"><span class="badge">ধাপ ৩</span> একটি C না আসার সম্ভাবনা নির্ণয়</div>
+            <div class="calc-box">
+                'একটি C না আসা' ঘটনাটির অর্থ হলো এমন ফলাফল যেখানে C-এর সংখ্যা ১ নয় (অর্থাৎ C শূন্যটি অথবা C দুটি):<br>
+                অনুকূল ফলাফলসমূহ: <strong>{LL, CC}</strong><br>
+                অনুকূল ফলাফলের সংখ্যা = ২।<br><br>
+                অতএব, <strong>P(একটি C না আসার সম্ভাবনা) = ২/৪ = ১/২</strong>।<br><br>
+                <em>[বিশেষ দ্রষ্টব্য: যদি প্রশ্নটির অর্থ 'একটিও C না আসা' অর্থাৎ কোনো C থাকবে না বোঝানো হয়, তবে অনুকূল ঘটনা = {LL}, যার সম্ভাবনা = ১/৪।]</em>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" onclick="prevStep('secA')" id="prev-secA" disabled>পূর্ববর্তী ধাপ</button>
+            <span class="step-indicator" id="ind-secA">ধাপ ১ / ৩</span>
+            <button class="action-btn" onclick="nextStep('secA')" id="next-secA">পরবর্তী ধাপ</button>
+        </div>
+    </div>
+
+    <!-- ==================== সমাধান খ ==================== -->
+    <div id="secB" class="solution-section">
+        <div class="step step-1 visible">
+            <div class="step-heading"><span class="badge">ধাপ ১</span> চারবার নিক্ষেপের প্রোবাবিলিটি ট্রি (Probability Tree)</div>
+            <p>নিচে মুদ্রাটি ৪ বার নিক্ষেপের সম্পূর্ণ ১৬টি শাখার প্রোবাবিলিটি ট্রি দেখানো হলো:</p>
+            <div class="svg-container">
+                <svg viewBox="0 0 800 520" width="800" height="520">
+                    <!-- Column Headers -->
+                    <text x="30" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">শুরু</text>
+                    <text x="140" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">১ম নিক্ষেপ</text>
+                    <text x="270" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">২য় নিক্ষেপ</text>
+                    <text x="410" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">৩য় নিক্ষেপ</text>
+                    <text x="550" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">৪র্থ নিক্ষেপ</text>
+                    <text x="680" y="20" fill="#1e3a8a" font-weight="bold" font-size="12">ফলাফল</text>
+
+                    <!-- Root -->
+                    <circle cx="35" cy="270" r="10" fill="#1e3a8a" />
+                    
+                    <!-- Branches from root to 1st toss -->
+                    <line x1="35" y1="270" x2="150" y2="150" stroke="#0284c7" stroke-width="2" />
+                    <line x1="35" y1="270" x2="150" y2="390" stroke="#0284c7" stroke-width="2" />
+
+                    <!-- 1st Toss Nodes -->
+                    <circle cx="150" cy="150" r="13" fill="#0284c7" /><text x="150" y="154" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">L</text>
+                    <circle cx="150" cy="390" r="13" fill="#0284c7" /><text x="150" y="394" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">C</text>
+
+                    <!-- Branches to 2nd Toss -->
+                    <line x1="150" y1="150" x2="280" y2="90" stroke="#0284c7" stroke-width="1.6" />
+                    <line x1="150" y1="150" x2="280" y2="210" stroke="#0284c7" stroke-width="1.6" />
+                    <line x1="150" y1="390" x2="280" y2="330" stroke="#0284c7" stroke-width="1.6" />
+                    <line x1="150" y1="390" x2="280" y2="450" stroke="#0284c7" stroke-width="1.6" />
+
+                    <!-- 2nd Toss Nodes -->
+                    <circle cx="280" cy="90" r="11" fill="#0284c7" /><text x="280" y="94" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">L</text>
+                    <circle cx="280" cy="210" r="11" fill="#0284c7" /><text x="280" y="214" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">C</text>
+                    <circle cx="280" cy="330" r="11" fill="#0284c7" /><text x="280" y="334" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">L</text>
+                    <circle cx="280" cy="450" r="11" fill="#0284c7" /><text x="280" y="454" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">C</text>
+
+                    <!-- Branches to 3rd Toss -->
+                    <line x1="280" y1="90" x2="420" y2="60" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="90" x2="420" y2="120" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="210" x2="420" y2="180" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="210" x2="420" y2="240" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="330" x2="420" y2="300" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="330" x2="420" y2="360" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="450" x2="420" y2="420" stroke="#16a34a" stroke-width="1.3" />
+                    <line x1="280" y1="450" x2="420" y2="480" stroke="#16a34a" stroke-width="1.3" />
+
+                    <!-- 3rd Toss Nodes -->
+                    <circle cx="420" cy="60" r="10" fill="#16a34a" /><text x="420" y="64" fill="#fff" font-size="9" text-anchor="middle">L</text>
+                    <circle cx="420" cy="120" r="10" fill="#16a34a" /><text x="420" y="124" fill="#fff" font-size="9" text-anchor="middle">C</text>
+                    <circle cx="420" cy="180" r="10" fill="#16a34a" /><text x="420" y="184" fill="#fff" font-size="9" text-anchor="middle">L</text>
+                    <circle cx="420" cy="240" r="10" fill="#16a34a" /><text x="420" y="244" fill="#fff" font-size="9" text-anchor="middle">C</text>
+                    <circle cx="420" cy="300" r="10" fill="#16a34a" /><text x="420" y="304" fill="#fff" font-size="9" text-anchor="middle">L</text>
+                    <circle cx="420" cy="360" r="10" fill="#16a34a" /><text x="420" y="364" fill="#fff" font-size="9" text-anchor="middle">C</text>
+                    <circle cx="420" cy="420" r="10" fill="#16a34a" /><text x="420" y="424" fill="#fff" font-size="9" text-anchor="middle">L</text>
+                    <circle cx="420" cy="480" r="10" fill="#16a34a" /><text x="420" y="484" fill="#fff" font-size="9" text-anchor="middle">C</text>
+
+                    <!-- Branches to 4th Toss & Leaf outcomes -->
+                    <!-- 1,2 -->
+                    <line x1="420" y1="60" x2="560" y2="45" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="60" x2="560" y2="75" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="45" r="8" fill="#475569" /><text x="560" y="48" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="49" font-size="12">→ LLLL</text>
+                    <circle cx="560" cy="75" r="8" fill="#475569" /><text x="560" y="78" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="79" font-size="12">→ LLLC</text>
+
+                    <!-- 3,4 -->
+                    <line x1="420" y1="120" x2="560" y2="105" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="120" x2="560" y2="135" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="105" r="8" fill="#475569" /><text x="560" y="108" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="109" font-size="12">→ LLCL</text>
+                    <circle cx="560" cy="135" r="8" fill="#475569" /><text x="560" y="138" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="139" font-size="12">→ LLCC</text>
+
+                    <!-- 5,6 -->
+                    <line x1="420" y1="180" x2="560" y2="165" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="180" x2="560" y2="195" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="165" r="8" fill="#475569" /><text x="560" y="168" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="169" font-size="12">→ LCLL</text>
+                    <circle cx="560" cy="195" r="8" fill="#475569" /><text x="560" y="198" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="199" font-size="12">→ LCLC</text>
+
+                    <!-- 7,8 -->
+                    <line x1="420" y1="240" x2="560" y2="225" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="240" x2="560" y2="255" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="225" r="8" fill="#475569" /><text x="560" y="228" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="229" font-size="12">→ LCCL</text>
+                    <circle cx="560" cy="255" r="8" fill="#475569" /><text x="560" y="258" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="259" font-size="12">→ LCCC</text>
+
+                    <!-- 9,10 -->
+                    <line x1="420" y1="300" x2="560" y2="285" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="300" x2="560" y2="315" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="285" r="8" fill="#475569" /><text x="560" y="288" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="289" font-size="12">→ CLLL</text>
+                    <circle cx="560" cy="315" r="8" fill="#475569" /><text x="560" y="318" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="319" font-size="12">→ CLLC</text>
+
+                    <!-- 11,12 -->
+                    <line x1="420" y1="360" x2="560" y2="345" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="360" x2="560" y2="375" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="345" r="8" fill="#475569" /><text x="560" y="348" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="349" font-size="12">→ CLCL</text>
+                    <circle cx="560" cy="375" r="8" fill="#475569" /><text x="560" y="378" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="379" font-size="12">→ CLCC</text>
+
+                    <!-- 13,14 -->
+                    <line x1="420" y1="420" x2="560" y2="405" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="420" x2="560" y2="435" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="405" r="8" fill="#475569" /><text x="560" y="408" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="409" font-size="12">→ CCLL</text>
+                    <circle cx="560" cy="435" r="8" fill="#475569" /><text x="560" y="438" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="439" font-size="12">→ CCLC</text>
+
+                    <!-- 15,16 -->
+                    <line x1="420" y1="480" x2="560" y2="465" stroke="#94a3b8" stroke-width="1.2" />
+                    <line x1="420" y1="480" x2="560" y2="495" stroke="#94a3b8" stroke-width="1.2" />
+                    <circle cx="560" cy="465" r="8" fill="#475569" /><text x="560" y="468" fill="#fff" font-size="8" text-anchor="middle">L</text><text x="580" y="469" font-size="12">→ CCCL</text>
+                    <circle cx="560" cy="495" r="8" fill="#475569" /><text x="560" y="498" fill="#fff" font-size="8" text-anchor="middle">C</text><text x="580" y="499" font-size="12">→ CCCC</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="step step-2">
+            <div class="step-heading"><span class="badge">ধাপ ২</span> সম্পূর্ণ নমুনা ক্ষেত্র (Sample Space) উপস্থাপন</div>
+            <div class="calc-box">
+                ট্রি থেকে প্রাপ্ত চারবার মুদ্রা নিক্ষেপের নমুনা ক্ষেত্রটি হলো:<br><br>
+                <strong>S = {<br>
+                &nbsp;&nbsp;LLLL, LLLC, LLCL, LLCC,<br>
+                &nbsp;&nbsp;LCLL, LCLC, LCCL, LCCC,<br>
+                &nbsp;&nbsp;CLLL, CLLC, CLCL, CLCC,<br>
+                &nbsp;&nbsp;CCLL, CCLC, CCCL, CCCC<br>
+                }</strong><br><br>
+                এখানে, মোট নমুনা বিন্দুর সংখ্যা, <strong>n(S) = ১৬</strong>।
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" onclick="prevStep('secB')" id="prev-secB" disabled>পূর্ববর্তী ধাপ</button>
+            <span class="step-indicator" id="ind-secB">ধাপ ১ / ২</span>
+            <button class="action-btn" onclick="nextStep('secB')" id="next-secB">পরবর্তী ধাপ</button>
+        </div>
+    </div>
+
+    <!-- ==================== সমাধান গ ==================== -->
+    <div id="secC" class="solution-section">
+        <div class="step step-1 visible">
+            <div class="step-heading"><span class="badge">ধাপ ১</span> মুদ্রা নিক্ষেপের সংখ্যা ও ফলাফলের সম্পর্ক পর্যবেক্ষণ</div>
+            <div class="calc-box">
+                একটি মুদ্রা প্রতিবার নিক্ষেপ করলে সম্ভাব্য ২টি ফলাফল (L অথবা C) পাওয়া যায়।<br><br>
+                • মুদ্রাটি <strong>১ বার</strong> নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা = ২ = <strong>2^1</strong><br>
+                • মুদ্রাটি <strong>২ বার</strong> নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা = ৪ = <strong>2^2</strong><br>
+                • মুদ্রাটি <strong>৩ বার</strong> নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা = ৮ = <strong>2^3</strong><br>
+                • মুদ্রাটি <strong>৪ বার</strong> নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা = ১৬ = <strong>2^4</strong>
+            </div>
+        </div>
+
+        <div class="step step-2">
+            <div class="step-heading"><span class="badge">ধাপ ২</span> গাণিতিক আরোহ বা সার্বিক সাধারণীকরণ</div>
+            <div class="calc-box">
+                দেখা যাচ্ছে যে, প্রতিটি অতিরিক্ত নিক্ষেপের জন্য সম্ভাব্য ঘটনা আগের ঘটনার দ্বিগুণ হয়।<br><br>
+                সুতরাং, মুদ্রাটি <strong>n সংখ্যক বার</strong> নিক্ষেপ করলে সংঘটিত মোট ঘটনার সংখ্যা হবে:<br>
+                = ২ × ২ × ২ × ...... × ২ (n সংখ্যক বার)<br>
+                = <strong>2^n</strong><br><br>
+                অতএব, মুদ্রাটি n সংখ্যক বার নিক্ষেপ করলে সংঘটিত ঘটনা সংখ্যা 2^n হয়।<br>
+                <strong>(দেখানো হলো)</strong>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" onclick="prevStep('secC')" id="prev-secC" disabled>পূর্ববর্তী ধাপ</button>
+            <span class="step-indicator" id="ind-secC">ধাপ ১ / ২</span>
+            <button class="action-btn" onclick="nextStep('secC')" id="next-secC">পরবর্তী ধাপ</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab switching
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.solution-section').forEach(s => s.classList.remove('active'));
+
+        event.target.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    // Step state tracking
+    const stepState = {
+        secA: { cur: 1, max: 3 },
+        secB: { cur: 1, max: 2 },
+        secC: { cur: 1, max: 2 }
+    };
+
+    function updateStep(secId) {
+        const cur = stepState[secId].cur;
+        const max = stepState[secId].max;
+        const parent = document.getElementById(secId);
+
+        for (let i = 1; i <= max; i++) {
+            const el = parent.querySelector(`.step-${i}`);
+            if (i <= cur) {
+                el.classList.add('visible');
+            } else {
+                el.classList.remove('visible');
+            }
+        }
+
+        parent.querySelector(`#prev-${secId}`).disabled = (cur === 1);
+        parent.querySelector(`#next-${secId}`).disabled = (cur === max);
+        parent.querySelector(`#ind-${secId}`).innerText = `ধাপ ${cur} / ${max}`;
+    }
+
+    function nextStep(secId) {
+        if (stepState[secId].cur < stepState[secId].max) {
+            stepState[secId].cur++;
+            updateStep(secId);
+        }
+    }
+
+    function prevStep(secId) {
+        if (stepState[secId].cur > 1) {
+            stepState[secId].cur--;
+            updateStep(secId);
+        }
+    }
+</script>
+
+</body>
+</html>
