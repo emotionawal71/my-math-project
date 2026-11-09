@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Probability Tree Animation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      background: #ffffff;
+      max-width: 950px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      overflow: hidden;
+    }
+    h2 {
+      text-align: center;
+      color: #1a365d;
+      margin-bottom: 8px;
+    }
+    .question-box {
+      background-color: #eef2f6;
+      border-left: 5px solid #2b6cb0;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      font-size: 15px;
+      color: #2d3748;
+      line-height: 1.5;
+    }
+    .svg-container {
+      width: 100%;
+      background: #fafbfc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+    }
+    .branch, .node, .prob-text, .result-text {
+      opacity: 0;
+      transition: all 0.6s ease-in-out;
+    }
+    .visible {
+      opacity: 1;
+    }
+    .highlight-branch {
+      stroke: #e53e3e !important;
+      stroke-width: 4 !important;
+    }
+    .highlight-node {
+      fill: #e53e3e !important;
+      font-weight: bold;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    button {
+      background: #3182ce;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2b6cb0;
+    }
+    button#resetBtn {
+      background: #718096;
+    }
+    button#resetBtn:hover {
+      background: #4a5568;
+    }
+    .step-desc {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      color: #2c5282;
+      min-height: 28px;
+    }
+    .calc-box {
+      margin-top: 15px;
+      padding: 15px;
+      background: #ebf8ff;
+      border: 1px dashed #3182ce;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      color: #2b6cb0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>সম্ভাবনা ট্রি (Probability Tree) অ্যানিমেশন</h2>
+  <div class="question-box">
+    <strong>প্রশ্ন:</strong> একজন লোকের ঢাকা হতে চট্টগ্রাম ট্রেনে যাওয়ার সম্ভাবনা ২/৯, বাসে যাওয়ার সম্ভাবনা ৩/৭, প্লেনে যাওয়ার সম্ভাবনা ১/৯। লোকটির চট্টগ্রাম হতে কক্সবাজার বাসে যাওয়ার সম্ভাবনা ২/৫ এবং গাড়িতে যাওয়ার সম্ভাবনা ২/৭। Probability tree ব্যবহার করে লোকটির চট্টগ্রাম ট্রেনে এবং কক্সবাজার বাসে যাওয়ার সম্ভাবনা বের করো।
+  </div>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 860 480" id="treeSvg">
+      <!-- Root Node -->
+      <circle cx="50" cy="240" r="10" fill="#2b6cb0" />
+      <text x="50" y="270" text-anchor="middle" font-size="15" fill="#1a202c" font-weight="bold">ঢাকা</text>
+
+      <!-- Stage 1 Branches -->
+      <!-- Train -->
+      <line id="b-train" class="branch" x1="50" y1="240" x2="260" y2="100" stroke="#4a5568" stroke-width="2.5" />
+      <text id="t-train" class="prob-text" x="135" y="150" font-size="14" fill="#2b6cb0" font-weight="bold">ট্রেন (২/৯)</text>
+      <circle id="n-train" class="node" cx="260" cy="100" r="7" fill="#4a5568" />
+      <text id="lbl-train" class="node" x="260" y="85" text-anchor="middle" font-size="14" fill="#2d3748">চট্টগ্রাম</text>
+
+      <!-- Bus -->
+      <line id="b-bus1" class="branch" x1="50" y1="240" x2="260" y2="240" stroke="#4a5568" stroke-width="2.5" />
+      <text id="t-bus1" class="prob-text" x="155" y="230" font-size="14" fill="#2b6cb0" font-weight="bold">বাস (৩/৭)</text>
+      <circle id="n-bus1" class="node" cx="260" cy="240" r="7" fill="#4a5568" />
+      <text id="lbl-bus1" class="node" x="260" y="225" text-anchor="middle" font-size="14" fill="#2d3748">চট্টগ্রাম</text>
+
+      <!-- Plane -->
+      <line id="b-plane" class="branch" x1="50" y1="240" x2="260" y2="380" stroke="#4a5568" stroke-width="2.5" />
+      <text id="t-plane" class="prob-text" x="135" y="335" font-size="14" fill="#2b6cb0" font-weight="bold">প্লেন (১/৯)</text>
+      <circle id="n-plane" class="node" cx="260" cy="380" r="7" fill="#4a5568" />
+      <text id="lbl-plane" class="node" x="260" y="405" text-anchor="middle" font-size="14" fill="#2d3748">চট্টগ্রাম</text>
+
+      <!-- Stage 2 Branches -->
+      <!-- From Train -->
+      <line id="b-train-bus" class="branch" x1="260" y1="100" x2="520" y2="55" stroke="#718096" stroke-width="2" />
+      <text id="t-train-bus" class="prob-text" x="380" y="65" font-size="13" fill="#319795" font-weight="bold">বাস (২/৫)</text>
+      <text id="lbl-cxb1" class="node" x="530" y="60" font-size="13" fill="#2d3748">কক্সবাজার</text>
+      <text id="res-target" class="result-text" x="620" y="60" font-size="14" fill="#e53e3e" font-weight="bold">ফলাফল: (২/৯) × (২/৫) = ৪/৪৫</text>
+
+      <line id="b-train-car" class="branch" x1="260" y1="100" x2="520" y2="135" stroke="#718096" stroke-width="2" />
+      <text id="t-train-car" class="prob-text" x="380" y="130" font-size="13" fill="#718096">গাড়ি (২/৭)</text>
+      <text id="lbl-cxb2" class="node" x="530" y="140" font-size="13" fill="#718096">কক্সবাজার</text>
+
+      <!-- From Bus -->
+      <line id="b-bus-bus" class="branch" x1="260" y1="240" x2="520" y2="205" stroke="#718096" stroke-width="2" />
+      <text id="t-bus-bus" class="prob-text" x="380" y="215" font-size="13" fill="#718096">বাস (২/৫)</text>
+      <text id="lbl-cxb3" class="node" x="530" y="210" font-size="13" fill="#718096">কক্সবাজার</text>
+
+      <line id="b-bus-car" class="branch" x1="260" y1="240" x2="520" y2="275" stroke="#718096" stroke-width="2" />
+      <text id="t-bus-car" class="prob-text" x="380" y="275" font-size="13" fill="#718096">গাড়ি (২/৭)</text>
+      <text id="lbl-cxb4" class="node" x="530" y="280" font-size="13" fill="#718096">কক্সবাজার</text>
+
+      <!-- From Plane -->
+      <line id="b-plane-bus" class="branch" x1="260" y1="380" x2="520" y2="350" stroke="#718096" stroke-width="2" />
+      <text id="t-plane-bus" class="prob-text" x="380" y="355" font-size="13" fill="#718096">বাস (২/৫)</text>
+      <text id="lbl-cxb5" class="node" x="530" y="355" font-size="13" fill="#718096">কক্সবাজার</text>
+
+      <line id="b-plane-car" class="branch" x1="260" y1="380" x2="520" y2="420" stroke="#718096" stroke-width="2" />
+      <text id="t-plane-car" class="prob-text" x="380" y="415" font-size="13" fill="#718096">গাড়ি (২/৭)</text>
+      <text id="lbl-cxb6" class="node" x="530" y="425" font-size="13" fill="#718096">কক্সবাজার</text>
+    </svg>
+  </div>
+
+  <div class="step-desc" id="stepDesc">শুরু করতে "পরবর্তী ধাপ" বাটনে ক্লিক করুন।</div>
+
+  <div class="calc-box" id="calcBox">
+    <strong>নির্ণেয় সম্ভাবনা:</strong> P(ট্রেন এবং বাস) = P(ট্রেন) × P(বাস) = (২/৯) × (২/৫) = <strong>৪/৪৫</strong>
+  </div>
+
+  <div class="controls">
+    <button id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ</button>
+    <button id="resetBtn" onclick="resetTree()">পুনরায় শুরু</button>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+
+  function showElements(ids) {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('visible');
+    });
+  }
+
+  function nextStep() {
+    currentStep++;
+
+    if (currentStep === 1) {
+      showElements([
+        'b-train', 't-train', 'n-train', 'lbl-train',
+        'b-bus1', 't-bus1', 'n-bus1', 'lbl-bus1',
+        'b-plane', 't-plane', 'n-plane', 'lbl-plane'
+      ]);
+      document.getElementById('stepDesc').innerText = 'ধাপ ১: ঢাকা থেকে চট্টগ্রাম যাওয়ার ৩টি সম্ভাব্য শাখা দেখানো হলো।';
+    } 
+    else if (currentStep === 2) {
+      showElements([
+        'b-train-bus', 't-train-bus', 'lbl-cxb1',
+        'b-train-car', 't-train-car', 'lbl-cxb2',
+        'b-bus-bus', 't-bus-bus', 'lbl-cxb3',
+        'b-bus-car', 't-bus-car', 'lbl-cxb4',
+        'b-plane-bus', 't-plane-bus', 'lbl-cxb5',
+        'b-plane-car', 't-plane-car', 'lbl-cxb6'
+      ]);
+      document.getElementById('stepDesc').innerText = 'ধাপ ২: চট্টগ্রাম থেকে কক্সবাজার যাওয়ার শাখাগুলো (বাস ও গাড়ি) যুক্ত করা হলো।';
+    } 
+    else if (currentStep === 3) {
+      document.getElementById('b-train').classList.add('highlight-branch');
+      document.getElementById('b-train-bus').classList.add('highlight-branch');
+      document.getElementById('t-train').classList.add('highlight-node');
+      document.getElementById('t-train-bus').classList.add('highlight-node');
+      document.getElementById('stepDesc').innerText = 'ধাপ ৩: প্রশ্নে উল্লিখিত পথটি চিহ্নিত করা হলো (ঢাকা হতে ট্রেনে এবং চট্টগ্রাম হতে বাসে)।';
+    } 
+    else if (currentStep === 4) {
+      showElements(['res-target']);
+      document.getElementById('calcBox').style.display = 'block';
+      document.getElementById('stepDesc').innerText = 'ধাপ ৪: গুণন বিধি অনুযায়ী নির্দিষ্ট পথের সম্ভাবনা গণনা সম্পন্ন হলো।';
+      document.getElementById('nextBtn').disabled = true;
+      document.getElementById('nextBtn').style.opacity = '0.5';
+    }
+  }
+
+  function resetTree() {
+    currentStep = 0;
+    const allAnimated = document.querySelectorAll('.branch, .node, .prob-text, .result-text');
+    allAnimated.forEach(el => {
+      el.classList.remove('visible');
+      el.classList.remove('highlight-branch');
+      el.classList.remove('highlight-node');
+    });
+    document.getElementById('calcBox').style.display = 'none';
+    document.getElementById('stepDesc').innerText = 'শুরু করতে "পরবর্তী ধাপ" বাটনে ক্লিক করুন।';
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = '1';
+  }
+</script>
+
+</body>
+</html>
