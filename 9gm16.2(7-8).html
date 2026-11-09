@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি: সামান্তরিক ও বর্গক্ষেত্রের সমাধান</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0d9488;
+      --accent: #e11d48;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #2563eb);
+      color: white;
+      padding: 16px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 8.33%;
+      transition: width 0.3s ease;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .diagram-panel {
+      flex: 1.1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #cbd5e1;
+      min-height: 280px;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+    }
+
+    .slide-panel {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+      padding: 10px;
+    }
+
+    .step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: #e0e7ff;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-weight: 700;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+    }
+
+    .step-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    .formula-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 15px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* SVG শৈলী */
+    .shape-poly { stroke: #334155; stroke-width: 2.5; fill: rgba(30, 58, 138, 0.08); }
+    .shape-line { stroke: #16a34a; stroke-width: 2.5; stroke-dasharray: 4; }
+    .shape-diag { stroke: #dc2626; stroke-width: 2.5; stroke-dasharray: 4; }
+    .text-dim { font-size: 13px; fill: #1e293b; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1 id="headerTopic">পরিমিতি: অনুশীলনী সমাধান (৭ ও ৮ নম্বর প্রশ্ন)</h1>
+  </header>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="main-content">
+    <!-- SVG ডায়াগ্রাম ডিসপ্লে -->
+    <div class="diagram-panel">
+      <!-- সমস্যা ৭ এর চিত্র -->
+      <svg viewBox="0 0 420 260" id="svgProblem7">
+        <polygon points="60,200 280,200 350,70 130,70" class="shape-poly" fill="rgba(14, 165, 233, 0.1)" />
+        <line x1="130" y1="70" x2="130" y2="200" class="shape-line" id="p7HeightLine" />
+        <rect x="130" y="188" width="12" height="12" fill="none" stroke="#16a34a" stroke-width="1.5" />
+        
+        <text x="170" y="135" class="text-dim" fill="#1e3a8a">ক্ষেত্রফল = 363 বর্গমিটার</text>
+        <text x="140" y="140" class="text-dim" fill="#16a34a" id="p7HeightLabel">উচ্চতা x</text>
+        <text x="140" y="222" class="text-dim" id="p7BaseLabel">ভূমি = 3x/4</text>
+      </svg>
+
+      <!-- সমস্যা ৮ এর চিত্র -->
+      <svg viewBox="0 0 420 260" id="svgProblem8" style="display:none;">
+        <!-- সামান্তরিক -->
+        <polygon points="30,120 180,120 210,60 60,60" class="shape-poly" />
+        <line x1="60" y1="60" x2="60" y2="120" class="shape-line" />
+        <text x="75" y="140" class="text-dim">ভূমি = 125 মি.</text>
+        <text x="65" y="95" class="text-dim" fill="#16a34a">উচ্চতা = 5 মি.</text>
+        <text x="70" y="50" class="text-dim" fill="#1e3a8a">ক্ষেত্রফল = 625 বর্গ মি.</text>
+
+        <!-- সমান ক্ষেত্রফলের বর্গক্ষেত্র -->
+        <rect x="250" y="60" width="130" height="130" class="shape-poly" id="p8Square" />
+        <line x1="250" y1="190" x2="380" y2="60" class="shape-diag" id="p8Diag" />
+        <text x="270" y="130" class="text-dim" fill="#1e3a8a">ক্ষেত্রফল = 625</text>
+        <text x="290" y="210" class="text-dim" id="p8SideLabel">বাহু a = 25 মি.</text>
+        <text x="315" y="115" class="text-dim" fill="#dc2626" id="p8DiagLabel">কর্ণ d</text>
+      </svg>
+    </div>
+
+    <!-- টেক্সট ও সূত্র প্যানেল -->
+    <div class="slide-panel">
+      <div>
+        <span class="step-badge" id="stepCounter">ধাপ: ১ / ১২</span>
+        <h2 class="step-title" id="slideTitle">শিরোনাম</h2>
+        <div class="step-body" id="slideBody">বিস্তারিত বিবরণ</div>
+      </div>
+
+      <div class="controls">
+        <div class="btn-group">
+          <button id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী</button>
+          <button id="nextBtn" onclick="nextSlide()">পরবর্তী →</button>
+        </div>
+        <button style="background: var(--muted);" onclick="toggleAutoPlay()" id="playBtn">স্বয়ংক্রিয় চালু</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const slides = [
+    // সমস্যা ৭: স্লাইড ১ থেকে ৬
+    {
+      step: 1,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ১: উচ্চতা ও ভূমি চলকের মাধ্যমে প্রকাশ",
+      body: "মনে করি,<br>সামান্তরিকটির উচ্চতা = x মিটার<br><div class='formula-box'>∴ সামান্তরিকের ভূমি = (x এর 3/4) মিটার = 3x/4 মিটার</div>দেওয়া আছে, সামান্তরিকের ক্ষেত্রফল = 363 বর্গমিটার।",
+      showSvg: 7,
+      updateSvg: () => {
+        document.getElementById("p7HeightLabel").textContent = "উচ্চতা x";
+        document.getElementById("p7BaseLabel").textContent = "ভূমি = 3x/4";
+      }
+    },
+    {
+      step: 2,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ২: ক্ষেত্রফলের সূত্র প্রয়োগ",
+      body: "আমরা জানি,<br><div class='formula-box'>সামান্তরিকের ক্ষেত্রফল = ভূমি × উচ্চতা</div>মান বসিয়ে সমীকরণ গঠন করি:<br>363 = (3x/4) × x",
+      showSvg: 7,
+      updateSvg: () => {}
+    },
+    {
+      step: 3,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ৩: সমীকরণ সরলীকরণ",
+      body: "বা, 363 = 3x² / 4<br>আর-গুণন (cross multiplication) করে পাই:<br><div class='formula-box'>3x² = 363 × 4<br>বা, 3x² = 1452</div>",
+      showSvg: 7,
+      updateSvg: () => {}
+    },
+    {
+      step: 4,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ৪: x² এর মান নির্ণয়",
+      body: "বা, x² = 1452 / 3<br><div class='formula-box'>বা, x² = <span class='highlight'>484</span></div>",
+      showSvg: 7,
+      updateSvg: () => {}
+    },
+    {
+      step: 5,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ৫: উচ্চতা (x) এর মান নির্ধারণ",
+      body: "উভয়পাশে বর্গমূল করে পাই:<br>x = √484<br>বা, x = 22<br><div class='formula-box'>∴ সামান্তরিকের উচ্চতা = <span class='highlight'>22 মিটার</span></div>",
+      showSvg: 7,
+      updateSvg: () => {
+        document.getElementById("p7HeightLabel").textContent = "উচ্চতা = 22 মি.";
+      }
+    },
+    {
+      step: 6,
+      header: "প্রশ্ন ৭: সামান্তরিকের ভূমি উচ্চতার 3/4 অংশ এবং ক্ষেত্রফল 363 বর্গমিটার হলে, ভূমি ও উচ্চতা নির্ণয় কর।",
+      title: "ধাপ ৬: ভূমির দৈর্ঘ্য ও প্রশ্ন ৭ এর সমাপ্তি",
+      body: "এবং ভূমি = (3 × 22) / 4 মিটার<br>= 66 / 4 মিটার = 16.5 মিটার<br><div class='formula-box' style='color: #16a34a;'>∴ সামান্তরিকের ভূমি 16.5 মিটার এবং উচ্চতা 22 মিটার।</div>উত্তর: ভূমি 16.5 মিটার ও উচ্চতা 22 মিটার।",
+      showSvg: 7,
+      updateSvg: () => {
+        document.getElementById("p7BaseLabel").textContent = "ভূমি = 16.5 মি.";
+      }
+    },
+
+    // সমস্যা ৮: স্লাইড ৭ থেকে ১২
+    {
+      step: 7,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ৭: সমস্যা ৮ পরিচিতি ও উপাত্ত",
+      body: "দেওয়া আছে,<br>সামান্তরিকের ভূমি = 125 মিটার<br>সামান্তরিকের উচ্চতা (লম্ব) = 5 মিটার<br><div class='formula-box'>উদ্দেশ্য: সমান ক্ষেত্রফলবিশিষ্ট বর্গক্ষেত্রের কর্ণের দৈর্ঘ্য নির্ণয়।</div>",
+      showSvg: 8,
+      updateSvg: () => {
+        document.getElementById("p8Diag").style.display = "none";
+        document.getElementById("p8DiagLabel").style.display = "none";
+        document.getElementById("p8SideLabel").style.display = "none";
+      }
+    },
+    {
+      step: 8,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ৮: সামান্তরিকের ক্ষেত্রফল নির্ণয়",
+      body: "আমরা জানি,<br>সামান্তরিকের ক্ষেত্রফল = ভূমি × উচ্চতা<br><div class='formula-box'>= (125 × 5) বর্গমিটার<br>= <span class='highlight'>625 বর্গমিটার</span></div>",
+      showSvg: 8,
+      updateSvg: () => {}
+    },
+    {
+      step: 9,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ৯: বর্গক্ষেত্রের ক্ষেত্রফল নির্ধারণ",
+      body: "শর্তানুসারে,<br>বর্গক্ষেত্রের ক্ষেত্রফল = সামান্তরিকক্ষেত্রের ক্ষেত্রফল<br><div class='formula-box'>∴ বর্গক্ষেত্রের ক্ষেত্রফল = <span class='highlight'>625 বর্গমিটার</span></div>",
+      showSvg: 8,
+      updateSvg: () => {}
+    },
+    {
+      step: 10,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ১০: বর্গক্ষেত্রের এক বাহুর দৈর্ঘ্য নির্ণয়",
+      body: "যেহেতু বর্গক্ষেত্রের ক্ষেত্রফল = (বাহু)²<br>সুতরাং, এক বাহুর দৈর্ঘ্য = √(ক্ষেত্রফল)<br><div class='formula-box'>= √625 মিটার<br>= <span class='highlight'>25 মিটার</span></div>",
+      showSvg: 8,
+      updateSvg: () => {
+        document.getElementById("p8SideLabel").style.display = "block";
+      }
+    },
+    {
+      step: 11,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ১১: কর্ণের দৈর্ঘ্যের সূত্র প্রয়োগ",
+      body: "আমরা জানি,<br><div class='formula-box'>বর্গের কর্ণের দৈর্ঘ্য = √2 × (বর্গের এক বাহুর দৈর্ঘ্য)</div>মান বসিয়ে পাই:<br>= (√2 × 25) মিটার",
+      showSvg: 8,
+      updateSvg: () => {
+        document.getElementById("p8Diag").style.display = "block";
+        document.getElementById("p8DiagLabel").style.display = "block";
+      }
+    },
+    {
+      step: 12,
+      header: "প্রশ্ন ৮: সামান্তরিকের ক্ষেত্রফল বর্গক্ষেত্রের সমান। ভূমি 125 মি. ও উচ্চতা 5 মি. হলে, বর্গক্ষেত্রের কর্ণ নির্ণয় কর।",
+      title: "ধাপ ১২: চূড়ান্ত মান ও ফলাফল",
+      body: "= 1.4142 × 25 মিটার (প্রায়)<br><div class='formula-box' style='color: #16a34a;'>= <span class='highlight'>35.35 মিটার (প্রায়)</span></div>∴ বর্গক্ষেত্রের কর্ণের দৈর্ঘ্য 35.35 মিটার (প্রায়)।<br>উত্তর: 35.35 মিটার (প্রায়)।",
+      showSvg: 8,
+      updateSvg: () => {
+        document.getElementById("p8DiagLabel").textContent = "কর্ণ = 35.35 মি.";
+      }
+    }
+  ];
+
+  let currentSlide = 0;
+  let autoPlayTimer = null;
+
+  function toBengaliNum(num) {
+    const bnNums = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bnNums[d] || d).join('');
+  }
+
+  function updateSlide() {
+    const s = slides[currentSlide];
+
+    // হেডার ও টেক্সট আপডেট
+    document.getElementById("headerTopic").textContent = s.header;
+    document.getElementById("stepCounter").textContent = "ধাপ: " + toBengaliNum(s.step) + " / ১২";
+    document.getElementById("slideTitle").innerHTML = s.title;
+    document.getElementById("slideBody").innerHTML = s.body;
+
+    // প্রগ্রেস বার
+    const percent = ((currentSlide + 1) / slides.length) * 100;
+    document.getElementById("progressBar").style.width = percent + "%";
+
+    // বাটন স্থিতি
+    document.getElementById("prevBtn").disabled = (currentSlide === 0);
+    document.getElementById("nextBtn").disabled = (currentSlide === slides.length - 1);
+
+    // এসভিজি চিত্র পরিবর্তন
+    if (s.showSvg === 7) {
+      document.getElementById("svgProblem7").style.display = "block";
+      document.getElementById("svgProblem8").style.display = "none";
+    } else {
+      document.getElementById("svgProblem7").style.display = "none";
+      document.getElementById("svgProblem8").style.display = "block";
+    }
+
+    s.updateSvg();
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      updateSlide();
+    } else if (autoPlayTimer) {
+      toggleAutoPlay();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updateSlide();
+    }
+  }
+
+  function toggleAutoPlay() {
+    const playBtn = document.getElementById("playBtn");
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+      playBtn.textContent = "স্বয়ংক্রিয় চালু";
+      playBtn.style.background = "var(--muted)";
+    } else {
+      playBtn.textContent = "থামুন";
+      playBtn.style.background = "#e11d48";
+      autoPlayTimer = setInterval(() => {
+        if (currentSlide < slides.length - 1) {
+          nextSlide();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 3500);
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // আরম্ভ
+  updateSlide();
+</script>
+
+</body>
+</html>
