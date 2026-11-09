@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আয়তাকার ক্ষেত্রের ক্ষেত্রফল ও পরিমিতি - NCTB গণিত</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0d9488;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .presentation-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 750px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .slide-indicator {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .content-area {
+      min-height: 420px;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.4s ease-out;
+    }
+
+    .slide.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-title {
+      color: var(--primary);
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .slide-body {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    .math-box {
+      background: #f1f5f9;
+      border-left: 4px solid var(--secondary);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0;
+      font-size: 1.2rem;
+    }
+
+    .highlight {
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #15803d;
+      font-weight: bold;
+    }
+
+    .svg-container {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-prev {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      background: #cbd5e1;
+    }
+
+    .btn-next {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e2e8f0;
+      width: 100%;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 12.5%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+<div class="presentation-container">
+  <div class="header">
+    <h2>বীজগণিতীয় পরিমিতি (দ্বিঘাত সমীকরণ)</h2>
+    <div class="slide-indicator" id="slideIndicator">স্লাইড ১ / ৮</div>
+  </div>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="content-area">
+    
+    <!-- স্লাইড ১ -->
+    <div class="slide active">
+      <h3 class="slide-title">ধাপ ১: সমস্যা বিশ্লেষণ ও জ্যামিতিক চিত্র</h3>
+      <div class="slide-body">
+        <p><strong>প্রশ্ন:</strong> একটি আয়তাকার ক্ষেত্রের ক্ষেত্রফল ১৬০ বর্গমিটার। যদি এর দৈর্ঘ্য ৬ মিটার কম হয়, তবে ক্ষেত্রটি বর্গাকার হয়। আয়তাকার ক্ষেত্রটির দৈর্ঘ্য ও প্রস্থ নির্ণয় কর।</p>
+        <div class="svg-container">
+          <svg width="340" height="150" viewBox="0 0 340 150">
+            <!-- বর্গাকার অংশ -->
+            <rect x="40" y="30" width="160" height="90" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+            <!-- বাদ দেওয়া অংশ -->
+            <rect x="200" y="30" width="80" height="90" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-dasharray="4"/>
+            <!-- মাপসমূহ -->
+            <text x="120" y="20" fill="#0369a1" font-size="14" text-anchor="middle">x - ৬ মি.</text>
+            <text x="240" y="20" fill="#b45309" font-size="14" text-anchor="middle">৬ মি.</text>
+            <line x1="40" y1="24" x2="280" y2="24" stroke="#475569" stroke-width="1"/>
+            <text x="160" y="142" fill="#1e293b" font-weight="bold" font-size="14" text-anchor="middle">মোট দৈর্ঘ্য (x)</text>
+            <text x="295" y="80" fill="#1e293b" font-size="14">প্রস্থ (y)</text>
+            <text x="120" y="80" fill="#0369a1" font-weight="bold" font-size="14" text-anchor="middle">বর্গাকার অঞ্চল</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ২ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ২: অজ্ঞাত চলক নির্ধারণ</h3>
+      <div class="slide-body">
+        <p>সমস্যাটি সমাধানের জন্য আয়তাকার ক্ষেত্রটির দৈর্ঘ্য ও প্রস্থকে চলক আকারে প্রকাশ করি:</p>
+        <div class="math-box">
+          মনে করি,<br>
+          আয়তাকার ক্ষেত্রটির দৈর্ঘ্য = <strong>x</strong> মিটার<br>
+          এবং আয়তাকার ক্ষেত্রটির প্রস্থ = <strong>y</strong> মিটার
+        </div>
+        <p>আমরা জানি, আয়তাকার ক্ষেত্রের ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ</p>
+        <div class="math-box">
+          সুতরাং, আয়তাকার ক্ষেত্রের ক্ষেত্রফল = <strong>xy</strong> বর্গমিটার
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৩ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৩: গাণিতিক সমীকরণ গঠন</h3>
+      <div class="slide-body">
+        <p>প্রশ্নের প্রথম ও দ্বিতীয় শর্ত অনুযায়ী দুটি সমীকরণ পাওয়া যায়:</p>
+        <div class="math-box">
+          <strong>১ম শর্তানুসারে:</strong><br>
+          xy = ১৬০  ...... (১)
+        </div>
+        <p>দৈর্ঘ্য ৬ মিটার কম হলে তা প্রস্থ (y) এর সমান হবে (যেহেতু ক্ষেত্রটি বর্গাকার হয়):</p>
+        <div class="math-box">
+          <strong>২য় শর্তানুসারে:</strong><br>
+          x - ৬ = y<br>
+          বা, <strong>x = y + ৬</strong> ...... (২)
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৪ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৪: দ্বিঘাত সমীকরণ গঠন</h3>
+      <div class="slide-body">
+        <p>সমীকরণ (২) থেকে প্রাপ্ত <strong>x</strong>-এর মান সমীকরণ (১)-এ প্রতিস্থাপন করি:</p>
+        <div class="math-box">
+          (y + ৬)y = ১৬০<br>
+          বা, y² + ৬y = ১৬০<br>
+          বা, <strong>y² + ৬y - ১৬০ = ০</strong>
+        </div>
+        <p class="highlight">এটি y চলকের একটি দ্বিঘাত সমীকরণ (Quadratic Equation)।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৫ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৫: উৎপাদকে বিশ্লেষণ (Middle Term Break)</h3>
+      <div class="slide-body">
+        <p>সমীকরণটির মধ্যপদ বিভাজন (Middle term) করে পাই: [১৬ × ১০ = ১৬০ এবং ১৬ - ১০ = ৬]</p>
+        <div class="math-box">
+          y² + ১৬y - ১০y - ১৬০ = ০<br>
+          বা, y(y + ১৬) - ১০(y + ১৬) = ০<br>
+          বা, <strong>(y + ১৬)(y - ১০) = ০</strong>
+        </div>
+        <p>দুটি রাশির গুণফল শূন্য হলে তাদের যেকোনো একটির মান অবশ্যই শূন্য হবে।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৬ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৬: প্রস্থ (y)-এর মান নির্ণয়</h3>
+      <div class="slide-body">
+        <div class="math-box">
+          হয়, y + ১৬ = ০  অথবা, y - ১০ = ০<br>
+          বা, <strong>y = -১৬</strong>  বা, <strong>y = ১০</strong>
+        </div>
+        <p><span class="highlight">শর্ত যাচাই:</span> দৈর্ঘ্য বা প্রস্থ কখনো ঋণাত্মক হতে পারে না।</p>
+        <div class="math-box">
+          যেহেতু y = -১৬ গ্রহণযোগ্য নয়,<br>
+          সুতরাং, <strong>y = ১০</strong><br>
+          অর্থাৎ, আয়তাকার ক্ষেত্রের প্রস্থ = <strong>১০ মিটার</strong>।
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৭ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৭: দৈর্ঘ্য (x)-এর মান নির্ণয়</h3>
+      <div class="slide-body">
+        <p>এখন, y-এর মান সমীকরণ (২)-এ বসিয়ে পাই:</p>
+        <div class="math-box">
+          x = y + ৬<br>
+          বা, x = ১০ + ৬<br>
+          বা, <strong>x = ১৬</strong>
+        </div>
+        <p>সুতরাং, আয়তাকার ক্ষেত্রটির দৈর্ঘ্য = <strong>১৬ মিটার</strong>।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৮ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৮: চূড়ান্ত উত্তর ও ফলাফল যাচাই</h3>
+      <div class="slide-body">
+        <div class="math-box" style="border-left-color: #15803d; background: #f0fdf4;">
+          <h4 class="success">উত্তর:</h4>
+          দৈর্ঘ্য = <strong>১৬ মিটার</strong><br>
+          প্রস্থ = <strong>১০ মিটার</strong>
+        </div>
+        <p><strong>শুদ্ধি পরীক্ষা (Verification):</strong></p>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+          <li>ক্ষেত্রফল = ১৬ × ১০ = ১৬০ বর্গমিটার (১ম শর্ত প্রমাণিত)।</li>
+          <li>দৈর্ঘ্য ৬ মিটার কমালে হয়: ১৬ - ৬ = ১০ মিটার, যা প্রস্থের সমান। অর্থাৎ ক্ষেত্রটি বর্গাকার হয় (২য় শর্ত প্রমাণিত)।</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-prev" id="prevBtn" onclick="changeSlide(-1)" disabled>
+      ← পূর্ববর্তী ধাপ
+    </button>
+    <button class="btn btn-next" id="nextBtn" onclick="changeSlide(1)">
+      পরবর্তী ধাপ →
+    </button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const slideIndicator = document.getElementById('slideIndicator');
+  const progressBar = document.getElementById('progressBar');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  const bengaliNumbers = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮'];
+
+  function updateSlideView() {
+    slides.forEach((slide, index) => {
+      slide.classList.remove('active');
+      if (index === currentSlide) {
+        slide.classList.add('active');
+      }
+    });
+
+    slideIndicator.textContent = `স্লাইড ${bengaliNumbers[currentSlide]} / ${bengaliNumbers[totalSlides - 1]}`;
+    progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+    prevBtn.disabled = currentSlide === 0;
+    
+    if (currentSlide === totalSlides - 1) {
+      nextBtn.textContent = 'পুনরায় শুরু করুন ↺';
+    } else {
+      nextBtn.textContent = 'পরবর্তী ধাপ →';
+    }
+  }
+
+  function changeSlide(direction) {
+    if (currentSlide === totalSlides - 1 && direction === 1) {
+      currentSlide = 0;
+    } else {
+      currentSlide += direction;
+    }
+    updateSlideView();
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      if (currentSlide < totalSlides - 1) changeSlide(1);
+    } else if (e.key === 'ArrowLeft') {
+      if (currentSlide > 0) changeSlide(-1);
+    }
+  });
+</script>
+
+</body>
+</html>
