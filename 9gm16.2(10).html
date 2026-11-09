@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>রম্বসের অপর কর্ণ ও ক্ষেত্রফল নির্ণয়</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0d9488;
+      --accent: #e11d48;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --highlight: #fef08a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .presentation-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 900px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), #3b82f6);
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .slide-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background-color: #e2e8f0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--secondary);
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    /* Main Content Layout */
+    .content-area {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .content-area {
+        grid-template-columns: 1.1fr 1fr;
+        align-items: center;
+      }
+    }
+
+    /* SVG Diagram Styling */
+    .diagram-card {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #cbd5e1;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      overflow: visible;
+    }
+
+    .rhombus-edge {
+      stroke: #334155;
+      stroke-width: 2.5;
+      fill: #ffffff;
+      transition: all 0.4s ease;
+    }
+
+    .diagonal {
+      stroke: #64748b;
+      stroke-width: 2;
+      stroke-dasharray: 4 3;
+      transition: all 0.4s ease;
+    }
+
+    .highlight-triangle {
+      fill: rgba(13, 148, 136, 0.25);
+      stroke: var(--secondary);
+      stroke-width: 2.5;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .active-edge {
+      stroke: var(--accent);
+      stroke-width: 3.5;
+    }
+
+    .active-diagonal {
+      stroke: #2563eb;
+      stroke-width: 3;
+      stroke-dasharray: none;
+    }
+
+    .svg-label {
+      font-size: 15px;
+      font-weight: bold;
+      fill: #1e293b;
+    }
+
+    .right-angle-symbol {
+      stroke: #0d9488;
+      stroke-width: 2;
+      fill: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* Slide Explanation Card */
+    .slide-content-card {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+    }
+
+    .step-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .math-highlight {
+      background: var(--highlight);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .math-block {
+      background: #f8fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Controls */
+    .controls {
+      background: #f1f5f9;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-prev {
+      background-color: #cbd5e1;
+      color: #334155;
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      background-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    .btn-next {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background-color: #1d4ed8;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background-color: var(--primary);
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    <!-- Header -->
+    <div class="header">
+      <h1>রম্বসের পরিমিতি সমাধান</h1>
+      <div class="slide-badge" id="slideIndicator">স্লাইড 1 / 10</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-area">
+      <!-- Diagram -->
+      <div class="diagram-card">
+        <svg viewBox="0 0 320 280" id="geomSvg">
+          <!-- Highlighted Triangle AOB (Slides 5,6,7) -->
+          <polygon id="triAOB" class="highlight-triangle" points="160,140 40,140 160,250" />
+          
+          <!-- Rhombus Body -->
+          <polygon id="rhombusShape" class="rhombus-edge" points="160,30 280,140 160,250 40,140" />
+          
+          <!-- Diagonals -->
+          <line id="diagAC" class="diagonal" x1="40" y1="140" x2="280" y2="140" />
+          <line id="diagBD" class="diagonal" x1="160" y1="30" x2="160" y2="250" />
+          
+          <!-- Side AB (Highlight on slide 2) -->
+          <line id="sideAB" stroke="transparent" stroke-width="3" x1="40" y1="140" x2="160" y2="250" />
+
+          <!-- Half Diagonals OB and OA -->
+          <line id="segOB" stroke="transparent" stroke-width="3.5" x1="160" y1="140" x2="160" y2="250" />
+          <line id="segOA" stroke="transparent" stroke-width="3.5" x1="40" y1="140" x2="160" y2="140" />
+
+          <!-- Right angle symbol at O in Triangle AOB -->
+          <path id="rightAngle" class="right-angle-symbol" d="M 145,140 L 145,155 L 160,155" />
+
+          <!-- Vertex Labels -->
+          <text x="20" y="145" class="svg-label">A</text>
+          <text x="155" y="272" class="svg-label">B</text>
+          <text x="290" y="145" class="svg-label">C</text>
+          <text x="155" y="20" class="svg-label">D</text>
+          <text x="168" y="132" class="svg-label" fill="#dc2626">O</text>
+        </svg>
+      </div>
+
+      <!-- Slide Text Content -->
+      <div class="slide-content-card" id="slideTextContainer">
+        <!-- Content inserted dynamically -->
+      </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="controls">
+      <button class="btn btn-prev" id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী</button>
+      <div class="slide-dots" id="dotsContainer"></div>
+      <button class="btn btn-next" id="nextBtn" onclick="nextSlide()">পরবর্তী →</button>
+    </div>
+  </div>
+
+  <script>
+    const slidesData = [
+      {
+        title: "১. সমস্যা পরিচিতি",
+        content: `
+          <p class="step-text"><b>প্রশ্ন:</b> একটি রম্বসের পরিসীমা 180 সে.মি. এবং ক্ষুদ্রতম কর্ণটি 54 সে.মি.। এর অপর কর্ণ এবং ক্ষেত্রফল নির্ণয় কর।</p>
+          <div class="math-block">
+            মনে করি, <b>ABCD</b> একটি রম্বস।<br>
+            এর ক্ষুদ্রতম কর্ণ, <b>BD = 54 সে.মি.</b><br>
+            এবং পরিসীমা = <b>180 সে.মি.</b>
+          </div>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+        }
+      },
+      {
+        title: "২. রম্বসের প্রতিটি বাহুর দৈর্ঘ্য নির্ণয়",
+        content: `
+          <p class="step-text">আমরা জানি, রম্বসের ৪টি বাহুর দৈর্ঘ্য পরস্পর সমান।</p>
+          <div class="math-block">
+            অতএব, বাহুর দৈর্ঘ্য, <b>AB</b> = (পরিসীমা ÷ 4)<br>
+            বা, AB = 180 ÷ 4 সে.মি.<br>
+            <b>বা, AB = 45 সে.মি.</b>
+          </div>
+          <p class="step-text">সুতরাং, রম্বসের প্রতিটি বাহুর দৈর্ঘ্য 45 সে.মি.।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('sideAB').setAttribute('stroke', '#e11d48');
+        }
+      },
+      {
+        title: "৩. কর্ণদ্বয়ের ছেদবিন্দু ও উপপাদ্যের বৈশিষ্ট্য",
+        content: `
+          <p class="step-text">মনে করি, রম্বসের <b>AC</b> ও <b>BD</b> কর্ণদ্বয় পরস্পর <b>O</b> বিন্দুতে ছেদ করে।</p>
+          <div class="math-block">
+            <b>জ্যামিতিক বৈশিষ্ট্য:</b><br>
+            রম্বসের কর্ণদ্বয় পরস্পরকে <span class="math-highlight">সমকোণে সমদ্বিখণ্ডিত</span> করে।
+          </div>
+          <p class="step-text">অর্থাৎ, O বিন্দুতে কর্ণ দুটি সমান দুই ভাগে বিভক্ত হয় এবং তাদের মধ্যবর্তী কোণ 90°।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('diagAC').classList.add('active-diagonal');
+          document.getElementById('diagBD').classList.add('active-diagonal');
+          document.getElementById('rightAngle').style.opacity = '1';
+        }
+      },
+      {
+        title: "৪. অর্ধ-কর্ণ OB এর মান নির্ণয়",
+        content: `
+          <p class="step-text">যেহেতু BD কর্ণ O বিন্দুতে সমদ্বিখণ্ডিত হয়:</p>
+          <div class="math-block">
+            <b>OB = BD ÷ 2</b><br>
+            বা, OB = 54 ÷ 2 সে.মি.<br>
+            <b>বা, OB = 27 সে.মি.</b>
+          </div>
+          <p class="step-text">সুতরাং, ত্রিভুজ AOB এর একটি বাহু OB = 27 সে.মি.।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('segOB').setAttribute('stroke', '#2563eb');
+        }
+      },
+      {
+        title: "৫. সমকোণী ত্রিভুজ AOB ও পিথাগোরাস সূত্র",
+        content: `
+          <p class="step-text">যেহেতু কর্ণদ্বয় সমকোণে ছেদ করে, তাই <b>কোণ AOB = 90°</b>।</p>
+          <p class="step-text">অতএব, <b>AOB একটি সমকোণী ত্রিভুজ</b> (যেখানে অতিভুজ AB)।</p>
+          <div class="math-block">
+            পিথাগোরাসের উপপাদ্য অনুসারে:<br>
+            <b>AB² = OB² + OA²</b>
+          </div>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('triAOB').style.opacity = '1';
+          document.getElementById('rightAngle').style.opacity = '1';
+          document.getElementById('sideAB').setAttribute('stroke', '#e11d48');
+          document.getElementById('segOB').setAttribute('stroke', '#2563eb');
+        }
+      },
+      {
+        title: "৬. সমীকরণে মান প্রতিস্থাপন",
+        content: `
+          <p class="step-text">সমীকরণে AB = 45 সে.মি. এবং OB = 27 সে.মি. বসিয়ে পাই:</p>
+          <div class="math-block">
+            (45)² = (27)² + (OA)²<br>
+            বা, (OA)² = (45)² - (27)²
+          </div>
+          <p class="step-text">এখন উভয় পদের বর্গ নির্ণয় করে OA² এর মান বের করব।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('triAOB').style.opacity = '1';
+          document.getElementById('rightAngle').style.opacity = '1';
+          document.getElementById('segOA').setAttribute('stroke', '#0d9488');
+        }
+      },
+      {
+        title: "৭. OA এর মান নির্ণয়",
+        content: `
+          <div class="math-block">
+            বা, OA² = 2025 - 729<br>
+            বা, OA² = 1296<br>
+            বা, OA = √1296<br>
+            <b>বা, OA = 36 সে.মি.</b>
+          </div>
+          <p class="step-text">সুতরাং, অপর কর্ণের অর্ধেকের দৈর্ঘ্য <b>OA = 36 সে.মি.</b> পাওয়া গেল।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('triAOB').style.opacity = '1';
+          document.getElementById('segOA').setAttribute('stroke', '#0d9488');
+        }
+      },
+      {
+        title: "৮. অপর কর্ণ AC এর দৈর্ঘ্য নির্ণয়",
+        content: `
+          <p class="step-text">যেহেতু O বিন্দুতে AC কর্ণ সমদ্বিখণ্ডিত হয়েছে:</p>
+          <div class="math-block">
+            অপর কর্ণ, <b>AC = 2 × OA</b><br>
+            বা, AC = 2 × 36 সে.মি.<br>
+            <b>বা, AC = 72 সে.মি.</b>
+          </div>
+          <p class="step-text">সুতরাং, রম্বসের অপর কর্ণের মোট দৈর্ঘ্য <span class="math-highlight">72 সে.মি.</span>।</p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('diagAC').classList.add('active-diagonal');
+        }
+      },
+      {
+        title: "৯. রম্বসের ক্ষেত্রফল নির্ণয়",
+        content: `
+          <p class="step-text">আমরা জানি, রম্বসের ক্ষেত্রফল = 1/2 × (কর্ণদ্বয়ের গুণফল)</p>
+          <div class="math-block">
+            ক্ষেত্রফল = 1/2 × AC × BD<br>
+            = 1/2 × 72 × 54 বর্গ সে.মি.<br>
+            = 36 × 54 বর্গ সে.মি.<br>
+            <b>= 1944 বর্গ সে.মি.</b>
+          </div>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('rhombusShape').style.fill = 'rgba(30, 58, 138, 0.15)';
+          document.getElementById('diagAC').classList.add('active-diagonal');
+          document.getElementById('diagBD').classList.add('active-diagonal');
+        }
+      },
+      {
+        title: "১০. চূড়ান্ত ফলাফল ও উত্তর",
+        content: `
+          <p class="step-text">সম্পূর্ণ সমাধানের সারসংক্ষেপ:</p>
+          <div class="math-block">
+            ১. রম্বসের প্রতিটি বাহু = <b>45 সে.মি.</b><br>
+            ২. রম্বসের অপর কর্ণ = <span class="math-highlight">72 সে.মি.</span><br>
+            ৩. রম্বসের ক্ষেত্রফল = <span class="math-highlight">1944 বর্গ সে.মি.</span>
+          </div>
+          <p class="step-text" style="font-weight: bold; color: var(--secondary); margin-top: 10px;">
+            উত্তর: অপর কর্ণ 72 সে.মি. এবং ক্ষেত্রফল 1944 বর্গ সে.মি.।
+          </p>
+        `,
+        setupVisuals: () => {
+          resetVisuals();
+          document.getElementById('rhombusShape').style.fill = 'rgba(13, 148, 136, 0.2)';
+          document.getElementById('sideAB').setAttribute('stroke', '#e11d48');
+          document.getElementById('diagAC').classList.add('active-diagonal');
+          document.getElementById('diagBD').classList.add('active-diagonal');
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+    const totalSlides = slidesData.length;
+
+    function resetVisuals() {
+      document.getElementById('triAOB').style.opacity = '0';
+      document.getElementById('rhombusShape').style.fill = '#ffffff';
+      document.getElementById('diagAC').className.baseVal = 'diagonal';
+      document.getElementById('diagBD').className.baseVal = 'diagonal';
+      document.getElementById('sideAB').setAttribute('stroke', 'transparent');
+      document.getElementById('segOB').setAttribute('stroke', 'transparent');
+      document.getElementById('segOA').setAttribute('stroke', 'transparent');
+      document.getElementById('rightAngle').style.opacity = '0';
+    }
+
+    function initDots() {
+      const container = document.getElementById('dotsContainer');
+      container.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = `dot ${i === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(i);
+        container.appendChild(dot);
+      }
+    }
+
+    function renderSlide(index) {
+      const slide = slidesData[index];
+      
+      // Update text
+      const container = document.getElementById('slideTextContainer');
+      container.innerHTML = `
+        <h2 class="step-title">${slide.title}</h2>
+        ${slide.content}
+      `;
+
+      // Update indicators
+      document.getElementById('slideIndicator').innerText = `স্লাইড ${index + 1} / ${totalSlides}`;
+      document.getElementById('progressBar').style.width = `${((index + 1) / totalSlides) * 100}%`;
+
+      // Update Buttons
+      document.getElementById('prevBtn').disabled = (index === 0);
+      document.getElementById('nextBtn').disabled = (index === totalSlides - 1);
+      if (index === totalSlides - 1) {
+        document.getElementById('nextBtn').innerText = 'সমাপ্ত ✔';
+      } else {
+        document.getElementById('nextBtn').innerText = 'পরবর্তী →';
+      }
+
+      // Update Dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+
+      // Update SVG
+      slide.setupVisuals();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        renderSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        renderSlide(currentSlide);
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      renderSlide(currentSlide);
+    }
+
+    // Keyboard Arrow Controls
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Initialize
+    initDots();
+    renderSlide(0);
+  </script>
+</body>
+</html>
