@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coin and Die Probability Tree Animation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      background: #ffffff;
+      max-width: 980px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 22px;
+    }
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+    .question-box {
+      background-color: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #1e293b;
+    }
+    .svg-container {
+      width: 100%;
+      background: #fafafa;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    svg {
+      width: 100%;
+      min-width: 820px;
+      height: 570px;
+      display: block;
+    }
+    .branch, .node, .prob-text, .result-text {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .visible {
+      opacity: 1;
+    }
+    .step-desc {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      color: #1d4ed8;
+      min-height: 28px;
+    }
+    .summary-box {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px dashed #64748b;
+      border-radius: 6px;
+      font-size: 15px;
+      color: #334155;
+      line-height: 1.6;
+      display: none;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 18px;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    button#resetBtn {
+      background: #64748b;
+    }
+    button#resetBtn:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>১টি মুদ্রা ও ১টি ছক্কার Probability Tree অ্যানিমেশন</h2>
+  
+  <div class="question-box">
+    <strong>প্রশ্ন ৬:</strong> ১টি মুদ্রা ও ১টি ছক্কা নিক্ষেপ ঘটনার probability tree তৈরি করো।
+  </div>
+
+  <div class="svg-container">
+    <svg viewBox="0 0 880 570" id="treeSvg">
+      <!-- Root Node -->
+      <circle cx="50" cy="285" r="9" fill="#0f172a" />
+      <text x="50" y="315" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">শুরু</text>
+
+      <!-- Level 1: Coin Toss -->
+      <!-- Head -->
+      <line class="branch lvl-1" x1="50" y1="285" x2="240" y2="140" stroke="#0284c7" stroke-width="2.5" />
+      <text class="prob-text lvl-1" x="125" y="195" font-size="14" fill="#0369a1" font-weight="bold">H (১/২)</text>
+      <circle class="node lvl-1" cx="240" cy="140" r="8" fill="#0284c7" />
+      <text class="node lvl-1" x="240" y="120" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">হেড (H)</text>
+
+      <!-- Tail -->
+      <line class="branch lvl-1" x1="50" y1="285" x2="240" y2="430" stroke="#0284c7" stroke-width="2.5" />
+      <text class="prob-text lvl-1" x="125" y="380" font-size="14" fill="#0369a1" font-weight="bold">T (১/২)</text>
+      <circle class="node lvl-1" cx="240" cy="430" r="8" fill="#0284c7" />
+      <text class="node lvl-1" x="240" y="455" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">টেল (T)</text>
+
+      <!-- Level 2 (Branches from Head) -->
+      <!-- 1 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="40" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="70" font-size="12" fill="#047857">১ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="45" font-size="14" font-weight="bold">১</text>
+      <text class="result-text lvl-res" x="620" y="45" font-size="14" fill="#334155">(H, ১) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 2 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="80" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="100" font-size="12" fill="#047857">২ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="85" font-size="14" font-weight="bold">২</text>
+      <text class="result-text lvl-res" x="620" y="85" font-size="14" fill="#334155">(H, ২) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 3 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="120" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="125" font-size="12" fill="#047857">৩ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="125" font-size="14" font-weight="bold">৩</text>
+      <text class="result-text lvl-res" x="620" y="125" font-size="14" fill="#334155">(H, ৩) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 4 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="160" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="160" font-size="12" fill="#047857">৪ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="165" font-size="14" font-weight="bold">৪</text>
+      <text class="result-text lvl-res" x="620" y="165" font-size="14" fill="#334155">(H, ৪) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 5 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="200" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="185" font-size="12" fill="#047857">৫ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="205" font-size="14" font-weight="bold">৫</text>
+      <text class="result-text lvl-res" x="620" y="205" font-size="14" fill="#334155">(H, ৫) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 6 -->
+      <line class="branch lvl-2-h" x1="240" y1="140" x2="520" y2="240" stroke="#10b981" stroke-width="1.8" />
+      <text class="prob-text lvl-2-h" x="375" y="215" font-size="12" fill="#047857">৬ (১/৬)</text>
+      <text class="node lvl-2-h" x="535" y="245" font-size="14" font-weight="bold">৬</text>
+      <text class="result-text lvl-res" x="620" y="245" font-size="14" fill="#334155">(H, ৬) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- Level 2 (Branches from Tail) -->
+      <!-- 1 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="330" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="370" font-size="12" fill="#6d28d9">১ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="335" font-size="14" font-weight="bold">১</text>
+      <text class="result-text lvl-res" x="620" y="335" font-size="14" fill="#334155">(T, ১) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 2 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="370" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="395" font-size="12" fill="#6d28d9">২ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="375" font-size="14" font-weight="bold">২</text>
+      <text class="result-text lvl-res" x="620" y="375" font-size="14" fill="#334155">(T, ২) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 3 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="410" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="420" font-size="12" fill="#6d28d9">৩ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="415" font-size="14" font-weight="bold">৩</text>
+      <text class="result-text lvl-res" x="620" y="415" font-size="14" fill="#334155">(T, ৩) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 4 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="450" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="450" font-size="12" fill="#6d28d9">৪ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="455" font-size="14" font-weight="bold">৪</text>
+      <text class="result-text lvl-res" x="620" y="455" font-size="14" fill="#334155">(T, ৪) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 5 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="490" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="475" font-size="12" fill="#6d28d9">৫ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="495" font-size="14" font-weight="bold">৫</text>
+      <text class="result-text lvl-res" x="620" y="495" font-size="14" fill="#334155">(T, ৫) → ১/২ × ১/৬ = ১/১২</text>
+
+      <!-- 6 -->
+      <line class="branch lvl-2-t" x1="240" y1="430" x2="520" y2="530" stroke="#8b5cf6" stroke-width="1.8" />
+      <text class="prob-text lvl-2-t" x="375" y="505" font-size="12" fill="#6d28d9">৬ (১/৬)</text>
+      <text class="node lvl-2-t" x="535" y="535" font-size="14" font-weight="bold">৬</text>
+      <text class="result-text lvl-res" x="620" y="535" font-size="14" fill="#334155">(T, ৬) → ১/২ × ১/৬ = ১/১২</text>
+    </svg>
+  </div>
+
+  <div class="step-desc" id="stepDesc">শুরু করতে "পরবর্তী ধাপ" বাটনে ক্লিক করুন।</div>
+
+  <div class="summary-box" id="summaryBox">
+    <strong>মোট ফলাফল (Sample Space, S):</strong><br>
+    S = {(H, ১), (H, ২), (H, ৩), (H, ৪), (H, ৫), (H, ৬), (T, ১), (T, ২), (T, ৩), (T, ৪), (T, ৫), (T, ৬)}<br>
+    মোট ফলাফল সংখ্যা = ২ × ৬ = ১২ টি এবং প্রতিটি ফলাফলের সম্ভাবনা = ১/১২।
+  </div>
+
+  <div class="controls">
+    <button id="nextBtn" onclick="nextStep()">পরবর্তী ধাপ</button>
+    <button id="resetBtn" onclick="resetAll()">পুনরায় শুরু</button>
+  </div>
+</div>
+
+<script>
+  let step = 0;
+
+  function showClass(className) {
+    const elements = document.querySelectorAll('.' + className);
+    elements.forEach(el => el.classList.add('visible'));
+  }
+
+  function nextStep() {
+    step++;
+
+    if (step === 1) {
+      showClass('lvl-1');
+      document.getElementById('stepDesc').innerText = 'ধাপ ১: মুদ্রা নিক্ষেপের ২টি শাখা (হেড ও টেল) এবং তাদের সম্ভাবনা (১/২) দেখানো হলো।';
+    } 
+    else if (step === 2) {
+      showClass('lvl-2-h');
+      document.getElementById('stepDesc').innerText = 'ধাপ ২: হেড (H) আসার পর ছক্কা নিক্ষেপের ৬টি সম্ভাব্য শাখা (১ হতে ৬) যুক্ত হলো।';
+    } 
+    else if (step === 3) {
+      showClass('lvl-2-t');
+      document.getElementById('stepDesc').innerText = 'ধাপ ৩: টেল (T) আসার পর ছক্কা নিক্ষেপের ৬টি সম্ভাব্য শাখা (১ হতে ৬) যুক্ত হলো।';
+    } 
+    else if (step === 4) {
+      showClass('lvl-res');
+      document.getElementById('summaryBox').style.display = 'block';
+      document.getElementById('stepDesc').innerText = 'ধাপ ৪: চূড়ান্ত ১২টি ফলাফল (Sample Space) এবং প্রত্যেকের সম্ভাবনা (১/১২) প্রদর্শিত হলো।';
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.disabled = true;
+      nextBtn.style.opacity = '0.5';
+    }
+  }
+
+  function resetAll() {
+    step = 0;
+    const allAnimated = document.querySelectorAll('.visible');
+    allAnimated.forEach(el => el.classList.remove('visible'));
+
+    document.getElementById('summaryBox').style.display = 'none';
+    document.getElementById('stepDesc').innerText = 'শুরু করতে "পরবর্তী ধাপ" বাটনে ক্লিক করুন।';
+
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = '1';
+  }
+</script>
+
+</body>
+</html>
