@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি: সামান্তরিকের অপর কর্ণের দৈর্ঘ্য নির্ণয়</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0d9488;
+      --accent: #e11d48;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 950px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #2563eb);
+      color: white;
+      padding: 18px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .diagram-panel {
+      flex: 1.1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #cbd5e1;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+    }
+
+    .slide-panel {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 330px;
+      padding: 10px;
+    }
+
+    .step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: #e0e7ff;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .step-content {
+      flex-grow: 1;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-weight: 700;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+    }
+
+    .step-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    .formula-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 10px 14px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 15px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 6.66%;
+      transition: width 0.3s ease;
+    }
+
+    /* SVG Dynamic classes */
+    .base-shape { stroke: #334155; stroke-width: 2; fill: none; }
+    .diag-bd { stroke: #0284c7; stroke-width: 2.5; stroke-dasharray: 4; }
+    .diag-ac { stroke: #dc2626; stroke-width: 2.5; stroke-dasharray: 4; opacity: 0.3; }
+    .height-line { stroke: #16a34a; stroke-width: 2; stroke-dasharray: 3; }
+    .ext-line { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 2; }
+    .poly-abd { fill: rgba(2, 132, 199, 0.15); }
+    .poly-bec { fill: rgba(22, 163, 74, 0.15); }
+    .poly-aec { fill: rgba(220, 38, 38, 0.15); }
+
+    .node-text { font-size: 14px; font-weight: bold; fill: #1e293b; }
+    .dim-text { font-size: 12px; fill: #475569; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>একটি সামান্তরিকের বাহুর দৈর্ঘ্য 30 সে.মি. এবং 26 সে.মি.। এর ক্ষুদ্রতর কর্ণটি 28 সে.মি. হলে, অপর কর্ণের দৈর্ঘ্য নির্ণয় কর।</h1>
+  </header>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="main-content">
+    <!-- ডায়াগ্রাম প্যানেল -->
+    <div class="diagram-panel">
+      <svg viewBox="0 0 460 300" id="geoSvg">
+        <!-- ত্রিভুজ ক্ষেত্রসমূহ (হাইলাইট শেড) -->
+        <polygon id="shadeABD" points="80,220 130,80 310,220" class="poly-abd" style="display:none;" />
+        <polygon id="shadeBEC" points="310,220 360,220 360,80" class="poly-bec" style="display:none;" />
+        <polygon id="shadeAEC" points="80,220 360,220 360,80" class="poly-aec" style="display:none;" />
+
+        <!-- সামান্তরিক বাহুসমূহ -->
+        <polygon points="80,220 310,220 360,80 130,80" class="base-shape" />
+
+        <!-- বর্ধিতাংশ ও লম্ব -->
+        <line x1="310" y1="220" x2="360" y2="220" class="ext-line" id="lineBE" />
+        <line x1="130" y1="80" x2="130" y2="220" class="height-line" id="lineDF" />
+        <line x1="360" y1="80" x2="360" y2="220" class="height-line" id="lineCE" />
+
+        <!-- লম্ব সমকোণ চিহ্ন -->
+        <rect x="130" y="210" width="10" height="10" fill="none" stroke="#16a34a" stroke-width="1.5" />
+        <rect x="350" y="210" width="10" height="10" fill="none" stroke="#16a34a" stroke-width="1.5" />
+
+        <!-- কর্ণসমূহ -->
+        <line x1="130" y1="80" x2="310" y2="220" class="diag-bd" id="lineBD" />
+        <line x1="80" y1="220" x2="360" y2="80" class="diag-ac" id="lineAC" />
+
+        <!-- শীর্ষবিন্দুসমূহ লেবেল -->
+        <text x="65" y="235" class="node-text">A</text>
+        <text x="305" y="238" class="node-text">B</text>
+        <text x="365" y="75" class="node-text">C</text>
+        <text x="120" y="75" class="node-text">D</text>
+        <text x="125" y="238" class="node-text">F</text>
+        <text x="365" y="238" class="node-text">E</text>
+
+        <!-- পরিমাপ লেবেল -->
+        <text x="180" y="238" class="dim-text" id="lblAB">30 সে.মি.</text>
+        <text x="235" y="70" class="dim-text">30 সে.মি.</text>
+        <text x="75" y="150" class="dim-text" transform="rotate(-68 75,150)">26 সে.মি.</text>
+        <text x="210" y="145" class="dim-text" fill="#0284c7">28 সে.মি.</text>
+        <text x="135" y="160" class="dim-text" fill="#16a34a" id="lblDF">h</text>
+        <text x="368" y="160" class="dim-text" fill="#16a34a" id="lblCE">h</text>
+      </svg>
+    </div>
+
+    <!-- স্লাইড টেক্সট প্যানেল -->
+    <div class="slide-panel">
+      <div>
+        <span class="step-badge" id="stepCounter">ধাপ: ১ / ১৫</span>
+        <h2 class="step-title" id="slideTitle">চিত্র অঙ্কন ও তথ্য পরিচিতি</h2>
+        <div class="step-body" id="slideBody">
+          ধরি, ABCD একটি সামান্তরিক।<br>
+          এর সন্নিহিত বাহুদ্বয় AB = 30 সে.মি. এবং AD = 26 সে.মি.।<br>
+          ক্ষুদ্রতর কর্ণ BD = 28 সে.মি.।<br>
+          আমাদের অপর কর্ণ AC-এর দৈর্ঘ্য নির্ণয় করতে হবে।
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="btn-group">
+          <button id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী</button>
+          <button id="nextBtn" onclick="nextSlide()">পরবর্তী →</button>
+        </div>
+        <button style="background: var(--muted);" onclick="toggleAutoPlay()" id="playBtn">স্বয়ংক্রিয় চালু</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ১৫টি স্লাইডের সম্পূর্ণ তথ্য ও সংশ্লিষ্ট ডায়াগ্রাম স্টেট
+  const slides = [
+    {
+      step: 1,
+      title: "চিত্র অঙ্কন ও তথ্যাবলি",
+      body: "ধরি, ABCD একটি সামান্তরিক।<br>এর সন্নিহিত বাহুর দৈর্ঘ্য AB = 30 সে.মি. এবং AD = 26 সে.মি.।<br>ক্ষুদ্রতর কর্ণ BD = 28 সে.মি.।<br>আমাদের অপর কর্ণ AC-এর দৈর্ঘ্য নির্ণয় করতে হবে।",
+      highlight: () => {
+        resetSvg();
+      }
+    },
+    {
+      step: 2,
+      title: "কর্ণ দ্বারা সামান্তরিকের বিভাজন (BD কর্ণ)",
+      body: "আমরা জানি, সামান্তরিকের যেকোনো কর্ণ সামান্তরিকক্ষেত্রকে দুটি সমান ক্ষেত্রফলবিশিষ্ট ত্রিভুজে সমদ্বিখণ্ডিত করে।<br><div class='formula-box'>∴ Δ ক্ষেত্র ABD = 1/2 × (সামান্তরিকক্ষেত্র ABCD)</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lineBD").style.strokeWidth = "4";
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 3,
+      title: "AC কর্ণ বিবেচনা ও ত্রিভুজের ক্ষেত্রফল সমতা",
+      body: "অনুরূপভাবে, AC কর্ণও সামান্তরিকটিকে সমদ্বিখণ্ডিত করে।<br><div class='formula-box'>∴ Δ ক্ষেত্র ABC = 1/2 × (সামান্তরিকক্ষেত্র ABCD)</div>অতএব, <span class='highlight'>Δ ক্ষেত্র ABC = Δ ক্ষেত্র ABD</span>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 4,
+      title: "Δ ABD এর বাহুসমূহের মান নির্ধারণ",
+      body: "এখন Δ ABD ত্রিভুজটি বিবেচনা করি:<br>AB = 30 সে.মি.<br>AD = 26 সে.মি.<br>BD = 28 সে.মি.",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 5,
+      title: "Δ ABD এর অর্ধ-পরিসীমা (s) নির্ণয়",
+      body: "Δ ABD এর অর্ধ-পরিসীমা s হলে,<br><div class='formula-box'>s = (AB + AD + BD) / 2<br>= (30 + 26 + 28) / 2 সে.মি.<br>= 84 / 2 সে.মি. = <span class='highlight'>42 সে.মি.</span></div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 6,
+      title: "Δ ABD এর ক্ষেত্রফলের সূত্র প্রয়োগ",
+      body: "বিষমবাহু ত্রিভুজের ক্ষেত্রফলের সূত্রানুসারে:<br>Δ ABD এর ক্ষেত্রফল = √[s(s - a)(s - b)(s - c)]<br><div class='formula-box'>= √[42(42 - 30)(42 - 26)(42 - 28)] বর্গ সে.মি.</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 7,
+      title: "Δ ABD এর ক্ষেত্রফল গণনা",
+      body: "= √[42 × 12 × 16 × 14] বর্গ সে.মি.<br>= √[112896] বর্গ সে.মি.<br><div class='formula-box'>= <span class='highlight'>336 বর্গ সে.মি.</span></div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeABD").style.display = "block";
+      }
+    },
+    {
+      step: 8,
+      title: "উচ্চতা সম্পর্কিত ক্ষেত্রফলের সূত্র",
+      body: "D বিন্দু থেকে AB বাহুর উপর DF লম্ব এবং C থেকে বর্ধিত AB-এর উপর CE লম্ব আঁকি।<br>উচ্চতা DF = CE = h ধরি।<br><div class='formula-box'>Δ ক্ষেত্র ABD = 1/2 × ভূমি × উচ্চতা<br>= 1/2 × AB × DF</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lineDF").style.stroke = "#e11d48";
+        document.getElementById("lineDF").style.strokeWidth = "3";
+        document.getElementById("lineCE").style.stroke = "#e11d48";
+        document.getElementById("lineCE").style.strokeWidth = "3";
+      }
+    },
+    {
+      step: 9,
+      title: "উচ্চতা (h) এর মান বের করার সমীকরণ",
+      body: "ক্ষেত্রফলের মান বসিয়ে পাই:<br>336 = 1/2 × 30 × h<br>বা, 15 × h = 336<br><div class='formula-box'>বা, h = 336 / 15</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lineDF").style.stroke = "#e11d48";
+        document.getElementById("lineCE").style.stroke = "#e11d48";
+      }
+    },
+    {
+      step: 10,
+      title: "উচ্চতা (h) এর মান লাভ",
+      body: "<div class='formula-box'>∴ h = <span class='highlight'>22.4 সে.মি.</span></div>অতএব, লম্ব DF = CE = 22.4 সে.মি.।",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lblCE").textContent = "22.4 সে.মি.";
+        document.getElementById("lblDF").textContent = "22.4 সে.মি.";
+      }
+    },
+    {
+      step: 11,
+      title: "সমকোণী ত্রিভুজ BEC-তে পিথাগোরাস প্রয়োগ",
+      body: "Δ BEC একটি সমকোণী ত্রিভুজ, যার ∠BEC = 90°।<br>এখানে, অতিভুজ BC = AD = 26 সে.মি. এবং CE = 22.4 সে.মি.।<br><div class='formula-box'>পিথাগোরাসের সূত্রানুসারে:<br>BC² = BE² + CE²<br>বা, BE² = BC² - CE²</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeBEC").style.display = "block";
+      }
+    },
+    {
+      step: 12,
+      title: "BE এর দৈর্ঘ্য গণনা",
+      body: "বা, BE² = (26)² - (22.4)²<br>বা, BE² = 676 - 501.76<br>বা, BE² = 174.24<br>বা, BE = √174.24<br><div class='formula-box'>∴ BE = <span class='highlight'>13.2 সে.মি.</span></div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeBEC").style.display = "block";
+        document.getElementById("lineBE").style.stroke = "#0d9488";
+        document.getElementById("lineBE").style.strokeWidth = "3";
+      }
+    },
+    {
+      step: 13,
+      title: "সমগ্র ভূমি AE এর দৈর্ঘ্য নির্ণয়",
+      body: "A থেকে E পর্যন্ত মোট দৈর্ঘ্য:<br><div class='formula-box'>AE = AB + BE<br>= 30 + 13.2 সে.মি.<br>= <span class='highlight'>43.2 সে.মি.</span></div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lblAB").textContent = "AE = 43.2 সে.মি.";
+      }
+    },
+    {
+      step: 14,
+      title: "সমকোণী ত্রিভুজ AEC-তে কর্ণ AC নির্ণয়",
+      body: "এখন সমকোণী ত্রিভুজ AEC বিবেচনা করি (যেখানে ∠AEC = 90°):<br><div class='formula-box'>AC² = AE² + CE²<br>= (43.2)² + (22.4)²<br>= 1866.24 + 501.76<br>= 2368</div>",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("shadeAEC").style.display = "block";
+        document.getElementById("lineAC").style.opacity = "1";
+        document.getElementById("lineAC").style.strokeWidth = "3.5";
+      }
+    },
+    {
+      step: 15,
+      title: "চূড়ান্ত উত্তর: অপর কর্ণের দৈর্ঘ্য",
+      body: "AC = √2368<br>= 48.662 সে.মি. (প্রায়)<br><div class='formula-box' style='font-size: 1.15rem; color: #16a34a;'>∴ অপর কর্ণের দৈর্ঘ্য = <span class='highlight'>48.66 সে.মি. (প্রায়)</span></div>উত্তর: 48.66 সে.মি. (প্রায়)।",
+      highlight: () => {
+        resetSvg();
+        document.getElementById("lineAC").style.opacity = "1";
+        document.getElementById("lineAC").style.stroke = "#16a34a";
+        document.getElementById("lineAC").style.strokeWidth = "4";
+      }
+    }
+  ];
+
+  let currentSlide = 0;
+  let autoPlayTimer = null;
+
+  function resetSvg() {
+    document.getElementById("shadeABD").style.display = "none";
+    document.getElementById("shadeBEC").style.display = "none";
+    document.getElementById("shadeAEC").style.display = "none";
+    document.getElementById("lineBD").style.strokeWidth = "2.5";
+    document.getElementById("lineAC").style.opacity = "0.3";
+    document.getElementById("lineAC").style.strokeWidth = "2.5";
+    document.getElementById("lineAC").style.stroke = "#dc2626";
+    document.getElementById("lineDF").style.stroke = "#16a34a";
+    document.getElementById("lineDF").style.strokeWidth = "2";
+    document.getElementById("lineCE").style.stroke = "#16a34a";
+    document.getElementById("lineCE").style.strokeWidth = "2";
+    document.getElementById("lineBE").style.stroke = "#94a3b8";
+    document.getElementById("lineBE").style.strokeWidth = "1.5";
+    document.getElementById("lblAB").textContent = "30 সে.মি.";
+  }
+
+  function toBengaliNum(num) {
+    const bnNums = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bnNums[d] || d).join('');
+  }
+
+  function updateSlide() {
+    const s = slides[currentSlide];
+    document.getElementById("stepCounter").textContent = "ধাপ: " + toBengaliNum(s.step) + " / ১৫";
+    document.getElementById("slideTitle").innerHTML = s.title;
+    document.getElementById("slideBody").innerHTML = s.body;
+
+    // Progress bar
+    const percent = ((currentSlide + 1) / slides.length) * 100;
+    document.getElementById("progressBar").style.width = percent + "%";
+
+    // Buttons
+    document.getElementById("prevBtn").disabled = (currentSlide === 0);
+    document.getElementById("nextBtn").disabled = (currentSlide === slides.length - 1);
+
+    // Call SVG highlight
+    s.highlight();
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      updateSlide();
+    } else if (autoPlayTimer) {
+      toggleAutoPlay();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updateSlide();
+    }
+  }
+
+  function toggleAutoPlay() {
+    const playBtn = document.getElementById("playBtn");
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+      playBtn.textContent = "স্বয়ংক্রিয় চালু";
+      playBtn.style.background = "var(--muted)";
+    } else {
+      playBtn.textContent = "থামুন";
+      playBtn.style.background = "#e11d48";
+      autoPlayTimer = setInterval(() => {
+        if (currentSlide < slides.length - 1) {
+          nextSlide();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 3500);
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Init
+  updateSlide();
+</script>
+
+</body>
+</html>
