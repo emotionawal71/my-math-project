@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি ১৬.২ : সমস্যা ১ ও ২ (১১টি স্লাইড অ্যানিমেশন)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      min-height: 100vh;
+    }
+    .app-card {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 22px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+    .header h1 {
+      font-size: 21px;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #64748b;
+    }
+    /* Slide Navigation Dots */
+    .slide-progress {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .dot-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .dot-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      transform: scale(1.1);
+    }
+    /* Slide Viewport */
+    .slide-viewport {
+      min-height: 420px;
+      background: #fcfdfe;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .slide-content {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+    .slide-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-title {
+      font-size: 19px;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 680px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .svg-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 220px;
+    }
+    .formula-box {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    .highlight-val {
+      color: #b91c1c;
+      font-weight: bold;
+    }
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .nav-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #1d4ed8;
+    }
+    .nav-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    .slide-number {
+      font-size: 15px;
+      font-weight: 600;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-card">
+  <div class="header">
+    <h1>পরিমিতি ১৬.২ : গাণিতিক সমস্যা ১ ও ২</h1>
+    <p>শিক্ষার্থীদের সহজে বোঝার জন্য ১১টি ধারাবাহিক স্লাইড অ্যানিমেশন</p>
+  </div>
+
+  <!-- Slide Buttons (1 to 11) -->
+  <div class="slide-progress">
+    <button class="dot-btn active" onclick="goToSlide(1)">১</button>
+    <button class="dot-btn" onclick="goToSlide(2)">২</button>
+    <button class="dot-btn" onclick="goToSlide(3)">৩</button>
+    <button class="dot-btn" onclick="goToSlide(4)">৪</button>
+    <button class="dot-btn" onclick="goToSlide(5)">৫</button>
+    <button class="dot-btn" onclick="goToSlide(6)">৬</button>
+    <button class="dot-btn" onclick="goToSlide(7)">৭</button>
+    <button class="dot-btn" onclick="goToSlide(8)">৮</button>
+    <button class="dot-btn" onclick="goToSlide(9)">৯</button>
+    <button class="dot-btn" onclick="goToSlide(10)">১০</button>
+    <button class="dot-btn" onclick="goToSlide(11)">১১</button>
+  </div>
+
+  <div class="slide-viewport">
+
+    <!-- SLIDE 1: পরিচিতি -->
+    <div class="slide-content active" id="slide-1">
+      <div class="slide-title">পাঠ পরিচিতি ও সূচিপত্র</div>
+      <div class="formula-box" style="text-align: center; padding: 25px;">
+        <h3 style="color: #1e3a8a; margin-bottom: 15px;">আজকের পাঠে আমরা দুটি গুরুত্বপূর্ণ সমস্যা সমাধান করব:</h3>
+        <p style="margin-bottom: 10px;"><strong>সমস্যা ১:</strong> আয়তাকার ক্ষেত্রের দৈর্ঘ্য বিস্তারের দ্বিগুণ ও ক্ষেত্রফল ৫১২ হলে পরিসীমা নির্ণয়।</p>
+        <p style="margin-bottom: 15px;"><strong>সমস্যা ২:</strong> ৮০ মি × ৬০ মি জমির ভেতরের ৪ মিটার চওড়া পুকুর পাড়ের ক্ষেত্রফল নির্ণয়।</p>
+        <p style="color: #2563eb; font-weight: bold;">ধাপে ধাপে স্লাইড দেখতে "পরবর্তী স্লাইড" বাটনে ক্লিক করুন।</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: প্রশ্ন ১ ধারণা -->
+    <div class="slide-content" id="slide-2">
+      <div class="slide-title">সমস্যা ১ : প্রশ্ন উপস্থাপন ও ধারণা</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 180" width="100%" height="180">
+            <rect x="30" y="40" width="220" height="100" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5" />
+            <text x="140" y="165" text-anchor="middle" font-size="15" fill="#0369a1" font-weight="bold">দৈর্ঘ্য = ২ × বিস্তার</text>
+            <text x="260" y="95" font-size="15" fill="#0369a1" font-weight="bold">বিস্তার</text>
+            <text x="140" y="95" text-anchor="middle" font-size="15" fill="#0c4a6e">ক্ষেত্রফল = ৫১২ বর্গমিটার</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">প্রশ্ন ১</span>
+          <p><strong>প্রশ্ন:</strong> একটি আয়তাকার ক্ষেত্রের দৈর্ঘ্য বিস্তারের দ্বিগুণ। এর ক্ষেত্রফল ৫১২ বর্গমিটার হলে, পরিসীমা নির্ণয় কর।</p>
+          <hr style="margin: 10px 0; border: none; border-top: 1px solid #cbd5e1;">
+          <p><strong>ধারণা:</strong> ছোট রাশিটিকে (বিস্তার) চলক x ধরলে দৈর্ঘ্য হবে ২x।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: প্রশ্ন ১ ক্ষেত্রফল প্রকাশ -->
+    <div class="slide-content" id="slide-3">
+      <div class="slide-title">সমস্যা ১ : চলক ও ক্ষেত্রফল প্রকাশ</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 180" width="100%" height="180">
+            <rect x="30" y="40" width="220" height="100" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5" />
+            <text x="140" y="165" text-anchor="middle" font-size="16" fill="#0369a1" font-weight="bold">দৈর্ঘ্য = ২x</text>
+            <text x="260" y="95" font-size="16" fill="#0369a1" font-weight="bold">x</text>
+            <text x="140" y="95" text-anchor="middle" font-size="16" fill="#b91c1c" font-weight="bold">ক্ষেত্রফল = ২x × x = ২x²</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">গাণিতিক গঠন</span>
+          <p>মনে করি, আয়তাকার ক্ষেত্রের বিস্তার = <strong>x</strong> মিটার</p>
+          <p>অতএব, আয়তাকার ক্ষেত্রের দৈর্ঘ্য = <strong>২x</strong> মিটার</p>
+          <p>সুতরাং, ক্ষেত্রফল = (দৈর্ঘ্য × বিস্তার)</p>
+          <p>= (২x × x) = <strong class="highlight-val">২x²</strong> বর্গমিটার</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: প্রশ্ন ১ সমীকরণ সমাধান -->
+    <div class="slide-content" id="slide-4">
+      <div class="slide-title">সমস্যা ১ : সমীকরণ সমাধান</div>
+      <div class="formula-box" style="max-width: 600px; margin: 0 auto;">
+        <span class="badge">x এর মান নির্ণয়</span>
+        <p>প্রশ্নমতে,</p>
+        <p style="font-size: 18px; margin: 8px 0;"><strong>২x² = ৫১২</strong></p>
+        <p>বা, x² = ৫১২ / ২</p>
+        <p>বা, x² = ২৫৬</p>
+        <p>বা, x = √২৫৬</p>
+        <p style="font-size: 18px; color: #15803d; margin-top: 8px;"><strong>∴ x = ১৬</strong></p>
+        <p style="color: #64748b; font-size: 14px; margin-top: 6px;">(যেহেতু দৈর্ঘ্য ঋণাত্মক হতে পারে না, তাই ধনাত্মক মান নেওয়া হলো)</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: প্রশ্ন ১ পরিসীমা নির্ণয় -->
+    <div class="slide-content" id="slide-5">
+      <div class="slide-title">সমস্যা ১ : বাহুর দৈর্ঘ্য ও পরিসীমা</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 180" width="100%" height="180">
+            <rect x="30" y="40" width="220" height="100" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5" />
+            <text x="140" y="165" text-anchor="middle" font-size="16" fill="#15803d" font-weight="bold">দৈর্ঘ্য = ৩২ মিটার</text>
+            <text x="260" y="95" font-size="16" fill="#15803d" font-weight="bold">১৬ মি.</text>
+            <text x="140" y="95" text-anchor="middle" font-size="16" fill="#15803d" font-weight="bold">পরিসীমা = ৯৬ মিটার</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">চূড়ান্ত উত্তর</span>
+          <p>অতএব, বিস্তার = <strong>১৬ মিটার</strong></p>
+          <p>দৈর্ঘ্য = (১৬ × ২) = <strong>৩২ মিটার</strong></p>
+          <hr style="margin: 8px 0; border: none; border-top: 1px solid #cbd5e1;">
+          <p>আমরা জানি, পরিসীমা = ২ (দৈর্ঘ্য + বিস্তার)</p>
+          <p>= ২ (৩২ + ১৬) মিটার</p>
+          <p>= ২ (৪৮) = <strong class="highlight-val">৯৬ মিটার</strong></p>
+          <p><strong>উত্তর:</strong> পরিসীমা <strong>৯৬ মিটার</strong>।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: প্রশ্ন ২ উপস্থাপন -->
+    <div class="slide-content" id="slide-6">
+      <div class="slide-title">সমস্যা ২ : প্রশ্ন উপস্থাপন ও জমির পরিমাপ</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 190" width="100%" height="190">
+            <rect x="25" y="25" width="230" height="140" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" />
+            <text x="140" y="15" text-anchor="middle" font-size="15" fill="#b45309" font-weight="bold">৮০ মিটার</text>
+            <text x="15" y="100" text-anchor="middle" font-size="15" fill="#b45309" font-weight="bold" transform="rotate(-90 15,100)">৬০ মিটার</text>
+            <text x="140" y="100" text-anchor="middle" font-size="16" fill="#92400e" font-weight="bold">সম্পূর্ণ জমি</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">প্রশ্ন ২</span>
+          <p><strong>প্রশ্ন:</strong> একটি জমির দৈর্ঘ্য ৮০ মিটার এবং প্রস্থ ৬০ মিটার। ঐ জমির মাঝে একটি পুকুর খনন করা হলো। যদি পুকুরের প্রত্যেক পাড়ের বিস্তার ৪ মিটার হয়, তবে পুকুরের পাড়ের ক্ষেত্রফল নির্ণয় কর।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: প্রশ্ন ২ জমির ক্ষেত্রফল -->
+    <div class="slide-content" id="slide-7">
+      <div class="slide-title">সমস্যা ২ : জমির মোট ক্ষেত্রফল নির্ণয়</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 190" width="100%" height="190">
+            <rect x="25" y="25" width="230" height="140" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" />
+            <text x="140" y="100" text-anchor="middle" font-size="16" fill="#b45309" font-weight="bold">জমির ক্ষেত্রফল = ৪৮০০ বর্গমিটার</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">ধাপ ১ : সম্পূর্ণ জমি</span>
+          <p>দেওয়া আছে,</p>
+          <p>জমির দৈর্ঘ্য = <strong>৮০ মিটার</strong></p>
+          <p>জমির প্রস্থ = <strong>৬০ মিটার</strong></p>
+          <hr style="margin: 8px 0; border: none; border-top: 1px solid #cbd5e1;">
+          <p>∴ জমির ক্ষেত্রফল = (৮০ × ৬০) বর্গমিটার</p>
+          <p>= <strong class="highlight-val">৪৮০০ বর্গমিটার</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: প্রশ্ন ২ পাড় বাদে পুকুরের বাহু -->
+    <div class="slide-content" id="slide-8">
+      <div class="slide-title">সমস্যা ২ : পাড় বাদে পুকুরের দৈর্ঘ্য ও প্রস্থ</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 190" width="100%" height="190">
+            <!-- Land -->
+            <rect x="25" y="25" width="230" height="140" fill="#fef3c7" stroke="#d97706" stroke-width="2" />
+            <!-- Pond -->
+            <rect x="55" y="50" width="170" height="90" fill="#bae6fd" stroke="#0284c7" stroke-width="2" />
+            <text x="140" y="100" text-anchor="middle" font-size="14" fill="#0369a1" font-weight="bold">পুকুর</text>
+            <text x="40" y="100" font-size="11" fill="#b45309">৪ মি</text>
+            <text x="230" y="100" font-size="11" fill="#b45309">৪ মি</text>
+            <text x="140" y="42" text-anchor="middle" font-size="11" fill="#b45309">৪ মি</text>
+            <text x="140" y="155" text-anchor="middle" font-size="11" fill="#b45309">৪ মি</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">ধাপ ২ : পাড় বাদ দেওয়া</span>
+          <p>যেহেতু পুকুরের চারদিকে ৪ মিটার চওড়া পাড় রয়েছে, তাই দুই পাশ থেকেই ৪ মিটার করে বাদ যাবে:</p>
+          <p><strong>পাড় বাদে দৈর্ঘ্য:</strong></p>
+          <p>= ৮০ - (৪ × ২) = ৮০ - ৮ = <strong>৭২ মিটার</strong></p>
+          <p><strong>পাড় বাদে প্রস্থ:</strong></p>
+          <p>= ৬০ - (৪ × ২) = ৬০ - ৮ = <strong>৫২ মিটার</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: প্রশ্ন ২ পুকুরের ক্ষেত্রফল -->
+    <div class="slide-content" id="slide-9">
+      <div class="slide-title">সমস্যা ২ : শুধু পুকুরের ক্ষেত্রফল নির্ণয়</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 190" width="100%" height="190">
+            <rect x="25" y="25" width="230" height="140" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4,4" />
+            <rect x="55" y="50" width="170" height="90" fill="#bae6fd" stroke="#0284c7" stroke-width="2.5" />
+            <text x="140" y="90" text-anchor="middle" font-size="14" fill="#0369a1" font-weight="bold">পুকুরের ক্ষেত্রফল</text>
+            <text x="140" y="112" text-anchor="middle" font-size="14" fill="#0c4a6e" font-weight="bold">= ৩৭৪৪ বর্গমিটার</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">ধাপ ৩ : পুকুরের ক্ষেত্রফল</span>
+          <p>পাড় বাদে পুকুরের দৈর্ঘ্য = ৭২ মিটার</p>
+          <p>পাড় বাদে পুকুরের প্রস্থ = ৫২ মিটার</p>
+          <hr style="margin: 8px 0; border: none; border-top: 1px solid #cbd5e1;">
+          <p>∴ পাড় বাদে পুকুরের ক্ষেত্রফল:</p>
+          <p>= (৭২ × ৫২) বর্গমিটার</p>
+          <p>= <strong class="highlight-val">৩৭৪৪ বর্গমিটার</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: প্রশ্ন ২ পাড়ের ক্ষেত্রফল -->
+    <div class="slide-content" id="slide-10">
+      <div class="slide-title">সমস্যা ২ : পুকুরের পাড়ের ক্ষেত্রফল</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 190" width="100%" height="190">
+            <!-- Shaded Border -->
+            <rect x="25" y="25" width="230" height="140" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5" />
+            <rect x="55" y="50" width="170" height="90" fill="#ffffff" stroke="#94a3b8" />
+            <text x="140" y="100" text-anchor="middle" font-size="13" fill="#64748b">পুকুর (সাদা অংশ)</text>
+            <text x="140" y="42" text-anchor="middle" font-size="13" fill="#c2410c" font-weight="bold">পাড়ের ক্ষেত্রফল = ১০৫৬ বর্গমিটার</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">ধাপ ৪ : পাড়ের ক্ষেত্রফল</span>
+          <p>পুকুরের পাড়ের ক্ষেত্রফল = (জমির মোট ক্ষেত্রফল - পুকুরের ক্ষেত্রফল)</p>
+          <p>= (৪৮০০ - ৩৭৪৪) বর্গমিটার</p>
+          <p>= <strong class="highlight-val">১০৫৬ বর্গমিটার</strong></p>
+          <hr style="margin: 8px 0; border: none; border-top: 1px solid #cbd5e1;">
+          <p><strong>উত্তর:</strong> পুকুরের পাড়ের ক্ষেত্রফল <strong>১০৫৬ বর্গমিটার</strong>।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: সারসংক্ষেপ -->
+    <div class="slide-content" id="slide-11">
+      <div class="slide-title">১১. পাঠের সারসংক্ষেপ ও মনে রাখার কৌশল</div>
+      <div class="formula-box" style="line-height: 1.8;">
+        <p>✔ <strong>আয়তক্ষেত্রের পরিসীমা সূত্র:</strong> ২ (দৈর্ঘ্য + বিস্তার)</p>
+        <p>✔ <strong>ক্ষেত্রফল সমীকরণ সমাধান:</strong> ক্ষেত্রফল = দৈর্ঘ্য × বিস্তার; চলক ধরে মান বের করে পরিসীমায় বসানো।</p>
+        <p>✔ <strong>ভেতরের দিকে রাস্তা/পাড় থাকলে:</strong></p>
+        <p style="padding-left: 15px; color: #1e40af;">নতুন দৈর্ঘ্য = মোট দৈর্ঘ্য - (বিস্তার × ২)<br>নতুন প্রস্থ = মোট প্রস্থ - (বিস্তার × ২)</p>
+        <p>✔ <strong>পাড়ের ক্ষেত্রফল:</strong> সম্পূর্ণ ক্ষেত্রের ক্ষেত্রফল - ভেতরের অংশের ক্ষেত্রফল।</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী স্লাইড</button>
+    <div class="slide-number" id="slideIndicator">স্লাইড ১ / ১১</div>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide()">পরবর্তী স্লাইড →</button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 11;
+  const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০', '১১'];
+
+  function updateView() {
+    for (let i = 1; i <= totalSlides; i++) {
+      const slide = document.getElementById('slide-' + i);
+      if (slide) slide.classList.remove('active');
+    }
+
+    const activeSlide = document.getElementById('slide-' + currentSlide);
+    if (activeSlide) activeSlide.classList.add('active');
+
+    const dots = document.querySelectorAll('.dot-btn');
+    dots.forEach((dot, index) => {
+      if (index + 1 === currentSlide) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+
+    document.getElementById('slideIndicator').innerText = 
+      'স্লাইড ' + bnDigits[currentSlide] + ' / ' + bnDigits[totalSlides];
+
+    document.getElementById('prevBtn').disabled = (currentSlide === 1);
+    document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides) {
+      currentSlide++;
+      updateView();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) {
+      currentSlide--;
+      updateView();
+    }
+  }
+
+  function goToSlide(slideNum) {
+    currentSlide = slideNum;
+    updateView();
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowRight') nextSlide();
+    if (event.key === 'ArrowLeft') prevSlide();
+  });
+</script>
+
+</body>
+</html>
