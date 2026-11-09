@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>৮ম শ্রেণি - গণিত (অধ্যায় ৫: বীজগণিতীয় ভগ্নাংশ)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kalpurush', 'SolaimanLipi', 'SutonnyMJ', Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 6px solid #0d6efd;
+        }
+        .stem {
+            background-color: #eef5ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 1px solid #d0e2ff;
+        }
+        .questions {
+            list-style-type: none;
+            margin-bottom: 15px;
+        }
+        .questions li {
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .questions li:last-child {
+            border-bottom: none;
+        }
+        .marks {
+            color: #0d6efd;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: right;
+        }
+        .btn-toggle {
+            background-color: #198754;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-toggle:hover {
+            background-color: #157347;
+        }
+        .solution {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .solution h4 {
+            color: #198754;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #198754;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+        .step {
+            margin-bottom: 18px;
+        }
+        .step-title {
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 5px;
+        }
+        .math-block {
+            background: #ffffff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            display: inline-block;
+            margin: 6px 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 17px;
+        }
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+        }
+        .numerator {
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+        .denominator {
+            padding-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>৮ম শ্রেণি: গণিত</h1>
+        <p>পঞ্চম অধ্যায়: বীজগণিতীয় ভগ্নাংশ — সৃজনশীল প্রশ্ন ও উত্তরমালা</p>
+    </header>
+
+    <!-- সৃজনশীল প্রশ্ন ১ -->
+    <div class="card">
+        <div class="stem">
+            উদ্দীপক: তিনটি বীজগণিতীয় ভগ্নাংশ হলো: 
+            A = <span class="fraction"><span class="numerator">x &minus; 2</span><span class="denominator">x<sup>2</sup> + 2x &minus; 3</span></span>, 
+            B = <span class="fraction"><span class="numerator">x + 3</span><span class="denominator">x<sup>2</sup> + 5x + 6</span></span> এবং 
+            C = <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup> + x &minus; 2</span></span>
+        </div>
+        <ul class="questions">
+            <li><span>(ক) A ভগ্নাংশের হরকে উৎপাদকে বিশ্লেষণ করো।</span> <span class="marks">[২]</span></li>
+            <li><span>(খ) A ও B কে সাধারণ হরবিশিষ্ট (সমহরবিশিষ্ট) ভগ্নাংশে প্রকাশ করো।</span> <span class="marks">[৪]</span></li>
+            <li><span>(গ) A + B &minus; C এর সরল মান নির্ণয় করো।</span> <span class="marks">[৪]</span></li>
+        </ul>
+        <button class="btn-toggle" onclick="toggleSolution('sol1')">উত্তর দেখুন / লুকান</button>
+        
+        <div id="sol1" class="solution">
+            <h4>সমাধান ১:</h4>
+            
+            <div class="step">
+                <div class="step-title">(ক) এর সমাধান:</div>
+                A ভগ্নাংশের হর = x<sup>2</sup> + 2x &minus; 3<br>
+                = x<sup>2</sup> + 3x &minus; x &minus; 3<br>
+                = x(x + 3) &minus; 1(x + 3)<br>
+                = (x + 3)(x &minus; 1)<br>
+                <strong>উত্তর:</strong> (x + 3)(x &minus; 1)
+            </div>
+
+            <div class="step">
+                <div class="step-title">(খ) এর সমাধান:</div>
+                A এর হর = x<sup>2</sup> + 2x &minus; 3 = (x + 3)(x &minus; 1) [ 'ক' হতে প্রাপ্ত ]<br>
+                B এর হর = x<sup>2</sup> + 5x + 6 = x<sup>2</sup> + 3x + 2x + 6 = x(x + 3) + 2(x + 3) = (x + 3)(x + 2)<br><br>
+                অতএব, হরদ্বয়ের ল.সা.গু = (x + 3)(x &minus; 1)(x + 2)<br><br>
+                ল.সা.গু &divide; A এর হর = (x + 2)<br>
+                সুতরাং, A = <span class="fraction"><span class="numerator">(x &minus; 2)(x + 2)</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span> = <span class="fraction"><span class="numerator">x<sup>2</sup> &minus; 4</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br><br>
+                ল.সা.গু &divide; B এর হর = (x &minus; 1)<br>
+                সুতরাং, B = <span class="fraction"><span class="numerator">(x + 3)(x &minus; 1)</span><span class="denominator">(x + 3)(x + 2)(x &minus; 1)</span></span> = <span class="fraction"><span class="numerator">x<sup>2</sup> + 2x &minus; 3</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br><br>
+                <strong>উত্তর:</strong> নির্ণেয় সমহরবিশিষ্ট ভগ্নাংশদ্বয় হলো:<br>
+                <span class="fraction"><span class="numerator">x<sup>2</sup> &minus; 4</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span> এবং <span class="fraction"><span class="numerator">x<sup>2</sup> + 2x &minus; 3</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span>
+            </div>
+
+            <div class="step">
+                <div class="step-title">(গ) এর সমাধান:</div>
+                C এর হর = x<sup>2</sup> + x &minus; 2 = x<sup>2</sup> + 2x &minus; x &minus; 2 = x(x + 2) &minus; 1(x + 2) = (x + 2)(x &minus; 1)<br>
+                হরগুলোর ল.সা.গু = (x + 3)(x &minus; 1)(x + 2)<br><br>
+                প্রদত্ত রাশি = A + B &minus; C<br>
+                = <span class="fraction"><span class="numerator">x &minus; 2</span><span class="denominator">(x + 3)(x &minus; 1)</span></span> + <span class="fraction"><span class="numerator">x + 3</span><span class="denominator">(x + 3)(x + 2)</span></span> &minus; <span class="fraction"><span class="numerator">1</span><span class="denominator">(x + 2)(x &minus; 1)</span></span><br>
+                = <span class="fraction"><span class="numerator">x &minus; 2</span><span class="denominator">(x + 3)(x &minus; 1)</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x + 2</span></span> &minus; <span class="fraction"><span class="numerator">1</span><span class="denominator">(x + 2)(x &minus; 1)</span></span><br>
+                = <span class="fraction"><span class="numerator">(x &minus; 2)(x + 2) + (x + 3)(x &minus; 1) &minus; (x + 3)</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                = <span class="fraction"><span class="numerator">(x<sup>2</sup> &minus; 4) + (x<sup>2</sup> + 2x &minus; 3) &minus; x &minus; 3</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                = <span class="fraction"><span class="numerator">2x<sup>2</sup> + x &minus; 10</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                = <span class="fraction"><span class="numerator">2x<sup>2</sup> &minus; 4x + 5x &minus; 10</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                = <span class="fraction"><span class="numerator">2x(x &minus; 2) + 5(x &minus; 2)</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                = <span class="fraction"><span class="numerator">(x &minus; 2)(2x + 5)</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span><br>
+                <strong>উত্তর:</strong> <span class="fraction"><span class="numerator">(x &minus; 2)(2x + 5)</span><span class="denominator">(x + 3)(x &minus; 1)(x + 2)</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- সৃজনশীল প্রশ্ন ২ -->
+    <div class="card">
+        <div class="stem">
+            উদ্দীপক: x<sup>2</sup> &minus; 3x + 1 = 0 একটি বীজগণিতীয় সমীকরণ এবং P = <span class="fraction"><span class="numerator">a<sup>3</sup> &minus; b<sup>3</sup></span><span class="denominator">a + b</span></span>, Q = <span class="fraction"><span class="numerator">a<sup>2</sup> &minus; ab + b<sup>2</sup></span><span class="denominator">a<sup>2</sup> &minus; b<sup>2</sup></span></span>
+        </div>
+        <ul class="questions">
+            <li><span>(ক) x + <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span> এর মান নির্ণয় করো।</span> <span class="marks">[২]</span></li>
+            <li><span>(খ) প্রমাণ করো যে, x<sup>4</sup> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>4</sup></span></span> = 47</span> <span class="marks">[৪]</span></li>
+            <li><span>(গ) P &times; Q &divide; <span class="fraction"><span class="numerator">a<sup>3</sup> + b<sup>3</sup></span><span class="denominator">a &minus; b</span></span> কে লঘিষ্ঠ আকারে প্রকাশ করো।</span> <span class="marks">[৪]</span></li>
+        </ul>
+        <button class="btn-toggle" onclick="toggleSolution('sol2')">উত্তর দেখুন / লুকান</button>
+        
+        <div id="sol2" class="solution">
+            <h4>সমাধান ২:</h4>
+            
+            <div class="step">
+                <div class="step-title">(ক) এর সমাধান:</div>
+                দেওয়া আছে, x<sup>2</sup> &minus; 3x + 1 = 0<br>
+                বা, x<sup>2</sup> + 1 = 3x<br>
+                উভয়পক্ষকে x দ্বারা ভাগ করে পাই,<br>
+                <span class="fraction"><span class="numerator">x<sup>2</sup></span><span class="denominator">x</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span> = <span class="fraction"><span class="numerator">3x</span><span class="denominator">x</span></span><br>
+                বা, x + <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span> = 3<br>
+                <strong>উত্তর:</strong> 3
+            </div>
+
+            <div class="step">
+                <div class="step-title">(খ) এর সমাধান:</div>
+                'ক' হতে পাই, x + <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span> = 3<br>
+                উভয়পক্ষকে বর্গ করে পাই,<br>
+                (x + <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span>)<sup>2</sup> = 3<sup>2</sup><br>
+                বা, x<sup>2</sup> + 2 &times; x &times; <span class="fraction"><span class="numerator">1</span><span class="denominator">x</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span> = 9<br>
+                বা, x<sup>2</sup> + 2 + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span> = 9<br>
+                বা, x<sup>2</sup> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span> = 9 &minus; 2 = 7<br><br>
+                পুনরায় উভয়পক্ষকে বর্গ করে পাই,<br>
+                (x<sup>2</sup> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span>)<sup>2</sup> = 7<sup>2</sup><br>
+                বা, (x<sup>2</sup>)<sup>2</sup> + 2 &times; x<sup>2</sup> &times; <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span> + (<span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>2</sup></span></span>)<sup>2</sup> = 49<br>
+                বা, x<sup>4</sup> + 2 + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>4</sup></span></span> = 49<br>
+                বা, x<sup>4</sup> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>4</sup></span></span> = 49 &minus; 2<br>
+                বা, x<sup>4</sup> + <span class="fraction"><span class="numerator">1</span><span class="denominator">x<sup>4</sup></span></span> = 47 (প্রমাণিত)
+            </div>
+
+            <div class="step">
+                <div class="step-title">(গ) এর সমাধান:</div>
+                প্রদত্ত রাশি = P &times; Q &divide; <span class="fraction"><span class="numerator">a<sup>3</sup> + b<sup>3</sup></span><span class="denominator">a &minus; b</span></span><br><br>
+                মান বসিয়ে পাই,<br>
+                = <span class="fraction"><span class="numerator">a<sup>3</sup> &minus; b<sup>3</sup></span><span class="denominator">a + b</span></span> &times; <span class="fraction"><span class="numerator">a<sup>2</sup> &minus; ab + b<sup>2</sup></span><span class="denominator">a<sup>2</sup> &minus; b<sup>2</sup></span></span> &divide; <span class="fraction"><span class="numerator">a<sup>3</sup> + b<sup>3</sup></span><span class="denominator">a &minus; b</span></span><br><br>
+                সূত্রের রূপান্তর করে পাই,<br>
+                = <span class="fraction"><span class="numerator">(a &minus; b)(a<sup>2</sup> + ab + b<sup>2</sup>)</span><span class="denominator">a + b</span></span> &times; <span class="fraction"><span class="numerator">a<sup>2</sup> &minus; ab + b<sup>2</sup></span><span class="denominator">(a + b)(a &minus; b)</span></span> &times; <span class="fraction"><span class="numerator">a &minus; b</span><span class="denominator">(a + b)(a<sup>2</sup> &minus; ab + b<sup>2</sup>)</span></span><br><br>
+                লব ও হরের সাধারণ উৎপাদকগুলো কাটাকাটি করে পাই,<br>
+                = <span class="fraction"><span class="numerator">(a &minus; b)(a<sup>2</sup> + ab + b<sup>2</sup>)</span><span class="denominator">(a + b)<sup>3</sup></span></span><br>
+                = <span class="fraction"><span class="numerator">a<sup>3</sup> &minus; b<sup>3</sup></span><span class="denominator">(a + b)<sup>3</sup></span></span><br>
+                <strong>উত্তর:</strong> <span class="fraction"><span class="numerator">a<sup>3</sup> &minus; b<sup>3</sup></span><span class="denominator">(a + b)<sup>3</sup></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- সৃজনশীল প্রশ্ন ৩ -->
+    <div class="card">
+        <div class="stem">
+            উদ্দীপক: X = <span class="fraction"><span class="numerator">1</span><span class="denominator">a<sup>2</sup> &minus; 5a + 6</span></span>, Y = <span class="fraction"><span class="numerator">1</span><span class="denominator">a<sup>2</sup> &minus; 7a + 12</span></span> এবং Z = <span class="fraction"><span class="numerator">1</span><span class="denominator">a<sup>2</sup> &minus; 9a + 20</span></span> তিনটি বীজগণিতীয় ভগ্নাংশ।
+        </div>
+        <ul class="questions">
+            <li><span>(ক) <span class="fraction"><span class="numerator">x<sup>2</sup> &minus; 9</span><span class="denominator">x<sup>2</sup> + 6x + 9</span></span> কে লঘিষ্ঠ আকারে প্রকাশ করো।</span> <span class="marks">[২]</span></li>
+            <li><span>(খ) X + Y এর মান নির্ণয় করো।</span> <span class="marks">[৪]</span></li>
+            <li><span>(গ) সরল করো: X + Y &minus; Z</span> <span class="marks">[৪]</span></li>
+        </ul>
+        <button class="btn-toggle" onclick="toggleSolution('sol3')">উত্তর দেখুন / লুকান</button>
+        
+        <div id="sol3" class="solution">
+            <h4>সমাধান ৩:</h4>
+            
+            <div class="step">
+                <div class="step-title">(ক) এর সমাধান:</div>
+                প্রদত্ত ভগ্নাংশ = <span class="fraction"><span class="numerator">x<sup>2</sup> &minus; 9</span><span class="denominator">x<sup>2</sup> + 6x + 9</span></span><br>
+                লব = x<sup>2</sup> &minus; 3<sup>2</sup> = (x + 3)(x &minus; 3)<br>
+                হর = x<sup>2</sup> + 2 &times; x &times; 3 + 3<sup>2</sup> = (x + 3)<sup>2</sup> = (x + 3)(x + 3)<br><br>
+                ভগ্নাংশটি = <span class="fraction"><span class="numerator">(x + 3)(x &minus; 3)</span><span class="denominator">(x + 3)(x + 3)</span></span> = <span class="fraction"><span class="numerator">x &minus; 3</span><span class="denominator">x + 3</span></span><br>
+                <strong>উত্তর:</strong> <span class="fraction"><span class="numerator">x &minus; 3</span><span class="denominator">x + 3</span></span>
+            </div>
+
+            <div class="step">
+                <div class="step-title">(খ) এর সমাধান:</div>
+                X এর হর = a<sup>2</sup> &minus; 5a + 6 = a<sup>2</sup> &minus; 3a &minus; 2a + 6 = a(a &minus; 3) &minus; 2(a &minus; 3) = (a &minus; 3)(a &minus; 2)<br>
+                Y এর হর = a<sup>2</sup> &minus; 7a + 12 = a<sup>2</sup> &minus; 4a &minus; 3a + 12 = a(a &minus; 4) &minus; 3(a &minus; 4) = (a &minus; 4)(a &minus; 3)<br><br>
+                অতএব, X + Y = <span class="fraction"><span class="numerator">1</span><span class="denominator">(a &minus; 3)(a &minus; 2)</span></span> + <span class="fraction"><span class="numerator">1</span><span class="denominator">(a &minus; 4)(a &minus; 3)</span></span><br>
+                হরগুলোর ল.সা.গু = (a &minus; 2)(a &minus; 3)(a &minus; 4)<br><br>
+                = <span class="fraction"><span class="numerator">(a &minus; 4) + (a &minus; 2)</span><span class="denominator">(a &minus; 2)(a &minus; 3)(a &minus; 4)</span></span><br>
+                = <span class="fraction"><span class="numerator">2a &minus; 6</span><span class="denominator">(a &minus; 2)(a &minus; 3)(a &minus; 4)</span></span><br>
+                = <span class="fraction"><span class="numerator">2(a &minus; 3)</span><span class="denominator">(a &minus; 2)(a &minus; 3)(a &minus; 4)</span></span><br>
+                = <span class="fraction"><span class="numerator">2</span><span class="denominator">(a &minus; 2)(a &minus; 4)</span></span><br>
+                <strong>উত্তর:</strong> <span class="fraction"><span class="numerator">2</span><span class="denominator">(a &minus; 2)(a &minus; 4)</span></span>
+            </div>
+
+            <div class="step">
+                <div class="step-title">(গ) এর সমাধান:</div>
+                Z এর হর = a<sup>2</sup> &minus; 9a + 20 = a<sup>2</sup> &minus; 5a &minus; 4a + 20 = a(a &minus; 5) &minus; 4(a &minus; 5) = (a &minus; 4)(a &minus; 5)<br><br>
+                সুতরাং, Z = <span class="fraction"><span class="numerator">1</span><span class="denominator">(a &minus; 4)(a &minus; 5)</span></span><br><br>
+                'খ' হতে পাই, X + Y = <span class="fraction"><span class="numerator">2</span><span class="denominator">(a &minus; 2)(a &minus; 4)</span></span><br><br>
+                অতএব, X + Y &minus; Z = <span class="fraction"><span class="numerator">2</span><span class="denominator">(a &minus; 2)(a &minus; 4)</span></span> &minus; <span class="fraction"><span class="numerator">1</span><span class="denominator">(a &minus; 4)(a &minus; 5)</span></span><br><br>
+                হরগুলোর ল.সা.গু = (a &minus; 2)(a &minus; 4)(a &minus; 5)<br><br>
+                = <span class="fraction"><span class="numerator">2(a &minus; 5) &minus; 1(a &minus; 2)</span><span class="denominator">(a &minus; 2)(a &minus; 4)(a &minus; 5)</span></span><br>
+                = <span class="fraction"><span class="numerator">2a &minus; 10 &minus; a + 2</span><span class="denominator">(a &minus; 2)(a &minus; 4)(a &minus; 5)</span></span><br>
+                = <span class="fraction"><span class="numerator">a &minus; 8</span><span class="denominator">(a &minus; 2)(a &minus; 4)(a &minus; 5)</span></span><br>
+                <strong>উত্তর:</strong> <span class="fraction"><span class="numerator">a &minus; 8</span><span class="denominator">(a &minus; 2)(a &minus; 4)(a &minus; 5)</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSolution(id) {
+        var el = document.getElementById(id);
+        if (el.style.display === "block") {
+            el.style.display = "none";
+        } else {
+            el.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
