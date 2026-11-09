@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সুষম অষ্টভুজের ক্ষেত্রফল নির্ণয় - এনিমেশন</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0284c7;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'SolaimanLipi', 'Kalpurush', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .slide-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    /* Content Area */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      min-height: 420px;
+      padding: 20px;
+      gap: 20px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* SVG Diagram Container */
+    .diagram-panel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      overflow: visible;
+    }
+
+    /* Explanation Panel */
+    .explanation-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 16px;
+    }
+
+    .slide-title {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .slide-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .formula-card {
+      background: #eff6ff;
+      border-left: 4px solid var(--secondary);
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    .highlight-text {
+      color: #b45309;
+      font-weight: 600;
+    }
+
+    .result-box {
+      background: #dcfce7;
+      border: 2px solid var(--success);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #166534;
+      text-align: center;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover:not(:disabled) {
+      background-color: var(--secondary);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    /* Progress Indicators */
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: var(--primary);
+      width: 24px;
+      border-radius: 8px;
+    }
+
+    /* SVG Visual Transitions */
+    .shape-polygon {
+      fill: #ffffff;
+      stroke: #334155;
+      stroke-width: 3;
+      transition: all 0.5s ease;
+    }
+
+    .radial-line {
+      stroke: #64748b;
+      stroke-width: 2;
+      stroke-dasharray: 4;
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+
+    .tri-sector {
+      fill: transparent;
+      transition: all 0.5s ease;
+    }
+
+    .active-tri {
+      fill: rgba(245, 158, 11, 0.35) !important;
+      stroke: #d97706;
+      stroke-width: 2.5;
+    }
+
+    .all-tri-fill {
+      fill: rgba(34, 197, 94, 0.25) !important;
+      stroke: #16a34a;
+      stroke-width: 2;
+    }
+
+    .vertex-label {
+      font-size: 14px;
+      font-weight: bold;
+      fill: #0f172a;
+    }
+
+    .center-label {
+      font-size: 15px;
+      font-weight: bold;
+      fill: #b91c1c;
+    }
+
+    .dim-label {
+      font-size: 13px;
+      fill: #b45309;
+      font-weight: bold;
+    }
+
+    .angle-arc {
+      fill: none;
+      stroke: #dc2626;
+      stroke-width: 2;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>সুষম অষ্টভুজের ক্ষেত্রফল নির্ণয়</h1>
+      <span class="slide-badge" id="slideBadge">স্লাইড ১ / ১০</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="workspace">
+      <!-- Diagram -->
+      <div class="diagram-panel">
+        <svg viewBox="0 0 400 380" id="geomSvg">
+          <!-- Sector Polygons for individual highlights -->
+          <polygon id="sec_OAB" class="tri-sector" points="200,190 150.3,310.1 249.7,310.1" />
+          <polygon id="sec_OBC" class="tri-sector" points="200,190 249.7,310.1 320.1,239.7" />
+          <polygon id="sec_OCD" class="tri-sector" points="200,190 320.1,239.7 320.1,140.3" />
+          <polygon id="sec_ODE" class="tri-sector" points="200,190 320.1,140.3 249.7,69.9" />
+          <polygon id="sec_OEF" class="tri-sector" points="200,190 249.7,69.9 150.3,69.9" />
+          <polygon id="sec_OFG" class="tri-sector" points="200,190 150.3,69.9 79.9,140.3" />
+          <polygon id="sec_OGH" class="tri-sector" points="200,190 79.9,140.3 79.9,239.7" />
+          <polygon id="sec_OHA" class="tri-sector" points="200,190 79.9,239.7 150.3,310.1" />
+
+          <!-- Octagon Boundary -->
+          <polygon id="octagonMain" class="shape-polygon" points="
+            150.3,310.1 249.7,310.1 320.1,239.7 320.1,140.3 
+            249.7,69.9 150.3,69.9 79.9,140.3 79.9,239.7" />
+
+          <!-- Center to Vertices lines -->
+          <line id="lineOA" class="radial-line" x1="200" y1="190" x2="150.3" y2="310.1" />
+          <line id="lineOB" class="radial-line" x1="200" y1="190" x2="249.7" y2="310.1" />
+          <line id="lineOC" class="radial-line" x1="200" y1="190" x2="320.1" y2="239.7" />
+          <line id="lineOD" class="radial-line" x1="200" y1="190" x2="320.1" y2="140.3" />
+          <line id="lineOE" class="radial-line" x1="200" y1="190" x2="249.7" y2="69.9" />
+          <line id="lineOF" class="radial-line" x1="200" y1="190" x2="150.3" y2="69.9" />
+          <line id="lineOG" class="radial-line" x1="200" y1="190" x2="79.9" y2="140.3" />
+          <line id="lineOH" class="radial-line" x1="200" y1="190" x2="79.9" y2="239.7" />
+
+          <!-- Center Point -->
+          <circle id="centerDot" cx="200" cy="190" r="4" fill="#dc2626" opacity="0" />
+          <text id="labelO" class="center-label" x="195" y="210" opacity="0">O</text>
+
+          <!-- Vertex Labels -->
+          <g id="vertexLabels" opacity="0" style="transition: opacity 0.5s;">
+            <text class="vertex-label" x="135" y="330">A</text>
+            <text class="vertex-label" x="255" y="330">B</text>
+            <text class="vertex-label" x="330" y="245">C</text>
+            <text class="vertex-label" x="330" y="140">D</text>
+            <text class="vertex-label" x="255" y="55">E</text>
+            <text class="vertex-label" x="135" y="55">F</text>
+            <text class="vertex-label" x="55" y="140">G</text>
+            <text class="vertex-label" x="55" y="245">H</text>
+          </g>
+
+          <!-- Angle Arc for ∠COD -->
+          <path id="angleArc" class="angle-arc" d="M 230,175 A 35 35 0 0 1 230,205" />
+          <text id="angleText" class="dim-label" x="235" y="195" opacity="0">৪৫°</text>
+
+          <!-- Dimension Labels (a = 1.5 m) -->
+          <text id="dimOD" class="dim-label" x="250" y="150" opacity="0">a = ১.৫ মি.</text>
+          <text id="dimOC" class="dim-label" x="250" y="235" opacity="0">a = ১.৫ মি.</text>
+        </svg>
+      </div>
+
+      <!-- Explanation -->
+      <div class="explanation-panel">
+        <h2 class="slide-title" id="slideTitle">১. প্রশ্ন পরিচিতি</h2>
+        <div class="slide-body" id="slideBody">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="controls">
+      <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>পূর্ববর্তী</button>
+      
+      <div class="dots" id="dotsContainer">
+        <!-- 10 dots injected via JS -->
+      </div>
+
+      <button class="btn" id="nextBtn" onclick="changeSlide(1)">পরবর্তী</button>
+    </div>
+  </div>
+
+  <script>
+    // 10 Slides Data
+    const slides = [
+      {
+        title: "১. প্রশ্ন পরিচিতি ও লক্ষ্য",
+        body: `
+          <p><strong>প্রশ্ন:</strong> একটি সুষম অষ্টভুজের কেন্দ্র থেকে কৌণিক বিন্দুর দূরত্ব ১.৫ মিটার হলে, এর ক্ষেত্রফল নির্ণয় কর।</p>
+          <div class="formula-card">আমাদের লক্ষ্য: কেন্দ্র থেকে শীর্ষবিন্দুর দূরত্ব ব্যবহার করে সম্পূর্ণ সুষম অষ্টভুজটির ক্ষেত্রফল বের করা।</div>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          setPolygonStyle("#ffffff", "#334155");
+        }
+      },
+      {
+        title: "২. সুষম অষ্টভুজ ABCDEFGH",
+        body: `
+          <p>মনে করি, <strong>ABCDEFGH</strong> একটি সুষম অষ্টভুজ।</p>
+          <p style="margin-top: 8px;">একটি সুষম অষ্টভুজের বৈশিষ্ট্য:</p>
+          <ul style="margin-left: 20px; margin-top: 6px;">
+            <li>এর ৮টি বাহু পরস্পর সমান।</li>
+            <li>এর ৮টি শীর্ষবিন্দু (কৌণিক বিন্দু) রয়েছে।</li>
+          </ul>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          setPolygonStyle("#ffffff", "#0284c7");
+        }
+      },
+      {
+        title: "৩. কেন্দ্রে শীর্ষবিন্দুগুলোর সংযোগ",
+        body: `
+          <p>অষ্টভুজের কেন্দ্র <strong>O</strong> চিহ্নিত করা হলো।</p>
+          <p style="margin-top: 8px;">কেন্দ্র O থেকে প্রতিটি শীর্ষবিন্দু (A, B, C, D, E, F, G, H) যোগ করা হলো।</p>
+          <div class="formula-card">ফলে কেন্দ্রে মোট ৮টি সমান ক্ষেত্রফলবিশিষ্ট ত্রিভুজ উৎপন্ন হয়।</div>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+        }
+      },
+      {
+        title: "৪. প্রতিটি ত্রিভুজের কেন্দ্রস্থ কোণ নির্ণয়",
+        body: `
+          <p>আমরা জানি, সুষম বহুভুজের কেন্দ্রে মোট উৎপন্ন কোণের পরিমাণ ৪ সমকোণ বা <strong>৩৬০°</strong>।</p>
+          <div class="formula-card">
+            প্রতিটি ত্রিভুজের শীর্ষকোণ (যেমন: ∠COD)<br>
+            = ৩৬০° ÷ ৮ = <strong>৪৫°</strong>
+          </div>
+          <p>অতএব, প্রতিটি ত্রিভুজ কেন্দ্রে ৪৫° কোণ ধারণ করে।</p>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          document.getElementById('angleArc').style.opacity = '1';
+          document.getElementById('angleText').style.opacity = '1';
+        }
+      },
+      {
+        title: "৫. কৌণিক বিন্দুর দূরত্ব (বাহুর পরিমাপ)",
+        body: `
+          <p>প্রশ্নে দেওয়া আছে:</p>
+          <p>কেন্দ্র O থেকে যেকোনো কৌণিক বিন্দুর দূরত্ব = <strong>১.৫ মিটার</strong>।</p>
+          <div class="formula-card">
+            ধরি, a = ১.৫ মিটার<br>
+            সুতরাং, OA = OB = OC = OD = ... = ১.৫ মিটার।
+          </div>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          document.getElementById('angleArc').style.opacity = '1';
+          document.getElementById('angleText').style.opacity = '1';
+          document.getElementById('dimOD').style.opacity = '1';
+          document.getElementById('dimOC').style.opacity = '1';
+        }
+      },
+      {
+        title: "৬. একটি নির্দিষ্ট ত্রিভুজ (ΔCOD) নির্বাচন",
+        body: `
+          <p>হিসাবের সুবিধার জন্য আমরা <strong>ΔCOD</strong> ত্রিভুজটিকে আলাদা করে বিবেচনা করি:</p>
+          <ul style="margin-left: 20px; margin-top: 8px;">
+            <li>বাহু OC = a = ১.৫ মিটার</li>
+            <li>বাহু OD = a = ১.৫ মিটার</li>
+            <li>তাদের অন্তর্ভুক্ত কোণ ∠COD = ৪৫°</li>
+          </ul>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          document.getElementById('angleArc').style.opacity = '1';
+          document.getElementById('angleText').style.opacity = '1';
+          document.getElementById('dimOD').style.opacity = '1';
+          document.getElementById('dimOC').style.opacity = '1';
+          document.getElementById('sec_OCD').classList.add('active-tri');
+        }
+      },
+      {
+        title: "৭. ত্রিভুজের ক্ষেত্রফল নির্ণয়ের সূত্র",
+        body: `
+          <p>কোনো ত্রিভুজের দুটি বাহুর দৈর্ঘ্য এবং তাদের অন্তর্ভুক্ত কোণ জানা থাকলে ক্ষেত্রফল:</p>
+          <div class="formula-card">
+            ক্ষেত্রফল = ১/২ × বাহুদ্বয়ের গুণফল × sin(অন্তর্ভুক্ত কোণ)<br>
+            Δ ক্ষেত্র COD = ১/২ × a × a × sin ৪৫° বর্গ একক
+          </div>
+          <p>যেহেতু sin ৪৫° = ১/√২, তাই এটি ব্যবহার করে সহজেই মান নির্ণয় করা যায়।</p>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          document.getElementById('dimOD').style.opacity = '1';
+          document.getElementById('dimOC').style.opacity = '1';
+          document.getElementById('sec_OCD').classList.add('active-tri');
+        }
+      },
+      {
+        title: "৮. ΔCOD এর ক্ষেত্রফল হিসাব",
+        body: `
+          <p>মান বসিয়ে পাই:</p>
+          <div class="formula-card">
+            ΔCOD এর ক্ষেত্রফল = ১/২ × (১.৫)² × (১/√২)<br>
+            = ১/(২√২) × ২.২৫ বর্গমিটার<br>
+            = <strong>০.৭৯৫৪৯৫ বর্গমিটার</strong> (প্রায়)
+          </div>
+          <p>অর্থাৎ একটি ত্রিভুজের ক্ষেত্রফল প্রায় ০.৭৯৫৪৯৫ বর্গমিটার।</p>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          document.getElementById('sec_OCD').classList.add('active-tri');
+        }
+      },
+      {
+        title: "৯. সম্পূর্ণ অষ্টভুজের ক্ষেত্রফল নির্ণয়",
+        body: `
+          <p>সুষম অষ্টভুজটি এমন মোট <strong>৮টি</strong> সমান ত্রিভুজ দ্বারা গঠিত।</p>
+          <div class="formula-card">
+            ABCDEFGH এর ক্ষেত্রফল = ৮ × (Δ ক্ষেত্র COD এর ক্ষেত্রফল)<br>
+            = ৮ × ০.৭৯৫৪৯৫ বর্গমিটার (প্রায়)<br>
+            = <strong>৬.৩৬৩৯৬ বর্গমিটার</strong> (প্রায়)
+          </div>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          setAllTrianglesFilled(true);
+        }
+      },
+      {
+        title: "১০. চূড়ান্ত উত্তর ও সারসংক্ষেপ",
+        body: `
+          <p>সুষম অষ্টভুজটির কেন্দ্র থেকে কৌণিক বিন্দুর দূরত্ব ১.৫ মিটার হলে:</p>
+          <div class="result-box">
+            নির্ণেয় অষ্টভুজের ক্ষেত্রফল = ৬.৩৬৩৯৬ বর্গমিটার (প্রায়)<br>
+            <span style="font-size: 1rem; font-weight: normal; color: #1e3a8a;">[দশমিকের পর তিন স্থান পর্যন্ত নিলে: ৬.৩৬৪ বর্গমিটার (প্রায়)]</span>
+          </div>
+          <div class="formula-card" style="margin-top: 15px;">
+            <strong>এক নজরে সাধারণ সূত্র:</strong><br>
+            n-বাহুবিশিষ্ট সুষম বহুভুজের ক্ষেত্রফল = n/২ × a² × sin(৩৬০°/n)
+          </div>
+        `,
+        setup: () => {
+          hideAllVisuals();
+          document.getElementById('vertexLabels').style.opacity = '1';
+          document.getElementById('centerDot').style.opacity = '1';
+          document.getElementById('labelO').style.opacity = '1';
+          setRadialLines(true);
+          setAllTrianglesFilled(true);
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+
+    // Helper functions for SVG manipulation
+    function hideAllVisuals() {
+      document.getElementById('vertexLabels').style.opacity = '0';
+      document.getElementById('centerDot').style.opacity = '0';
+      document.getElementById('labelO').style.opacity = '0';
+      document.getElementById('angleArc').style.opacity = '0';
+      document.getElementById('angleText').style.opacity = '0';
+      document.getElementById('dimOD').style.opacity = '0';
+      document.getElementById('dimOC').style.opacity = '0';
+      
+      setRadialLines(false);
+      setAllTrianglesFilled(false);
+      document.getElementById('sec_OCD').classList.remove('active-tri');
+    }
+
+    function setPolygonStyle(fill, stroke) {
+      const p = document.getElementById('octagonMain');
+      p.style.fill = fill;
+      p.style.stroke = stroke;
+    }
+
+    function setRadialLines(show) {
+      const lines = document.querySelectorAll('.radial-line');
+      lines.forEach(line => {
+        line.style.opacity = show ? '1' : '0';
+      });
+    }
+
+    function setAllTrianglesFilled(fill) {
+      const sectors = document.querySelectorAll('.tri-sector');
+      sectors.forEach(s => {
+        if (fill) {
+          s.classList.add('all-tri-fill');
+        } else {
+          s.classList.remove('all-tri-fill');
+        }
+      });
+    }
+
+    // Render Slide
+    function renderSlide(index) {
+      const slide = slides[index];
+      
+      // Update Texts
+      document.getElementById('slideBadge').innerText = `স্লাইড ${index + 1} / ${slides.length}`;
+      document.getElementById('slideTitle').innerText = slide.title;
+      document.getElementById('slideBody').innerHTML = slide.body;
+
+      // Update Controls
+      document.getElementById('prevBtn').disabled = (index === 0);
+      document.getElementById('nextBtn').disabled = (index === slides.length - 1);
+
+      // Update Dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+
+      // Execute SVG Setup
+      slide.setup();
+    }
+
+    function changeSlide(direction) {
+      const newIndex = currentSlide + direction;
+      if (newIndex >= 0 && newIndex < slides.length) {
+        currentSlide = newIndex;
+        renderSlide(currentSlide);
+      }
+    }
+
+    function initDots() {
+      const container = document.getElementById('dotsContainer');
+      container.innerHTML = '';
+      slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => {
+          currentSlide = i;
+          renderSlide(currentSlide);
+        };
+        container.appendChild(dot);
+      });
+    }
+
+    // Initialize
+    initDots();
+    renderSlide(0);
+  </script>
+</body>
+</html>
