@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি - বাগান ও পুকুরের ক্ষেত্রফল নির্ণয়</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #0284c7;
+      --accent: #d97706;
+      --success: #15803d;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SolaimanLipi', 'Noto Sans Bengali', Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .presentation-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 760px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .slide-indicator {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .progress-bar {
+      height: 5px;
+      background: #e2e8f0;
+      width: 100%;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 10%;
+      transition: width 0.3s ease;
+    }
+
+    .content-area {
+      min-height: 430px;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.35s ease-out;
+    }
+
+    .slide.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-title {
+      color: var(--primary);
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .slide-body {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    .math-box {
+      background: #f1f5f9;
+      border-left: 5px solid var(--secondary);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0;
+      font-size: 1.2rem;
+    }
+
+    .highlight {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    .svg-container {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-prev {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .btn-prev:hover:not(:disabled) {
+      background: #cbd5e1;
+    }
+
+    .btn-next {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-next:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="presentation-container">
+  <div class="header">
+    <h2>পরিমিতি (বাগান ও পুকুর সম্পর্কিত সমস্যা)</h2>
+    <div class="slide-indicator" id="slideIndicator">স্লাইড ১ / ১০</div>
+  </div>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <div class="content-area">
+    
+    <!-- স্লাইড ১ -->
+    <div class="slide active">
+      <h3 class="slide-title">ধাপ ১: সমস্যা বিশ্লেষণ ও জ্যামিতিক নকশা</h3>
+      <div class="slide-body">
+        <p><strong>প্রশ্ন:</strong> একটি বাগানের দৈর্ঘ্য ৪০ মিটার এবং প্রস্থ ৩০ মিটার। বাগানের ভিতরে সমান পাড়বিশিষ্ট একটি পুকুর আছে। পুকুরের ক্ষেত্রফল বাগানের ক্ষেত্রফলের ১/২ অংশ হলে, পুকুরের দৈর্ঘ্য ও প্রস্থ নির্ণয় কর।</p>
+        
+        <div class="svg-container">
+          <svg width="360" height="180" viewBox="0 0 360 180">
+            <!-- বাইরের বাগান -->
+            <rect x="30" y="25" width="280" height="130" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <!-- ভেতরের পুকুর -->
+            <rect x="70" y="55" width="200" height="70" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+            
+            <text x="170" y="95" fill="#0369a1" font-weight="bold" font-size="14" text-anchor="middle">পুকুর</text>
+            <text x="170" y="18" fill="#166534" font-size="13" text-anchor="middle">বাগানের দৈর্ঘ্য = ৪০ মিটার</text>
+            <text x="320" y="95" fill="#166534" font-size="13">৩০ মি.</text>
+            
+            <!-- পাড়ের বিস্তার (x) -->
+            <text x="50" y="95" fill="#475569" font-size="12" text-anchor="middle">x মি.</text>
+            <text x="290" y="95" fill="#475569" font-size="12" text-anchor="middle">x মি.</text>
+            <text x="170" y="45" fill="#475569" font-size="12" text-anchor="middle">x মি.</text>
+            <text x="170" y="145" fill="#475569" font-size="12" text-anchor="middle">x মি.</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ২ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ২: সম্পূর্ণ বাগানের ক্ষেত্রফল নির্ণয়</h3>
+      <div class="slide-body">
+        <p>দেওয়া আছে, বাগানের দৈর্ঘ্য ও প্রস্থ যথাক্রমে ৪০ মিটার এবং ৩০ মিটার:</p>
+        <div class="math-box">
+          বাগানের দৈর্ঘ্য = ৪০ মিটার<br>
+          বাগানের প্রস্থ = ৩০ মিটার<br><br>
+          সুতরাং, বাগানের ক্ষেত্রফল = (দৈর্ঘ্য × প্রস্থ)<br>
+          = (৪০ × ৩০) বর্গমিটার<br>
+          = <strong>১২০০ বর্গমিটার</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৩ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৩: পুকুরের ক্ষেত্রফল নির্ধারণ</h3>
+      <div class="slide-body">
+        <p>শর্তমতে, পুকুরের ক্ষেত্রফল সম্পূর্ণ বাগানের ক্ষেত্রফলের অর্ধেক (১/২ অংশ):</p>
+        <div class="math-box">
+          পুকুরের ক্ষেত্রফল = বাগানের ক্ষেত্রফল × (১/২)<br>
+          = ১২০০ × (১/২) বর্গমিটার<br>
+          = <strong>৬০০ বর্গমিটার</strong>
+        </div>
+        <p>অর্থাৎ, ভেতরের জলাশয়টির মোট আয়তন হবে ৬০০ বর্গমিটার।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৪ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৪: পাড়ের বিস্তার ও পুকুরের মাত্রা নির্ধারণ</h3>
+      <div class="slide-body">
+        <p>বাগানের চারদিকে সমান চওড়া পাড় আছে:</p>
+        <div class="math-box">
+          মনে করি, পুকুরের পাড়ের বিস্তার = <strong>x</strong> মিটার<br><br>
+          অতএব, পাড় বাদে পুকুরের দৈর্ঘ্য = (৪০ - ২x) মিটার<br>
+          এবং পাড় বাদে পুকুরের প্রস্থ = (৩০ - ২x) মিটার
+        </div>
+        <p class="highlight">উভয় দিক থেকে পাড়ের বিস্তার (x) বাদ দেওয়ার কারণে ২x বিয়োগ করতে হয়।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৫ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৫: গাণিতিক সমীকরণ গঠন</h3>
+      <div class="slide-body">
+        <p>পুকুরের দৈর্ঘ্য ও প্রস্থ গুণ করলে তার ক্ষেত্রফল পাওয়া যাবে:</p>
+        <div class="math-box">
+          প্রশ্নমতে,<br>
+          (৪০ - ২x)(৩০ - ২x) = ৬০০
+        </div>
+        <p>বাস্তব শর্ত অনুযায়ী, এই সমীকরণটি সমাধান করে পাড়ের বিস্তার (x)-এর মান বের করতে হবে।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৬ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৬: দ্বিঘাত সমীকরণ সরলীকরণ</h3>
+      <div class="slide-body">
+        <p>রাশি দুটি গুণ করে দ্বিঘাত সমীকরণ আকারে প্রকাশ করি:</p>
+        <div class="math-box">
+          ১২০০ - ৮০x - ৬০x + ৪x² = ৬০০<br>
+          বা, ৪x² - ১৪০x + ১২০০ - ৬০০ = ০<br>
+          বা, ৪x² - ১৪০x + ৬০০ = ০<br>
+          বা, ৪(x² - ৩৫x + ১৫০) = ০<br>
+          বা, <strong>x² - ৩৫x + ১৫০ = ০</strong>  [উভয়পক্ষকে ৪ দ্বারা ভাগ করে]
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৭ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৭: উৎপাদকে বিশ্লেষণ (Middle Term Split)</h3>
+      <div class="slide-body">
+        <p>সমীকরণটিকে উৎপাদকে বিশ্লেষণ করি: [৩০ × ৫ = ১৫০ এবং ৩০ + ৫ = ৩৫]</p>
+        <div class="math-box">
+          x² - ৩০x - ৫x + ১৫০ = ০<br>
+          বা, x(x - ৩০) - ৫(x - ৩০) = ০<br>
+          বা, <strong>(x - ৩০)(x - ৫) = ০</strong>
+        </div>
+        <p>সুতরাং, দুটি সম্ভাব্য উৎপাদক পাওয়া গেল: (x - ৩০) এবং (x - ৫)।</p>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৮ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৮: x-এর মান নির্ণয় ও গ্রহণযোগ্যতা যাচাই</h3>
+      <div class="slide-body">
+        <div class="math-box">
+          হয়, x - ৫ = ০  => <strong>x = ৫</strong><br>
+          অথবা, x - ৩০ = ০ => <strong>x = ৩০</strong>
+        </div>
+        <p><span class="highlight">গ্রহণযোগ্যতা যাচাই:</span> বাগানের মূল প্রস্থই হলো ৩০ মিটার। পাড়ের বিস্তার কখনো বাগানের প্রস্থের সমান (৩০ মিটার) হতে পারে না (কারণ তখন ২x = ৬০ মিটার > ৩০ মিটার হয়ে যায়)।</p>
+        <div class="math-box">
+          যেহেতু x = ৩০ গ্রহণযোগ্য নয়,<br>
+          সুতরাং, পুকুরের পাড়ের বিস্তার, <strong>x = ৫ মিটার</strong>।
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ৯ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ৯: পুকুরের প্রকৃত দৈর্ঘ্য ও প্রস্থ নির্ণয়</h3>
+      <div class="slide-body">
+        <p>x = ৫ মানটি পুকুরের মাত্রায় বসিয়ে পাই:</p>
+        <div class="math-box">
+          পুকুরের দৈর্ঘ্য = (৪০ - ২ × ৫) মিটার<br>
+          = (৪০ - ১০) মিটার<br>
+          = <strong>৩০ মিটার</strong><br><br>
+          পুকুরের প্রস্থ = (৩০ - ২ × ৫) মিটার<br>
+          = (৩০ - ১০) মিটার<br>
+          = <strong>২০ মিটার</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- স্লাইড ১০ -->
+    <div class="slide">
+      <h3 class="slide-title">ধাপ ১০: চূড়ান্ত উত্তর ও ফলাফল যাচাই</h3>
+      <div class="slide-body">
+        <div class="math-box" style="border-left-color: var(--success); background: #f0fdf4;">
+          <h4 style="color: var(--success); margin-bottom: 6px;">উত্তর:</h4>
+          পুকুরের দৈর্ঘ্য = <strong>৩০ মিটার</strong><br>
+          পুকুরের প্রস্থ = <strong>২০ মিটার</strong>
+        </div>
+        <p><strong>শুদ্ধি পরীক্ষা (Verification):</strong></p>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+          <li>পুকুরের ক্ষেত্রফল = ৩০ × ২০ = ৬০০ বর্গমিটার।</li>
+          <li>বাগানের ক্ষেত্রফল = ১২০০ বর্গমিটার।</li>
+          <li>অনুপাত = ৬০০ / ১২০০ = ১/২ (যা প্রশ্নের প্রদত্ত শর্তকে সম্পূর্ণ সিদ্ধ করে)।</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-prev" id="prevBtn" onclick="changeSlide(-1)" disabled>
+      ← পূর্ববর্তী ধাপ
+    </button>
+    <button class="btn btn-next" id="nextBtn" onclick="changeSlide(1)">
+      পরবর্তী ধাপ →
+    </button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const slideIndicator = document.getElementById('slideIndicator');
+  const progressBar = document.getElementById('progressBar');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  const bnNumbers = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
+
+  function updateSlideView() {
+    slides.forEach((slide, index) => {
+      slide.classList.remove('active');
+      if (index === currentSlide) {
+        slide.classList.add('active');
+      }
+    });
+
+    slideIndicator.textContent = `স্লাইড ${bnNumbers[currentSlide]} / ${bnNumbers[totalSlides - 1]}`;
+    progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+    prevBtn.disabled = currentSlide === 0;
+
+    if (currentSlide === totalSlides - 1) {
+      nextBtn.textContent = 'পুনরায় শুরু করুন ↺';
+    } else {
+      nextBtn.textContent = 'পরবর্তী ধাপ →';
+    }
+  }
+
+  function changeSlide(direction) {
+    if (currentSlide === totalSlides - 1 && direction === 1) {
+      currentSlide = 0;
+    } else {
+      currentSlide += direction;
+    }
+    updateSlideView();
+  }
+
+  // কিবোর্ডের অ্যারো কি দিয়ে নেভিগেশন সুবিধা
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      if (currentSlide < totalSlides - 1) changeSlide(1);
+    } else if (e.key === 'ArrowLeft') {
+      if (currentSlide > 0) changeSlide(-1);
+    }
+  });
+</script>
+
+</body>
+</html>
