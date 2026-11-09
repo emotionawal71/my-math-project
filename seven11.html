@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>৭ম শ্রেণি - তথ্য ও উপাত্ত MCQ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'SolaimanLipi', 'Hind Siliguri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            padding: 20px 10px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 25px 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+        .mcq-card {
+            background: white;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid #2a5298;
+        }
+        .question {
+            font-size: 17px;
+            font-weight: bold;
+            color: #1a252f;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .option {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .toggle-btn {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: 500;
+        }
+        .toggle-btn:hover {
+            background-color: #0369a1;
+        }
+        .explanation-box {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, margin-top 0.4s ease-out;
+            opacity: 0;
+            background-color: #f0fdf4;
+            border-radius: 6px;
+            border-left: 4px solid #16a34a;
+        }
+        .explanation-box.show {
+            max-height: 300px;
+            opacity: 1;
+            margin-top: 15px;
+            padding: 12px 15px;
+        }
+        .correct-ans {
+            color: #15803d;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        .expl-text {
+            color: #334155;
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>৭ম শ্রেণি গণিত — অধ্যায় ১১: তথ্য ও উপাত্ত</h1>
+        <p>১৫টি গুরুত্বপূর্ণ বহুনির্বাচনি প্রশ্ন (MCQ) ও উত্তর ব্যাখ্যা</p>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="mcq-card">
+        <div class="question">১. উৎস থেকে সরাসরি যে উপাত্ত সংগৃহীত হয় তাকে কী বলে?</div>
+        <div class="options-container">
+            <div class="option">(ক) মাধ্যমিক উপাত্ত</div>
+            <div class="option">(খ) প্রাথমিক উপাত্ত</div>
+            <div class="option">(গ) বিন্যস্ত উপাত্ত</div>
+            <div class="option">(ঘ) অবিন্যস্ত উপাত্ত</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) প্রাথমিক উপাত্ত</div>
+            <div class="expl-text">ব্যাখ্যা: যে উপাত্ত সরাসরি মূল উৎস থেকে অনুসন্ধানকারী নিজে সংগ্রহ করেন, তাকে প্রাথমিক উপাত্ত বা প্রত্যক্ষ উপাত্ত বলে। এর নির্ভরযোগ্যতা বেশি।</div>
+        </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="mcq-card">
+        <div class="question">২. কোনো উপাত্তের সর্বোচ্চ সংখ্যা ৬০ এবং সর্বনিম্ন সংখ্যা ২৫ হলে, পরিসর কত?</div>
+        <div class="options-container">
+            <div class="option">(ক) ৩৫</div>
+            <div class="option">(খ) ৩৬</div>
+            <div class="option">(গ) ৩৪</div>
+            <div class="option">(ঘ) ৩৭</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) ৩৬</div>
+            <div class="expl-text">ব্যাখ্যা: পরিসর = (সর্বোচ্চ সংখ্যা - সর্বনিম্ন সংখ্যা) + ১ = (৬০ - ২৫) + ১ = ৩৫ + ১ = ৩৬।</div>
+        </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="mcq-card">
+        <div class="question">৩. উপাত্তগুলো মানের ঊর্ধ্বক্রম বা অধঃক্রম অনুসারে সাজানো থাকলে তাকে কী বলে?</div>
+        <div class="options-container">
+            <div class="option">(ক) গণসংখ্যা</div>
+            <div class="option">(খ) অবিন্যস্ত উপাত্ত</div>
+            <div class="option">(গ) বিন্যস্ত উপাত্ত</div>
+            <div class="option">(ঘ) শ্রেণি ব্যবধান</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (গ) বিন্যস্ত উপাত্ত</div>
+            <div class="expl-text">ব্যাখ্যা: সংখ্যাসূচক উপাত্তসমূহ মানের কোনো ক্রমানুসারে (ছোট থেকে বড় বা বড় থেকে ছোট) সাজানো থাকলে তাকে বিন্যস্ত উপাত্ত বলে।</div>
+        </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="mcq-card">
+        <div class="question">৪. ৫, ৮, ১২, ৪, ৯, ১০ উপাত্তগুলোর মধ্যক কোনটি?</div>
+        <div class="options-container">
+            <div class="option">(ক) ৮</div>
+            <div class="option">(খ) ৮.৫</div>
+            <div class="option">(গ) ৯</div>
+            <div class="option">(ঘ) ৯.৫</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) ৮.৫</div>
+            <div class="expl-text">ব্যাখ্যা: উপাত্তগুলোকে মানের ক্রমানুসারে সাজালে পাই: ৪, ৫, ৮, ৯, ১০, ১২। এখানে পদসংখ্যা n = ৬ (জোড়)। সুতরাং মধ্যক = (৩য় পদ + ৪র্থ পদ) / ২ = (৮ + ৯) / ২ = ১৭ / ২ = ৮.৫।</div>
+        </div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="mcq-card">
+        <div class="question">৫. ৪, ৭, ৫, ৭, ৯, ৮, ৭, ৪ উপাত্তগুলোর প্রচুরক কোনটি?</div>
+        <div class="options-container">
+            <div class="option">(ক) ৪</div>
+            <div class="option">(খ) ৫</div>
+            <div class="option">(গ) ৭</div>
+            <div class="option">(ঘ) ৮</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (গ) ৭</div>
+            <div class="expl-text">ব্যাখ্যা: প্রদত্ত উপাত্তগুলোর মধ্যে ৪ আছে ২ বার, ৫ আছে ১ বার, ৮ আছে ১ বার, ৯ আছে ১ বার এবং ৭ আছে সর্বাধিক ৩ বার। সুতরাং প্রচুরক হলো ৭।</div>
+        </div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="mcq-card">
+        <div class="question">৬. কোনো উপাত্তে কোনো সংখ্যাই একাধিকবার না থাকলে প্রচুরক—</div>
+        <div class="options-container">
+            <div class="option">(ক) ০ হবে</div>
+            <div class="option">(খ) ১ হবে</div>
+            <div class="option">(গ) প্রচুরক নেই</div>
+            <div class="option">(ঘ) প্রথম সংখ্যাটি হবে</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (গ) প্রচুরক নেই</div>
+            <div class="expl-text">ব্যাখ্যা: কোনো উপাত্তে যদি কোনো সংখ্যাই একাধিকবার পুনরাবৃত্তি না ঘটে, অর্থাৎ প্রতিটি সংখ্যা একবার করেই থাকে, তবে সেই উপাত্তের কোনো প্রচুরক থাকে না।</div>
+        </div>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="mcq-card">
+        <div class="question">৭. পরিসর ৪০ এবং শ্রেণি ব্যবধান ৫ হলে, শ্রেণি সংখ্যা কত?</div>
+        <div class="options-container">
+            <div class="option">(ক) ৮</div>
+            <div class="option">(খ) ৯</div>
+            <div class="option">(গ) ৭</div>
+            <div class="option">(ঘ) ১০</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (ক) ৮</div>
+            <div class="expl-text">ব্যাখ্যা: শ্রেণি সংখ্যা = পরিসর / শ্রেণি ব্যবধান = ৪০ / ৫ = ৮।</div>
+        </div>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="mcq-card">
+        <div class="question">৮. গণসংখ্যা নিবেশন সারণি তৈরির প্রথম ধাপ কোনটি?</div>
+        <div class="options-container">
+            <div class="option">(ক) শ্রেণি সংখ্যা নির্ণয়</div>
+            <div class="option">(খ) ট্যালি চিহ্ন প্রদান</div>
+            <div class="option">(গ) পরিসর নির্ণয়</div>
+            <div class="option">(ঘ) গণসংখ্যা যোগফল</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (গ) পরিসর নির্ণয়</div>
+            <div class="expl-text">ব্যাখ্যা: গণসংখ্যা নিবেশন সারণি তৈরি করার জন্য সর্বপ্রথমে উপাত্তের পরিসর বের করতে হয়, তারপর সুবিধাজনক শ্রেণি ব্যাপ্তি ধরে শ্রেণি সংখ্যা নির্ধারণ করতে হয়।</div>
+        </div>
+    </div>
+
+    <!-- Question 9 -->
+    <div class="mcq-card">
+        <div class="question">৯. উপাত্তের সংখ্যা বিজোড় (n) হলে মধ্যক নির্ণয়ের সূত্র কোনটি?</div>
+        <div class="options-container">
+            <div class="option">(ক) (n / ২) তম পদ</div>
+            <div class="option">(খ) ((n + ১) / ২) তম পদের মান</div>
+            <div class="option">(গ) ((n - ১) / ২) তম পদ</div>
+            <div class="option">(ঘ) (n + ১) তম পদ</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) ((n + ১) / ২) তম পদের মান</div>
+            <div class="expl-text">ব্যাখ্যা: উপাত্তের সংখ্যা বিজোড় হলে মানের ক্রমানুসারে সাজানোর পর ঠিক মাঝের পদটিই মধ্যক হয়, যার অবস্থান হলো ((n + ১) / ২) তম পদ।</div>
+        </div>
+    </div>
+
+    <!-- Question 10 -->
+    <div class="mcq-card">
+        <div class="question">১০. আয়তলেখ অঙ্কনের সময় অনুভূমিক বা X-অক্ষে সাধারণত কী স্থাপন করা হয়?</div>
+        <div class="options-container">
+            <div class="option">(ক) গণসংখ্যা</div>
+            <div class="option">(খ) শ্রেণি ব্যবধান</div>
+            <div class="option">(গ) ক্রমযোজিত গণসংখ্যা</div>
+            <div class="option">(ঘ) মধ্যবিন্দু</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) শ্রেণি ব্যবধান</div>
+            <div class="expl-text">ব্যাখ্যা: আয়তলেখ আঁকার নিয়ম অনুযায়ী X-অক্ষে শ্রেণি ব্যবধান (বা অবিচ্ছিন্ন শ্রেণি সীমা) এবং Y-অক্ষে সংশ্লিষ্ট শ্রেণির গণসংখ্যা ধরা হয়।</div>
+        </div>
+    </div>
+
+    <!-- Question 11 -->
+    <div class="mcq-card">
+        <div class="question">১১. ৮, ১০, ১২, ১৪, ১৬ উপাত্তগুলোর গড় কত?</div>
+        <div class="options-container">
+            <div class="option">(ক) ১১</div>
+            <div class="option">(খ) ১২</div>
+            <div class="option">(গ) ১৩</div>
+            <div class="option">(ঘ) ১০</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) ১২</div>
+            <div class="expl-text">ব্যাখ্যা: সংখ্যাগুলোর যোগফল = ৮ + ১০ + ১২ + ১৪ + ১৬ = ৬০। মোট পদের সংখ্যা = ৫। সুতরাং গড় = ৬০ / ৫ = ১২।</div>
+        </div>
+    </div>
+
+    <!-- Question 12 -->
+    <div class="mcq-card">
+        <div class="question">১২. ট্যালি চিহ্নের ক্ষেত্রে চারটি উলম্ব দাগ দেওয়ার পর ৫ম দাগটি কীভাবে দেওয়া হয়?</div>
+        <div class="options-container">
+            <div class="option">(ক) পাশে সোজাভাবে</div>
+            <div class="option">(খ) আড়াআড়িভাবে দাগ চারটি কেটে</div>
+            <div class="option">(গ) নিচে সমান্তরালভাবে</div>
+            <div class="option">(ঘ) নতুন স্তম্ভে</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) আড়াআড়িভাবে দাগ চারটি কেটে</div>
+            <div class="expl-text">ব্যাখ্যা: গণনায় সুবিধার জন্য প্রতি ৫টি ট্যালি চিহ্নের একটি বান্ডিল করা হয়। ৪টি খাড়া দাগের পর ৫ম দাগটি আড়াআড়ি দিয়ে ৫টির গুচ্ছ পূর্ণ করা হয়।</div>
+        </div>
+    </div>
+
+    <!-- Question 13 -->
+    <div class="mcq-card">
+        <div class="question">১৩. কোনো উপাত্তের সর্বনিম্ন সংখ্যা ৩০ এবং পরিসর ২১ হলে সর্বোচ্চ সংখ্যা কত?</div>
+        <div class="options-container">
+            <div class="option">(ক) ৫০</div>
+            <div class="option">(খ) ৫১</div>
+            <div class="option">(গ) ৫২</div>
+            <div class="option">(ঘ) ৪৯</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (ক) ৫০</div>
+            <div class="expl-text">ব্যাখ্যা: আমরা জানি, পরিসর = (সর্বোচ্চ সংখ্যা - সর্বনিম্ন সংখ্যা) + ১। বা, ২১ = সর্বোচ্চ সংখ্যা - ৩০ + ১। বা, সর্বোচ্চ সংখ্যা = ২১ + ৩০ - ১ = ৫০।</div>
+        </div>
+    </div>
+
+    <!-- Question 14 -->
+    <div class="mcq-card">
+        <div class="question">১৪. নিচের কোন উপাত্তগুচ্ছের কোনো প্রচুরক নেই?</div>
+        <div class="options-container">
+            <div class="option">(ক) ২, ৩, ৩, ৫</div>
+            <div class="option">(খ) ৩, ৫, ৭, ৯, ১১</div>
+            <div class="option">(গ) ৬, ৬, ৮, ৮</div>
+            <div class="option">(ঘ) ১, ২, ২, ৩</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) ৩, ৫, ৭, ৯, ১১</div>
+            <div class="expl-text">ব্যাখ্যা: '৩, ৫, ৭, ৯, ১১' উপাত্তগুলোর প্রত্যেকটি সংখ্যা একবার করেই বিদ্যমান। কোনো সংখ্যা একাধিকবার আসেনি, তাই এর প্রচুরক নেই।</div>
+        </div>
+    </div>
+
+    <!-- Question 15 -->
+    <div class="mcq-card">
+        <div class="question">১৫. আয়তলেখের প্রতিটি আয়তের ক্ষেত্রফল কার সমানুপাতিক?</div>
+        <div class="options-container">
+            <div class="option">(ক) শ্রেণি মধ্যমানের</div>
+            <div class="option">(খ) সংশ্লিষ্ট শ্রেণির গণসংখ্যার</div>
+            <div class="option">(গ) মোট উপাত্ত সংখ্যার</div>
+            <div class="option">(ঘ) পরিসরের</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer(this)">উত্তর ও ব্যাখ্যা দেখুন</button>
+        <div class="explanation-box">
+            <div class="correct-ans">সঠিক উত্তর: (খ) সংশ্লিষ্ট শ্রেণির গণসংখ্যার</div>
+            <div class="expl-text">ব্যাখ্যা: সমান শ্রেণি ব্যাপ্তিতে প্রতিটি আয়তের ভূমি সমান থাকে। ফলে আয়তক্ষেত্রটির উচ্চতা বা ক্ষেত্রফল সরাসরি ওই শ্রেণির গণসংখ্যার সমানুপাতিক হয়।</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleAnswer(button) {
+        const explBox = button.nextElementSibling;
+        if (explBox.classList.contains('show')) {
+            explBox.classList.remove('show');
+            button.innerText = 'উত্তর ও ব্যাখ্যা দেখুন';
+            button.style.backgroundColor = '#0284c7';
+        } else {
+            explBox.classList.add('show');
+            button.innerText = 'উত্তর ও ব্যাখ্যা লুকান';
+            button.style.backgroundColor = '#e11d48';
+        }
+    }
+</script>
+
+</body>
+</html>
