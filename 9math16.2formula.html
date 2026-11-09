@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমিতি ১৬.২: চতুর্ভুজ ও বহুভুজ সূত্রাবলি</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      min-height: 100vh;
+    }
+    .app-card {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+    .header h1 {
+      font-size: 22px;
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #64748b;
+    }
+    .slide-progress {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .dot-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .dot-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      transform: scale(1.1);
+    }
+    .slide-viewport {
+      min-height: 420px;
+      background: #fcfdfe;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide-content {
+      display: none;
+      width: 100%;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+    .slide-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-title {
+      font-size: 20px;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 680px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .svg-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 240px;
+    }
+    .formula-box {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 16px;
+      border-radius: 6px;
+    }
+    .formula-item {
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    .formula-item:last-child {
+      margin-bottom: 0;
+    }
+    .formula-item strong {
+      color: #1d4ed8;
+    }
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .nav-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover {
+      background: #1d4ed8;
+    }
+    .nav-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    .slide-number {
+      font-size: 15px;
+      font-weight: 600;
+      color: #475569;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .summary-table th, .summary-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .summary-table th {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-card">
+  <div class="header">
+    <h1>অনুশীলনী ১৬.২ : চতুর্ভুজ ও বহুভুজ সংক্রান্ত সূত্রাবলি</h1>
+    <p>শিক্ষার্থীদের সহজে বোঝার জন্য ৮টি স্লাইডে চিত্রসহ এনিমেশন ও বিশ্লেষণ</p>
+  </div>
+
+  <!-- Slide Buttons (1 to 8) -->
+  <div class="slide-progress">
+    <button class="dot-btn active" onclick="goToSlide(1)">১</button>
+    <button class="dot-btn" onclick="goToSlide(2)">২</button>
+    <button class="dot-btn" onclick="goToSlide(3)">৩</button>
+    <button class="dot-btn" onclick="goToSlide(4)">৪</button>
+    <button class="dot-btn" onclick="goToSlide(5)">৫</button>
+    <button class="dot-btn" onclick="goToSlide(6)">৬</button>
+    <button class="dot-btn" onclick="goToSlide(7)">৭</button>
+    <button class="dot-btn" onclick="goToSlide(8)">৮</button>
+  </div>
+
+  <div class="slide-viewport">
+    
+    <!-- SLIDE 1: আয়তক্ষেত্র -->
+    <div class="slide-content active" id="slide-1">
+      <div class="slide-title">১. আয়তক্ষেত্র (Rectangle)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 200" width="100%" height="200">
+            <rect x="40" y="40" width="200" height="120" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5" />
+            <line x1="40" y1="160" x2="240" y2="40" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" />
+            <text x="140" y="185" text-anchor="middle" font-size="16" fill="#0369a1" font-weight="bold">a (দৈর্ঘ্য)</text>
+            <text x="255" y="105" text-anchor="middle" font-size="16" fill="#0369a1" font-weight="bold">b</text>
+            <text x="120" y="90" fill="#ef4444" font-size="14" font-weight="bold">কর্ণ = √(a² + b²)</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">আয়তক্ষেত্রের বৈশিষ্ট্য ও সূত্র</span>
+          <div class="formula-item"><strong>বাহুদ্বয়:</strong> দৈর্ঘ্য = a এবং প্রস্থ = b</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = ab বর্গ একক</div>
+          <div class="formula-item"><strong>পরিসীমা:</strong> = ২(a + b) একক</div>
+          <div class="formula-item"><strong>কর্ণের দৈর্ঘ্য:</strong> = √(a² + b²) একক</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: বর্গক্ষেত্র -->
+    <div class="slide-content" id="slide-2">
+      <div class="slide-title">২. বর্গক্ষেত্র (Square)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 260 200" width="100%" height="200">
+            <rect x="60" y="30" width="140" height="140" fill="#fef3c7" stroke="#d97706" stroke-width="2.5" />
+            <line x1="60" y1="170" x2="200" y2="30" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,5" />
+            <text x="130" y="190" text-anchor="middle" font-size="16" fill="#b45309" font-weight="bold">a</text>
+            <text x="215" y="105" text-anchor="middle" font-size="16" fill="#b45309" font-weight="bold">a</text>
+            <text x="105" y="95" fill="#dc2626" font-size="14" font-weight="bold">√২ a</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">বর্গক্ষেত্রের বৈশিষ্ট্য ও সূত্র</span>
+          <div class="formula-item"><strong>বাহুর দৈর্ঘ্য:</strong> a (প্রতিটি বাহু সমান)</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = a² বর্গ একক</div>
+          <div class="formula-item"><strong>পরিসীমা:</strong> = ৪a একক</div>
+          <div class="formula-item"><strong>কর্ণের দৈর্ঘ্য:</strong> = a√২ বা √২ a একক</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: সামান্তরিক (ভূমি ও উচ্চতা) -->
+    <div class="slide-content" id="slide-3">
+      <div class="slide-title">৩. সামান্তরিক: ভূমি ও উচ্চতা (Parallelogram)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 200" width="100%" height="200">
+            <polygon points="40,160 200,160 240,40 80,40" fill="#f3e8ff" stroke="#7e22ce" stroke-width="2.5" />
+            <line x1="80" y1="40" x2="80" y2="160" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" />
+            <rect x="80" y="145" width="15" height="15" fill="none" stroke="#ef4444" />
+            <text x="120" y="185" text-anchor="middle" font-size="16" fill="#6b21a8" font-weight="bold">ভূমি (b)</text>
+            <text x="65" y="105" font-size="15" fill="#ef4444" font-weight="bold">h</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">সামান্তরিকের ১ম ক্ষেত্রফল সূত্র</span>
+          <div class="formula-item"><strong>ভূমি:</strong> b একক</div>
+          <div class="formula-item"><strong>উচ্চতা:</strong> h একক (ভূমির উপর লম্ব দূরত্ব)</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = bh বর্গ একক</div>
+          <div class="formula-item" style="color: #64748b; font-size: 14px;">(এটি আয়তক্ষেত্রের মতোই ভূমি ও উচ্চতার গুণফল নির্দেশ করে)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: সামান্তরিক (কর্ণ ও বিপরীত লম্ব) -->
+    <div class="slide-content" id="slide-4">
+      <div class="slide-title">৪. সামান্তরিক: কর্ণ ও লম্ব (Parallelogram)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 200" width="100%" height="200">
+            <polygon points="40,160 200,160 240,40 80,40" fill="#fdf2f8" stroke="#be185d" stroke-width="2.5" />
+            <line x1="40" y1="160" x2="240" y2="40" stroke="#0284c7" stroke-width="2" />
+            <line x1="80" y1="40" x2="116" y2="114" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4" />
+            <text x="155" y="115" font-size="15" fill="#0284c7" font-weight="bold">কর্ণ (d)</text>
+            <text x="85" y="75" font-size="15" fill="#dc2626" font-weight="bold">h</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">সামান্তরিকের ২য় ক্ষেত্রফল সূত্র</span>
+          <div class="formula-item"><strong>কর্ণের দৈর্ঘ্য:</strong> d একক</div>
+          <div class="formula-item"><strong>বিপরীত কৌণিক বিন্দু হতে লম্ব:</strong> h একক</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = dh বর্গ একক</div>
+          <div class="formula-item" style="color: #64748b; font-size: 14px;">(কর্ণটি সামান্তরিককে দুটি সমান ত্রিভুজে বিভক্ত করে: ২ × ১/২ dh = dh)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: রম্বস -->
+    <div class="slide-content" id="slide-5">
+      <div class="slide-title">৫. রম্বস (Rhombus)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 260 200" width="100%" height="200">
+            <polygon points="130,20 230,100 130,180 30,100" fill="#ecfdf5" stroke="#059669" stroke-width="2.5" />
+            <line x1="30" y1="100" x2="230" y2="100" stroke="#dc2626" stroke-width="2" />
+            <line x1="130" y1="20" x2="130" y2="180" stroke="#2563eb" stroke-width="2" />
+            <text x="175" y="90" font-size="14" fill="#dc2626" font-weight="bold">d₁</text>
+            <text x="138" y="60" font-size="14" fill="#2563eb" font-weight="bold">d₂</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">রম্বসের বৈশিষ্ট্য ও সূত্র</span>
+          <div class="formula-item"><strong>কর্ণদ্বয়:</strong> d₁ এবং d₂</div>
+          <div class="formula-item">কর্ণদ্বয় পরস্পরকে সমকোণে সমদ্বিখণ্ডিত করে।</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = ১/২ d₁ d₂ বর্গ একক</div>
+          <div class="formula-item"><strong>পরিসীমা:</strong> = ৪a একক (যেখানে a বাহু)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: ট্রাপিজিয়াম -->
+    <div class="slide-content" id="slide-6">
+      <div class="slide-title">৬. ট্রাপিজিয়াম (Trapezium)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 280 200" width="100%" height="200">
+            <polygon points="30,160 250,160 190,50 70,50" fill="#fff7ed" stroke="#ea580c" stroke-width="2.5" />
+            <line x1="130" y1="50" x2="130" y2="160" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4" />
+            <text x="130" y="40" text-anchor="middle" font-size="16" fill="#ea580c" font-weight="bold">b</text>
+            <text x="140" y="185" text-anchor="middle" font-size="16" fill="#ea580c" font-weight="bold">a</text>
+            <text x="140" y="110" font-size="15" fill="#dc2626" font-weight="bold">h</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">ট্রাপিজিয়ামের ক্ষেত্রফল সূত্র</span>
+          <div class="formula-item"><strong>সমান্তরাল বাহুদ্বয়:</strong> a এবং b</div>
+          <div class="formula-item"><strong>সমান্তরাল বাহুর মধ্যবর্তী লম্ব দূরত্ব:</strong> h</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong> = ১/২ (a + b) h বর্গ একক</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: সুষম বহুভুজ -->
+    <div class="slide-content" id="slide-7">
+      <div class="slide-title">৭. সুষম বহুভুজ (Regular Polygon)</div>
+      <div class="grid-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 240 210" width="100%" height="200">
+            <!-- Regular Octagon -->
+            <polygon points="75,25 145,25 195,75 195,145 145,195 75,195 25,145 25,75" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5" />
+            <!-- Center lines -->
+            <line x1="110" y1="110" x2="75" y2="195" stroke="#16a34a" stroke-dasharray="3,3" />
+            <line x1="110" y1="110" x2="145" y2="195" stroke="#16a34a" stroke-dasharray="3,3" />
+            <circle cx="110" cy="110" r="4" fill="#dc2626" />
+            <text x="110" y="210" text-anchor="middle" font-size="16" fill="#16a34a" font-weight="bold">বাহুর দৈর্ঘ্য = a</text>
+          </svg>
+        </div>
+        <div class="formula-box">
+          <span class="badge">n-সংখ্যক বাহুবিশিষ্ট সুষম বহুভুজ</span>
+          <div class="formula-item"><strong>বাহুর সংখ্যা:</strong> n</div>
+          <div class="formula-item"><strong>প্রতিটি বাহুর দৈর্ঘ্য:</strong> a</div>
+          <div class="formula-item"><strong>ক্ষেত্রফল:</strong><br>= (na² / ৪) cot(১৮০° / n) বর্গ একক</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: সারসংক্ষেপ -->
+    <div class="slide-content" id="slide-8">
+      <div class="slide-title">৮. একনজরে সকল সূত্রাবলি (সারাংশ)</div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>আকার (Shape)</th>
+            <th>ক্ষেত্রফল (Area)</th>
+            <th>অন্যান্য সূত্র</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>আয়তক্ষেত্র</strong></td>
+            <td>ab</td>
+            <td>কর্ণ = √(a² + b²), পরিসীমা = ২(a + b)</td>
+          </tr>
+          <tr>
+            <td><strong>বর্গক্ষেত্র</strong></td>
+            <td>a²</td>
+            <td>কর্ণ = a√২, পরিসীমা = ৪a</td>
+          </tr>
+          <tr>
+            <td><strong>সামান্তরিক</strong></td>
+            <td>bh অথবা dh</td>
+            <td>b = ভূমি, h = উচ্চতা / লম্ব</td>
+          </tr>
+          <tr>
+            <td><strong>রম্বস</strong></td>
+            <td>১/২ d₁ d₂</td>
+            <td>d₁, d₂ = দুটি কর্ণ</td>
+          </tr>
+          <tr>
+            <td><strong>ট্রাপিজিয়াম</strong></td>
+            <td>১/২ (a + b) h</td>
+            <td>a, b = সমান্তরাল বাহুদ্বয়</td>
+          </tr>
+          <tr>
+            <td><strong>সুষম বহুভুজ</strong></td>
+            <td>(na² / ৪) cot(১৮০° / n)</td>
+            <td>n = বাহুর সংখ্যা, a = বাহুর দৈর্ঘ্য</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>← পূর্ববর্তী স্লাইড</button>
+    <div class="slide-number" id="slideIndicator">স্লাইড ১ / ৮</div>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide()">পরবর্তী স্লাইড →</button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 8;
+
+  function updateView() {
+    // Hide all slides
+    for (let i = 1; i <= totalSlides; i++) {
+      const slide = document.getElementById('slide-' + i);
+      if (slide) slide.classList.remove('active');
+    }
+    
+    // Show current slide
+    const activeSlide = document.getElementById('slide-' + currentSlide);
+    if (activeSlide) activeSlide.classList.add('active');
+
+    // Update Dots
+    const dots = document.querySelectorAll('.dot-btn');
+    dots.forEach((dot, index) => {
+      if (index + 1 === currentSlide) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+
+    // Update Slide Indicator Text
+    const bengaliNumerals = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮'];
+    document.getElementById('slideIndicator').innerText = 
+      'স্লাইড ' + bengaliNumerals[currentSlide] + ' / ' + bengaliNumerals[totalSlides];
+
+    // Buttons Disable state
+    document.getElementById('prevBtn').disabled = (currentSlide === 1);
+    document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides) {
+      currentSlide++;
+      updateView();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) {
+      currentSlide--;
+      updateView();
+    }
+  }
+
+  function goToSlide(slideNum) {
+    currentSlide = slideNum;
+    updateView();
+  }
+
+  // Keyboard Navigation (Arrow Keys)
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowRight') {
+      nextSlide();
+    } else if (event.key === 'ArrowLeft') {
+      prevSlide();
+    }
+  });
+</script>
+
+</body>
+</html>
