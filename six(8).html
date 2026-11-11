@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>৬ষ্ঠ শ্রেণি গণিত: ৮ম অধ্যায় (তথ্য ও উপাত্ত) - MCQ স্লাইড</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SutonnyMJ', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Presentation Screen Container */
+    #presentation-container {
+      width: 95vw;
+      max-width: 1250px;
+      height: 85vh;
+      background-color: #FFFFFF;
+      border: 4px solid #002B5B;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #002B5B;
+      padding-bottom: 15px;
+    }
+
+    .chapter-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #002B5B;
+    }
+
+    .slide-indicator {
+      font-size: 24px;
+      font-weight: 800;
+      background-color: #002B5B;
+      color: #FFFFFF;
+      padding: 6px 18px;
+      border-radius: 8px;
+    }
+
+    /* Slide Content Body */
+    .slide-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+    }
+
+    .badge-q {
+      background-color: #8B0000;
+      color: #FFFFFF;
+    }
+
+    .badge-ans {
+      background-color: #006400;
+      color: #FFFFFF;
+    }
+
+    .content-title {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 35px;
+      color: #000000;
+    }
+
+    /* MCQ Horizontal Grid Layout */
+    .options-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .option-card {
+      flex: 1 1 45%;
+      background-color: #F8F9FA;
+      border: 3px solid #000000;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #000000;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      background-color: #F4F8FA;
+      border-left: 8px solid #006400;
+      padding: 25px 30px;
+      border-radius: 6px;
+    }
+
+    .correct-ans {
+      font-size: 36px;
+      font-weight: 900;
+      color: #006400;
+      margin-bottom: 20px;
+    }
+
+    .exp-detail {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #111111;
+    }
+
+    /* Bottom Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid #E0E0E0;
+      padding-top: 20px;
+    }
+
+    .nav-btn {
+      background-color: #002B5B;
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 800;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-btn:hover {
+      background-color: #004085;
+    }
+
+    .nav-btn:disabled {
+      background-color: #CCCCCC;
+      cursor: not-allowed;
+    }
+
+    .shortcut-tip {
+      font-size: 16px;
+      color: #555555;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div id="presentation-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="chapter-title">৬ষ্ঠ শ্রেণি গণিত | ৮ম অধ্যায়: তথ্য ও উপাত্ত</div>
+    <div class="slide-indicator" id="slide-num">স্লাইড: ১ / ৩০</div>
+  </div>
+
+  <!-- Dynamic Slide Body -->
+  <div class="slide-body" id="slide-container">
+    <!-- Slide content will load here -->
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="controls">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">পূর্ববর্তী (Prev)</button>
+    <span class="shortcut-tip">কীবোর্ডের Left / Right arrow দিয়ে স্লাইড পরিবর্তন করা যায়</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">পরবর্তী (Next)</button>
+  </div>
+</div>
+
+<script>
+  // Complete 30 Slides Data (15 Questions + 15 Explanations)
+  const slides = [
+    // 1
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১",
+      title: "সংখ্যাভিত্তিক কোনো তথ্য বা ঘটনাকে পরিসংখ্যানে কী বলা হয়?",
+      options: [
+        "(ক) চলক",
+        "(খ) উপাত্ত",
+        "(গ) পরিসর",
+        "(ঘ) প্রচুরক"
+      ]
+    },
+    // 2
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১",
+      correct: "সঠিক উত্তর: (খ) উপাত্ত",
+      detail: "ব্যাখ্যা: সংখ্যাসূচক বা সংখ্যাভিত্তিক যেকোনো তথ্য বা ঘটনাকে পরিসংখ্যানে উপাত্ত (Data) বলা হয়।"
+    },
+    // 3
+    {
+      type: "question",
+      badge: "প্রশ্ন - ২",
+      title: "অনুসন্ধানকারী সরাসরি উৎস থেকে যে উপাত্ত সংগ্রহ করে, তাকে কী বলে?",
+      options: [
+        "(ক) মাধ্যমিক উপাত্ত",
+        "(খ) প্রাথমিক উপাত্ত",
+        "(গ) অবিন্যস্ত উপাত্ত",
+        "(ঘ) বিন্যস্ত উপাত্ত"
+      ]
+    },
+    // 4
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ২",
+      correct: "সঠিক উত্তর: (খ) প্রাথমিক উপাত্ত",
+      detail: "ব্যাখ্যা: সরাসরি উৎস থেকে যে উপাত্ত সংগ্রহ করা হয় তাকে প্রাথমিক বা প্রত্যক্ষ উপাত্ত বলে। এই উপাত্তের নির্ভরযোগ্যতা অনেক বেশি।"
+    },
+    // 5
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৩",
+      title: "যে উপাত্তগুলো মানের কোনো নির্দিষ্ট ক্রমানুসারে সাজানো থাকে না, সেগুলোকে কী বলে?",
+      options: [
+        "(ক) বিন্যস্ত উপাত্ত",
+        "(খ) অবিন্যস্ত উপাত্ত",
+        "(গ) মাধ্যমিক উপাত্ত",
+        "(ঘ) গুণবাচক উপাত্ত"
+      ]
+    },
+    // 6
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৩",
+      correct: "সঠিক উত্তর: (খ) অবিন্যস্ত উপাত্ত",
+      detail: "ব্যাখ্যা: উপাত্তের সংখ্যাগুলো যদি মানের ঊর্ধ্বক্রম বা অধঃক্রম অনুসারে সাজানো না থেকে এলোমেলো থাকে, তবে তাকে অবিন্যস্ত উপাত্ত বলে।"
+    },
+    // 7
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৪",
+      title: "উপাত্তের পরিসর নির্ণয়ের সঠিক সূত্র কোনটি?",
+      options: [
+        "(ক) সর্বোচ্চ সংখ্যা - সর্বনিম্ন সংখ্যা",
+        "(খ) (সর্বোচ্চ সংখ্যা - সর্বনিম্ন সংখ্যা) + ১",
+        "(গ) সর্বোচ্চ সংখ্যা + সর্বনিম্ন সংখ্যা",
+        "(ঘ) (সর্বোচ্চ সংখ্যা + সর্বনিম্ন সংখ্যা) ÷ ২"
+      ]
+    },
+    // 8
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৪",
+      correct: "সঠিক উত্তর: (খ) (সর্বোচ্চ সংখ্যা - সর্বনিম্ন সংখ্যা) + ১",
+      detail: "ব্যাখ্যা: উপাত্তের বিস্তৃতি বা পরিসর = (সর্বোচ্চ মান - সর্বনিম্ন মান) + ১।"
+    },
+    // 9
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৫",
+      title: "গাণিতিক গড় নির্ণয়ের সঠিক সূত্র কোনটি?",
+      options: [
+        "(ক) উপাত্তসমূহের গুণফল ÷ উপাত্তের সংখ্যা",
+        "(খ) উপাত্তসমূহের সমষ্টি ÷ উপাত্তের সংখ্যা",
+        "(গ) উপাত্তের সংখ্যা ÷ উপাত্তসমূহের সমষ্টি",
+        "(ঘ) সর্বোচ্চ মান ÷ সর্বনিম্ন মান"
+      ]
+    },
+    // 10
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৫",
+      correct: "সঠিক উত্তর: (খ) উপাত্তসমূহের সমষ্টি ÷ উপাত্তের সংখ্যা",
+      detail: "ব্যাখ্যা: গাণিতিক গড় = (উপাত্তসমূহের যোগফল বা সমষ্টি) ÷ (মোট উপাত্তের সংখ্যা)।"
+    },
+    // 11
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৬",
+      title: "৬, ৮, ১০, ১২ এবং ১৪ সংখ্যাগুলোর গড় কত?",
+      options: [
+        "(ক) ৮",
+        "(খ) ৯",
+        "(গ) ১০",
+        "(ঘ) ১১"
+      ]
+    },
+    // 12
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৬",
+      correct: "সঠিক উত্তর: (গ) ১০",
+      detail: "ব্যাখ্যা: উপাত্তগুলোর সমষ্টি = ৬ + ৮ + ১০ + ১২ + ১৪ = ৫০। উপাত্তের মোট সংখ্যা = ৫। সুতরাং গড় = ৫০ ÷ ৫ = ১০।"
+    },
+    // 13
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৭",
+      title: "উপাত্তগুলোকে মানের ক্রমানুসারে সাজালে যে মানটি ঠিক মাঝামাঝি থাকে, তাকে কী বলে?",
+      options: [
+        "(ক) গড়",
+        "(খ) প্রচুরক",
+        "(গ) মধ্যক",
+        "(ঘ) পরিসর"
+      ]
+    },
+    // 14
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৭",
+      correct: "সঠিক উত্তর: (গ) মধ্যক",
+      detail: "ব্যাখ্যা: উপাত্তগুলোকে মানের ঊর্ধ্বক্রম বা অধঃক্রম অনুসারে সাজালে ঠিক মাঝের মানটিকে মধ্যক (Median) বলা হয়।"
+    },
+    // 15
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৮",
+      title: "উপাত্তের সংখ্যা n বিজোড় সংখ্যা হলে, মধ্যক নির্ণয়ের সূত্র কোনটি?",
+      options: [
+        "(ক) n/২ তম পদ",
+        "(খ) (n + ১)/২ তম পদ",
+        "(গ) (n - ১)/২ তম পদ",
+        "(ঘ) (n + ২)/২ তম পদ"
+      ]
+    },
+    // 16
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৮",
+      correct: "সঠিক উত্তর: (খ) (n + ১)/২ তম পদ",
+      detail: "ব্যাখ্যা: উপাত্তের সংখ্যা n বিজোড় হলে, মানের ক্রমানুসারে সাজানোর পর (n + ১)/২ তম পদের মানই হবে নির্ণেয় মধ্যক।"
+    },
+    // 17
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৯",
+      title: "৯, ৫, ৩, ১১, ৭ সংখ্যাগুলোর মধ্যক কত?",
+      options: [
+        "(ক) ৫",
+        "(খ) ৭",
+        "(গ) ৯",
+        "(ঘ) ৩"
+      ]
+    },
+    // 18
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৯",
+      correct: "সঠিক উত্তর: (খ) ৭",
+      detail: "ব্যাখ্যা: উপাত্তগুলোকে মানের ঊর্ধ্বক্রমে সাজিয়ে পাই: ৩, ৫, ৭, ৯, ১১। এখানে n = ৫ (বিজোড়)। অতএব মধ্যক পদ = (৫ + ১)/২ = ৩য় পদ। ৩য় পদের মান হলো ৭।"
+    },
+    // 19
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১০",
+      title: "৪, ৬, ৮, ১০ সংখ্যাগুলোর মধ্যক কত?",
+      options: [
+        "(ক) ৬",
+        "(খ) ৭",
+        "(গ) ৮",
+        "(ঘ) ৯"
+      ]
+    },
+    // 20
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১০",
+      correct: "সঠিক উত্তর: (খ) ৭",
+      detail: "ব্যাখ্যা: উপাত্তের সংখ্যা ৪ (জোড়)। সাজানো উপাত্তের মাঝের দুটি পদ হলো ৬ এবং ৮। মধ্যক = মধ্যবর্তী পদ দুটির গড় = (৬ + ৮) ÷ ২ = ১৪ ÷ ২ = ৭।"
+    },
+    // 21
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১১",
+      title: "কোনো উপাত্তে যে সংখ্যাটি সর্বাধিক বার থাকে, তাকে কী বলা হয়?",
+      options: [
+        "(ক) গড়",
+        "(খ) মধ্যক",
+        "(গ) প্রচুরক",
+        "(ঘ) পরিসর"
+      ]
+    },
+    // 22
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১১",
+      correct: "সঠিক উত্তর: (গ) প্রচুরক",
+      detail: "ব্যাখ্যা: কোনো উপাত্তে যে সংখ্যা বা মানটি সবচেয়ে বেশি সংখ্যক বার উপস্থিত থাকে, তাকে প্রচুরক (Mode) বলে।"
+    },
+    // 23
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১২",
+      title: "৩, ৫, ৮, ৫, ৯, ৫, ২ সংখ্যাগুলোর প্রচুরক কোনটি?",
+      options: [
+        "(ক) ৩",
+        "(খ) ৫",
+        "(গ) ৮",
+        "(ঘ) ৯"
+      ]
+    },
+    // 24
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১২",
+      correct: "সঠিক উত্তর: (খ) ৫",
+      detail: "ব্যাখ্যা: প্রদত্ত উপাত্তগুলোর মধ্যে ৫ সংখ্যাটি সর্বাধিক ৩ বার রয়েছে। তাই এখানে প্রচুরক হলো ৫।"
+    },
+    // 25
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৩",
+      title: "৭, ৯, ১২, ১৫, ১৮ উপাত্তগুলোর প্রচুরক কোনটি?",
+      options: [
+        "(ক) ৭",
+        "(খ) ৯",
+        "(গ) ১৮",
+        "(ঘ) প্রচুরক নেই"
+      ]
+    },
+    // 26
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৩",
+      correct: "সঠিক উত্তর: (ঘ) প্রচুরক নেই",
+      detail: "ব্যাখ্যা: উপাত্তের প্রতিটি সংখ্যা কেবল একবার করেই আছে। কোনো সংখ্যা একাধিকবার না থাকলে সেই উপাত্তের কোনো প্রচুরক থাকে না।"
+    },
+    // 27
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৪",
+      title: "একটি উপাত্তের সর্বোচ্চ সংখ্যা ২৫ এবং সর্বনিম্ন সংখ্যা ১০ হলে, পরিসর কত?",
+      options: [
+        "(ক) ১৫",
+        "(খ) ১৬",
+        "(গ) ১৭",
+        "(ঘ) ৩৫"
+      ]
+    },
+    // 28
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৪",
+      correct: "সঠিক উত্তর: (খ) ১৬",
+      detail: "ব্যাখ্যা: পরিসর = (সর্বোচ্চ মান - সর্বনিম্ন মান) + ১ = (২৫ - ১০) + ১ = ১৫ + ১ = ১৬।"
+    },
+    // 29
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৫",
+      title: "উপাত্তকে চিত্রের মাধ্যমে আয়তাকার স্তম্ভ দ্বারা প্রকাশ করাকে কী বলে?",
+      options: [
+        "(ক) পাইচিত্র",
+        "(খ) স্তম্ভলেখ",
+        "(গ) রেখাচিত্র",
+        "(ঘ) সারণি"
+      ]
+    },
+    // 30
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৫",
+      correct: "সঠিক উত্তর: (খ) স্তম্ভলেখ",
+      detail: "ব্যাখ্যা: সংগৃহীত উপাত্তকে সহজে বোঝার জন্য উলম্ব বা অনুভূমিক সমান প্রস্থের আয়তাকার স্তম্ভের মাধ্যমে প্রকাশ করাকে স্তম্ভলেখ (Bar diagram) বলে।"
+    }
+  ];
+
+  // Convert English numbers to Bengali numerals
+  function toBengaliNumber(num) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bengaliDigits[d] || d).join('');
+  }
+
+  let currentSlide = 0;
+
+  function renderSlide() {
+    const slide = slides[currentSlide];
+    const container = document.getElementById("slide-container");
+    const slideNum = document.getElementById("slide-num");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    // Update Slide Counter
+    slideNum.innerText = "স্লাইড: " + toBengaliNumber(currentSlide + 1) + " / ৩০";
+
+    // Disable/Enable Nav Buttons
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === slides.length - 1;
+
+    // Render Question or Explanation
+    if (slide.type === "question") {
+      container.innerHTML = `
+        <div class="badge badge-q">${slide.badge}</div>
+        <div class="content-title">${slide.title}</div>
+        <div class="options-grid">
+          <div class="option-card">${slide.options[0]}</div>
+          <div class="option-card">${slide.options[1]}</div>
+          <div class="option-card">${slide.options[2]}</div>
+          <div class="option-card">${slide.options[3]}</div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="badge badge-ans">${slide.badge}</div>
+        <div class="explanation-box">
+          <div class="correct-ans">${slide.correct}</div>
+          <div class="exp-detail">${slide.detail}</div>
+        </div>
+      `;
+    }
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      renderSlide();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      renderSlide();
+    }
+  }
+
+  // Keyboard Navigation Support (Arrow Keys)
+  window.addEventListener("keydown", function(e) {
+    if (e.key === "ArrowRight" || e.key === "Space") {
+      nextSlide();
+    } else if (e.key === "ArrowLeft") {
+      prevSlide();
+    }
+  });
+
+  // Initial load
+  renderSlide();
+</script>
+
+</body>
+</html>
