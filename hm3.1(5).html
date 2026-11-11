@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জ্যামিতিক প্রমাণ: অ্যাপোলোনিয়াসের উপপাদ্যের প্রয়োগ (৮টি স্লাইড)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #000000;
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            font-weight: 700;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 20px;
+            line-height: 1.55;
+        }
+
+        /* Header Section */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #000000;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #002D62;
+        }
+
+        .slide-badge {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #B30000;
+            padding: 6px 18px;
+            border: 3px solid #000000;
+            border-radius: 8px;
+        }
+
+        /* Main Presentation Area */
+        .presentation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 22px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        /* Diagram Box */
+        .diagram-panel {
+            background-color: #FFFFFF;
+            border: 4px solid #002D62;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .svg-wrapper {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            background-color: #FFFFFF;
+            overflow: visible;
+        }
+
+        .diagram-caption {
+            width: 100%;
+            text-align: center;
+            font-size: 21px;
+            font-weight: 700;
+            color: #000000;
+            border-top: 3px solid #000000;
+            padding-top: 10px;
+            margin-top: 8px;
+        }
+
+        /* Content / Slide Box */
+        .content-panel {
+            background-color: #FFFFFF;
+            border: 4px solid #000000;
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .slide-heading {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #002D62;
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            border: 3px solid #000000;
+        }
+
+        .slide-body {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .math-box {
+            border: 3px solid #B30000;
+            background-color: #FFFFFF;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .math-box-green {
+            border: 3px solid #006622;
+            background-color: #FFFFFF;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .note-box {
+            border-left: 8px solid #4B0082;
+            border-top: 2px solid #000000;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 10px 14px;
+            font-size: 22px;
+            color: #000000;
+            background-color: #FFFFFF;
+        }
+
+        .highlight-red {
+            color: #B30000;
+            font-weight: 700;
+        }
+
+        .highlight-navy {
+            color: #002D62;
+            font-weight: 700;
+        }
+
+        .highlight-green {
+            color: #006622;
+            font-weight: 700;
+        }
+
+        .highlight-purple {
+            color: #4B0082;
+            font-weight: 700;
+        }
+
+        /* Animations */
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-text {
+            animation: fadeInSlide 0.35s ease-out forwards;
+        }
+
+        @keyframes drawLine {
+            from { stroke-dashoffset: 400; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        .draw-anim {
+            stroke-dasharray: 400;
+            animation: drawLine 0.7s ease-out forwards;
+        }
+
+        @keyframes pulseStroke {
+            0% { stroke-width: 5; }
+            50% { stroke-width: 8; }
+            100% { stroke-width: 5; }
+        }
+
+        .pulse-line {
+            animation: pulseStroke 1.4s infinite ease-in-out;
+        }
+
+        /* Controls Footer */
+        .controls-bar {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 4px solid #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            padding: 10px 22px;
+            border: 3px solid #000000;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #FFFFFF;
+            color: #000000;
+            transition: transform 0.1s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background-color: #002D62;
+            color: #FFFFFF;
+        }
+
+        .btn-reset {
+            background-color: #B30000;
+            color: #FFFFFF;
+        }
+
+        .btn:disabled {
+            background-color: #FFFFFF;
+            color: #000000;
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .slide-dots {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dot-btn {
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            width: 44px;
+            height: 44px;
+            font-size: 22px;
+            font-weight: 700;
+            border: 3px solid #000000;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+            color: #000000;
+            cursor: pointer;
+        }
+
+        .dot-btn.active {
+            background-color: #006622;
+            color: #FFFFFF;
+        }
+
+        /* Responsive for Mobile / Tablet */
+        @media (max-width: 960px) {
+            .presentation-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-title {
+                font-size: 26px;
+            }
+            .slide-heading {
+                font-size: 24px;
+            }
+            .slide-body, .math-box, .math-box-green {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header-bar">
+        <div class="main-title">উচ্চতর গণিত (নবম-দশম শ্রেণি) — প্রশ্ন ০৫ এর প্রমাণ</div>
+        <div class="slide-badge" id="slideCounter">স্লাইড ১ / ৮</div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="presentation-grid">
+        <!-- Left: Geometric SVG Diagram -->
+        <section class="diagram-panel">
+            <div class="svg-wrapper">
+                <svg viewBox="0 0 500 390" id="geoSvg" aria-label="ত্রিভুজ ABC এর জ্যামিতিক চিত্র">
+                    <!-- Triangle Highlight Polygons (Transparent white-safe tints for active focus) -->
+                    <polygon id="polyABQ" points="245,55 65,325 305,325" fill="#B30000" fill-opacity="0.09" stroke="none" style="display:none;" />
+                    <polygon id="polyAPC" points="245,55 185,325 425,325" fill="#006622" fill-opacity="0.09" stroke="none" style="display:none;" />
+
+                    <!-- Base Segments (BP, PQ, QC) -->
+                    <line id="lineBC" x1="65" y1="325" x2="425" y2="325" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+                    
+                    <!-- Highlighted Base Sub-segments -->
+                    <line id="hlBQ" x1="65" y1="325" x2="305" y2="325" stroke="#B30000" stroke-width="6" style="display:none;" />
+                    <line id="hlPC" x1="185" y1="325" x2="425" y2="325" stroke="#006622" stroke-width="6" style="display:none;" />
+
+                    <!-- Main Sides AB and AC -->
+                    <line id="lineAB" x1="245" y1="55" x2="65" y2="325" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+                    <line id="lineAC" x1="245" y1="55" x2="425" y2="325" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+
+                    <!-- Internal Lines AP and AQ -->
+                    <line id="lineAP" x1="245" y1="55" x2="185" y2="325" stroke="#B30000" stroke-width="5" stroke-linecap="round" />
+                    <line id="lineAQ" x1="245" y1="55" x2="305" y2="325" stroke="#4B0082" stroke-width="5" stroke-linecap="round" />
+
+                    <!-- Equal Tick Marks on BP, PQ, QC -->
+                    <g id="tickMarks" stroke="#B30000" stroke-width="4" stroke-linecap="round">
+                        <!-- Tick on BP (midpoint x=125) -->
+                        <line x1="122" y1="312" x2="128" y2="338" />
+                        <line x1="130" y1="312" x2="136" y2="338" />
+                        <!-- Tick on PQ (midpoint x=245) -->
+                        <line x1="242" y1="312" x2="248" y2="338" />
+                        <line x1="250" y1="312" x2="256" y2="338" />
+                        <!-- Tick on QC (midpoint x=365) -->
+                        <line x1="362" y1="312" x2="368" y2="338" />
+                        <line x1="370" y1="312" x2="376" y2="338" />
+                    </g>
+
+                    <!-- Vertices / Points -->
+                    <circle cx="245" cy="55" r="7" fill="#000000" />
+                    <circle cx="65" cy="325" r="7" fill="#000000" />
+                    <circle id="ptP" cx="185" cy="325" r="7" fill="#B30000" />
+                    <circle id="ptQ" cx="305" cy="325" r="7" fill="#4B0082" />
+                    <circle cx="425" cy="325" r="7" fill="#000000" />
+
+                    <!-- Labels -->
+                    <text x="245" y="36" text-anchor="middle" font-size="26" font-weight="900" fill="#000000">A</text>
+                    <text x="55" y="366" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">B</text>
+                    <text x="185" y="366" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">P</text>
+                    <text x="305" y="366" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">Q</text>
+                    <text x="430" y="366" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">C</text>
+
+                    <!-- Dynamic Median Tag inside SVG -->
+                    <g id="tagMedianAP" style="display:none;">
+                        <rect x="108" y="168" width="98" height="34" rx="6" fill="#FFFFFF" stroke="#B30000" stroke-width="3" />
+                        <text x="157" y="192" text-anchor="middle" font-size="20" font-weight="800" fill="#B30000">মধ্যমা AP</text>
+                    </g>
+                    <g id="tagMedianAQ" style="display:none;">
+                        <rect x="292" y="168" width="98" height="34" rx="6" fill="#FFFFFF" stroke="#006622" stroke-width="3" />
+                        <text x="341" y="192" text-anchor="middle" font-size="20" font-weight="800" fill="#006622">মধ্যমা AQ</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="diagram-caption" id="diagramCaption">
+                চিত্র: △ABC এর BC বাহুতে BP = PQ = QC
+            </div>
+        </section>
+
+        <!-- Right: Step-by-Step Explanation Panel -->
+        <section class="content-panel">
+            <div class="slide-heading" id="slideHeading">স্লাইড ১: প্রশ্ন ও সাধারণ পরিচিতি</div>
+            <div class="slide-body animate-text" id="slideBody">
+                <!-- Dynamic Slide Content injected via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation Controls -->
+    <footer class="controls-bar">
+        <div class="nav-buttons">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)">❮ পূর্ববর্তী ধাপ</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="changeSlide(1)">পরবর্তী ধাপ ❯</button>
+            <button class="btn btn-reset" onclick="goToSlide(0)">পুনরায় শুরু ↺</button>
+        </div>
+        <div class="slide-dots" id="slideDots">
+            <!-- Slide Jump Buttons ১-৮ -->
+        </div>
+    </footer>
+
+    <script>
+        const banglaDigits = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮'];
+        let currentSlide = 0;
+
+        const slides = [
+            {
+                heading: "স্লাইড ১: প্রশ্ন ও মূল সমস্যা",
+                caption: "চিত্র: △ABC এর BC বাহু P ও Q বিন্দুতে সমত্রিখণ্ডিত হয়েছে",
+                html: `
+                    <div><span class="highlight-navy">প্রশ্ন ০৫:</span> △ABC এর BC বাহু P ও Q বিন্দুতে তিনটি সমান অংশে বিভক্ত হয়েছে।</div>
+                    <div class="math-box">
+                        প্রমাণ করো যে,<br>
+                        <span class="highlight-red">AB² + AC² = AP² + AQ² + 4PQ²</span>
+                    </div>
+                    <div class="note-box">
+                        <span class="highlight-purple">মূল ধারণা (সংকেত):</span><br>
+                        এখানে BP = PQ = QC। আমরা পর্যায়ক্রমে △ABQ এবং △APC ত্রিভুজ দুইটিতে <strong>অ্যাপোলোনিয়াসের উপপাদ্য</strong> প্রয়োগ করব।
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    setDisplay('lineAP', true, '#002D62', false, true);
+                    setDisplay('lineAQ', true, '#002D62', false, true);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ২: বিশেষ নির্বচন",
+                caption: "দেওয়া আছে: BP = PQ = QC এবং A, P ও A, Q যোগ করা হয়েছে",
+                html: `
+                    <div><span class="highlight-navy">বিশেষ নির্বচন:</span></div>
+                    <div>দেওয়া আছে, △ABC এর BC বাহু <strong>P</strong> ও <strong>Q</strong> বিন্দুতে তিনটি সমান অংশে বিভক্ত হয়েছে।</div>
+                    <div class="note-box">
+                        অর্থাৎ, <span class="highlight-red">BP = PQ = QC</span>।<br>
+                        A, P এবং A, Q যোগ করা হয়েছে।
+                    </div>
+                    <div class="math-box">
+                        প্রমাণ করতে হবে যে,<br>
+                        <span class="highlight-navy">AB² + AC² = AP² + AQ² + 4PQ²</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    setDisplay('lineAP', true, '#B30000', true, false);
+                    setDisplay('lineAQ', true, '#4B0082', true, false);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৩: প্রমাণ — প্রথম ত্রিভুজ (△ABQ) নির্বাচন",
+                caption: "△ABQ ত্রিভুজে BP = PQ হওয়ায় AP হলো এর মধ্যমা",
+                html: `
+                    <div><span class="highlight-red">প্রমাণ (ধাপ ১):</span></div>
+                    <div>প্রথমে <strong>△ABQ</strong> বিবেচনা করি (চিত্রে লাল রঙে চিহ্নিত অংশ)।</div>
+                    <div>△ABQ-এ <span class="highlight-red">BP = PQ</span>। [অঙ্কনানুসারে / দেওয়া আছে]</div>
+                    <div class="math-box">
+                        তাহলে, <strong>AP</strong> হলো <strong>△ABQ</strong>-এর মধ্যমা,<br>
+                        যা BQ বাহুকে P বিন্দুতে সমদ্বিখণ্ডিত করে।
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    document.getElementById('polyABQ').style.display = 'block';
+                    document.getElementById('hlBQ').style.display = 'block';
+                    document.getElementById('tagMedianAP').style.display = 'block';
+
+                    setStroke('lineAB', '#B30000', 6);
+                    setStroke('lineAC', '#002D62', 3.5);
+                    setDisplay('lineAQ', true, '#B30000', false, false, 6);
+                    setDisplay('lineAP', true, '#B30000', false, true, 6);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৪: সমীকরণ (1) গঠন",
+                caption: "△ABQ-এ অ্যাপোলোনিয়াসের সূত্র প্রয়োগ: AB² + AQ² = 2AP² + 2PQ²",
+                html: `
+                    <div>△ABQ-এর মধ্যমা <strong>AP</strong> হওয়ায় অ্যাপোলোনিয়াসের সূত্রানুসারে পাই:</div>
+                    <div class="note-box">
+                        AB² + AQ² = 2(AP² + BP²)<br>
+                        বা, AB² + AQ² = 2AP² + 2BP² &nbsp; <span class="highlight-purple">[যেহেতু BP = PQ]</span>
+                    </div>
+                    <div class="math-box">
+                        ∴ <span class="highlight-red">AB² + AQ² = 2AP² + 2PQ²</span> .......... (1)<br>
+                        <span style="font-size:21px;">[এ্যাপোলোনিয়াসের সূত্রানুসারে]</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    document.getElementById('polyABQ').style.display = 'block';
+                    document.getElementById('hlBQ').style.display = 'block';
+                    document.getElementById('tagMedianAP').style.display = 'block';
+
+                    setStroke('lineAB', '#B30000', 6);
+                    setStroke('lineAC', '#002D62', 3.5);
+                    setDisplay('lineAQ', true, '#B30000', false, false, 6);
+                    setDisplay('lineAP', true, '#B30000', false, false, 6);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৫: প্রমাণ — দ্বিতীয় ত্রিভুজ (△APC) নির্বাচন",
+                caption: "△APC ত্রিভুজে PQ = QC হওয়ায় AQ হলো এর মধ্যমা",
+                html: `
+                    <div><span class="highlight-green">প্রমাণ (ধাপ ২):</span></div>
+                    <div>আবার, <strong>△APC</strong> বিবেচনা করি (চিত্রে সবুজ রঙে চিহ্নিত অংশ)।</div>
+                    <div>△APC-এ <span class="highlight-green">PQ = QC</span>। [দেওয়া আছে]</div>
+                    <div class="math-box-green">
+                        তাহলে, <strong>AQ</strong> হলো <strong>△APC</strong>-এর মধ্যমা,<br>
+                        যা PC বাহুকে Q বিন্দুতে সমদ্বিখণ্ডিত করে।
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    document.getElementById('polyAPC').style.display = 'block';
+                    document.getElementById('hlPC').style.display = 'block';
+                    document.getElementById('tagMedianAQ').style.display = 'block';
+
+                    setStroke('lineAB', '#002D62', 3.5);
+                    setStroke('lineAC', '#006622', 6);
+                    setDisplay('lineAP', true, '#006622', false, false, 6);
+                    setDisplay('lineAQ', true, '#006622', false, true, 6);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৬: সমীকরণ (2) গঠন",
+                caption: "△APC-এ অ্যাপোলোনিয়াসের সূত্র প্রয়োগ: AC² + AP² = 2AQ² + 2PQ²",
+                html: `
+                    <div>△APC-এর মধ্যমা <strong>AQ</strong> হওয়ায় অ্যাপোলোনিয়াসের সূত্রানুসারে পাই:</div>
+                    <div class="note-box">
+                        AC² + AP² = 2(AQ² + PQ²)<br>
+                        বা, AC² + AP² = 2AQ² + 2PQ²
+                    </div>
+                    <div class="math-box-green">
+                        ∴ <span class="highlight-green">AC² + AP² = 2AQ² + 2PQ²</span> .......... (2)<br>
+                        <span style="font-size:21px;">[এ্যাপোলোনিয়াসের সূত্রানুসারে]</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    document.getElementById('polyAPC').style.display = 'block';
+                    document.getElementById('hlPC').style.display = 'block';
+                    document.getElementById('tagMedianAQ').style.display = 'block';
+
+                    setStroke('lineAB', '#002D62', 3.5);
+                    setStroke('lineAC', '#006622', 6);
+                    setDisplay('lineAP', true, '#006622', false, false, 6);
+                    setDisplay('lineAQ', true, '#006622', false, false, 6);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৭: সমীকরণ (1) ও (2) যোগকরণ",
+                caption: "প্রাপ্ত দুইটি সমীকরণের বামপক্ষ ও ডানপক্ষ যোগ করা হলো",
+                html: `
+                    <div class="note-box">
+                        সমীকরণ (1): <span class="highlight-red">AB² + AQ² = 2AP² + 2PQ²</span><br>
+                        সমীকরণ (2): <span class="highlight-green">AC² + AP² = 2AQ² + 2PQ²</span>
+                    </div>
+                    <div><strong>(1) ও (2) নং সমীকরণ যোগ করে পাই,</strong></div>
+                    <div class="math-box">
+                        AB² + AC² + AQ² + AP² = 2AP² + 2AQ² + 4PQ²
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    document.getElementById('polyABQ').style.display = 'block';
+                    document.getElementById('polyAPC').style.display = 'block';
+                    setStroke('lineAB', '#002D62', 5.5);
+                    setStroke('lineAC', '#002D62', 5.5);
+                    setDisplay('lineAP', true, '#B30000', false, false, 5);
+                    setDisplay('lineAQ', true, '#006622', false, false, 5);
+                    setDisplay('tickMarks', true);
+                }
+            },
+            {
+                heading: "স্লাইড ৮: পক্ষান্তর ও চূড়ান্ত প্রমাণ",
+                caption: "সম্পূর্ণ প্রমাণিত: AB² + AC² = AP² + AQ² + 4PQ²",
+                html: `
+                    <div>পূর্ববর্তী লাইন থেকে <strong>AP²</strong> ও <strong>AQ²</strong> ডানপক্ষে পক্ষান্তর করে পাই:</div>
+                    <div class="note-box">
+                        AB² + AC² = 2AP² − AP² + 2AQ² − AQ² + 4PQ²
+                    </div>
+                    <div class="math-box-green">
+                        সুতরাং, <span class="highlight-navy">AB² + AC²</span> = <span class="highlight-red">AP² + AQ² + 4PQ²</span>. <strong>(প্রমাণিত)</strong>
+                    </div>
+                    <div style="font-size:21px; color:#4B0082;">
+                        ✓ বোর্ড পরীক্ষার খাতায় লেখার জন্য সম্পূর্ণ উপপাদ্যটি প্রস্তুত!
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagramStyles();
+                    setStroke('lineAB', '#002D62', 6);
+                    setStroke('lineAC', '#002D62', 6);
+                    setDisplay('lineAP', true, '#B30000', false, true, 5.5);
+                    setDisplay('lineAQ', true, '#4B0082', false, true, 5.5);
+                    setDisplay('tickMarks', true);
+                }
+            }
+        ];
+
+        function resetDiagramStyles() {
+            document.getElementById('polyABQ').style.display = 'none';
+            document.getElementById('polyAPC').style.display = 'none';
+            document.getElementById('hlBQ').style.display = 'none';
+            document.getElementById('hlPC').style.display = 'none';
+            document.getElementById('tagMedianAP').style.display = 'none';
+            document.getElementById('tagMedianAQ').style.display = 'none';
+
+            setStroke('lineAB', '#002D62', 5);
+            setStroke('lineAC', '#002D62', 5);
+            setStroke('lineBC', '#002D62', 5);
+
+            const ap = document.getElementById('lineAP');
+            const aq = document.getElementById('lineAQ');
+            ap.classList.remove('draw-anim', 'pulse-line');
+            aq.classList.remove('draw-anim', 'pulse-line');
+        }
+
+        function setStroke(id, color, width) {
+            const el = document.getElementById(id);
+            el.setAttribute('stroke', color);
+            el.setAttribute('stroke-width', width);
+        }
+
+        function setDisplay(id, show, color = null, animateDraw = false, pulse = false, width = 5) {
+            const el = document.getElementById(id);
+            el.style.display = show ? 'block' : 'none';
+            if (color) el.setAttribute('stroke', color);
+            if (width) el.setAttribute('stroke-width', width);
+
+            el.classList.remove('draw-anim', 'pulse-line');
+            void el.offsetWidth; // Reflow to trigger CSS animation cleanly
+            if (animateDraw) el.classList.add('draw-anim');
+            if (pulse) el.classList.add('pulse-line');
+        }
+
+        function initDots() {
+            const dotsContainer = document.getElementById('slideDots');
+            dotsContainer.innerHTML = '';
+            slides.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'dot-btn' + (idx === 0 ? ' active' : '');
+                btn.textContent = banglaDigits[idx];
+                btn.title = 'স্লাইড ' + banglaDigits[idx];
+                btn.onclick = () => goToSlide(idx);
+                dotsContainer.appendChild(btn);
+            });
+        }
+
+        function renderSlide() {
+            const slide = slides[currentSlide];
+            document.getElementById('slideCounter').textContent = `স্লাইড ${banglaDigits[currentSlide]} / ৮`;
+            document.getElementById('slideHeading').textContent = slide.heading;
+            document.getElementById('diagramCaption').textContent = slide.caption;
+
+            const bodyEl = document.getElementById('slideBody');
+            bodyEl.classList.remove('animate-text');
+            void bodyEl.offsetWidth;
+            bodyEl.innerHTML = slide.html;
+            bodyEl.classList.add('animate-text');
+
+            slide.updateDiagram();
+
+            // Update Navigation Buttons
+            document.getElementById('prevBtn').disabled = (currentSlide === 0);
+            document.getElementById('nextBtn').disabled = (currentSlide === slides.length - 1);
+
+            // Update Active Dot
+            const dotBtns = document.querySelectorAll('.dot-btn');
+            dotBtns.forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        function changeSlide(step) {
+            const nextIndex = currentSlide + step;
+            if (nextIndex >= 0 && nextIndex < slides.length) {
+                currentSlide = nextIndex;
+                renderSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            renderSlide();
+        }
+
+        // Keyboard Arrow Support for Classroom Clickers / Laptops
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize Presentation
+        initDots();
+        renderSlide();
+    </script>
+</body>
+</html>
