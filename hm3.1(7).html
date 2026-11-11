@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>জ্যামিতি অ্যানিমেশন - ১২টি স্লাইড</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --gold: #fbbf24;
+    --green: #4ade80;
+    --pink: #f472b6;
+    --text: #f8fafc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hind Siliguri', 'Nirmala UI', sans-serif;
+    background: radial-gradient(circle at top, #1e293b, #0f172a);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  .presentation {
+    width: 100%;
+    max-width: 1050px;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Header */
+  .header {
+    background: rgba(15, 23, 42, 0.8);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .slide-badge {
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+  }
+  .slide-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  /* Main Content Grid */
+  .content {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    min-height: 440px;
+    padding: 25px;
+    gap: 25px;
+    align-items: center;
+  }
+  @media (max-width: 800px) {
+    .content { grid-template-columns: 1fr; }
+  }
+  /* Text & Math Area */
+  .steps-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .step-item {
+    background: rgba(15, 23, 42, 0.55);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 1.15rem;
+    line-height: 1.65;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .step-item.highlight {
+    border-left-color: var(--gold);
+    background: rgba(251, 191, 36, 0.12);
+  }
+  .step-item.success {
+    border-left-color: var(--green);
+    background: rgba(74, 222, 128, 0.15);
+    font-weight: 700;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* Fraction Styling */
+  .frac {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 5px;
+    font-size: 0.95em;
+  }
+  .frac .num {
+    border-bottom: 1.5px solid var(--text);
+    padding: 0 5px 2px;
+  }
+  .frac .den {
+    padding: 2px 5px 0;
+  }
+  sup { font-size: 0.72em; color: var(--gold); }
+
+  /* Geometry SVG Box */
+  .figure-box {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+  }
+  .draw-line {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: draw 0.9s ease forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  .pulse-line {
+    animation: pulseGlow 1.5s infinite alternate;
+  }
+  @keyframes pulseGlow {
+    from { filter: drop-shadow(0 0 2px currentColor); stroke-width: 3.5; }
+    to { filter: drop-shadow(0 0 10px currentColor); stroke-width: 5; }
+  }
+  .svg-label {
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 17px;
+    fill: #ffffff;
+  }
+  .caption {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    text-align: center;
+  }
+
+  /* Controls & Dots */
+  .footer {
+    background: rgba(15, 23, 42, 0.9);
+    padding: 15px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .btn-group { display: flex; gap: 10px; }
+  button {
+    font-family: inherit;
+    background: #334155;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  button:hover:not(:disabled) { background: var(--accent); color: #0f172a; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #0f172a; }
+  .dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #334155;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s;
+  }
+  .dot.active {
+    background: var(--gold);
+    color: #0f172a;
+    transform: scale(1.15);
+  }
+</style>
+</head>
+<body>
+
+<div class="presentation">
+  <div class="header">
+    <span class="slide-title" id="slideTitle">স্লাইড শিরোনাম</span>
+    <span class="slide-badge" id="slideCounter">স্লাইড ১ / ১২</span>
+  </div>
+
+  <div class="content">
+    <div class="steps-box" id="stepsContainer"></div>
+    <div class="figure-box">
+      <svg viewBox="0 0 400 330" id="geoSvg"></svg>
+      <div class="caption" id="figCaption">চিত্রে ΔABC ও এর মধ্যমাত্রয়</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="btn-group">
+      <button id="prevBtn" onclick="changeSlide(-1)">◀ পূর্ববর্তী</button>
+      <button id="playBtn" onclick="toggleAutoPlay()">▶ অটো-প্লে</button>
+      <button class="primary" id="nextBtn" onclick="changeSlide(1)">পরবর্তী ▶</button>
+    </div>
+    <div class="dots" id="dotsContainer"></div>
+  </div>
+</div>
+
+<script>
+const frac = (n, d) => `<span class="frac"><span class="num">${n}</span><span class="den">${d}</span></span>`;
+
+const slides = [
+  {
+    title: "১. মূল সমস্যা ও সংকেত",
+    caption: "প্রশ্ন ০৭ : ত্রিভুজের বাহু ও ভরকেন্দ্রের সম্পর্ক",
+    svgMode: "triangleOnly",
+    steps: [
+      `<strong>প্রশ্ন ০৭ :</strong> ΔABC এর মধ্যমাত্রয় <b>G</b> বিন্দুতে মিলিত হলে প্রমাণ করো যে,<br><b>AB<sup>2</sup> + BC<sup>2</sup> + AC<sup>2</sup> = 3(GA<sup>2</sup> + GB<sup>2</sup> + GC<sup>2</sup>)</b>`,
+      `<strong>সংকেত :</strong> অ্যাপোলোনিয়াসের উপপাদ্যের আলোকে ত্রিভুজের বাহুর দৈর্ঘ্য ও মধ্যমার সম্পর্ক ব্যবহার করতে হবে।`
+    ]
+  },
+  {
+    title: "২. চিত্র অঙ্কন ও বিশেষ নির্বচন",
+    caption: "AD, BE ও CF মধ্যমাত্রয় G বিন্দুতে মিলিত হয়েছে",
+    svgMode: "allMedians",
+    steps: [
+      `<strong>বিশেষ নির্বচন :</strong> দেওয়া আছে, ΔABC এর <b>AD, BE</b> ও <b>CF</b> মধ্যমাত্রয় <b>G</b> বিন্দুতে মিলিত হয়েছে।`,
+      `প্রমাণ করতে হবে যে,<br><b>AB<sup>2</sup> + BC<sup>2</sup> + CA<sup>2</sup> = 3(GA<sup>2</sup> + GB<sup>2</sup> + GC<sup>2</sup>)</b>`
+    ]
+  },
+  {
+    title: "৩. প্রমাণের শুরু (অ্যাপোলোনিয়াসের উপপাদ্য)",
+    caption: "হাইলাইট: AB, AC বাহু এবং AD মধ্যমা ও CD অংশ",
+    svgMode: "apolloniusAD",
+    steps: [
+      `<strong>প্রমাণ :</strong> ΔABC-এ <b>AD</b> একটি মধ্যমা (যেখানে D, BC বাহুর মধ্যবিন্দু)।`,
+      `অ্যাপোলোনিয়াসের উপপাদ্য অনুসারে পাই,`,
+      `<div class="highlight"><b>AB<sup>2</sup> + AC<sup>2</sup> = 2AD<sup>2</sup> + 2CD<sup>2</sup></b></div>`
+    ]
+  },
+  {
+    title: "৪. CD ও BC বাহুর সম্পর্ক প্রতিস্থাপন",
+    caption: "D বিন্দু BC এর মধ্যবিন্দু হওয়ায় CD = ½ BC",
+    svgMode: "midpointBC",
+    steps: [
+      `যেহেতু AD মধ্যমা, তাই <b>CD = ${frac("1", "2")} BC</b>`,
+      `মান বসিয়ে পাই:<br>AB<sup>2</sup> + AC<sup>2</sup> = 2AD<sup>2</sup> + 2(${frac("1", "2")} BC)<sup>2</sup>`,
+      `বা, AB<sup>2</sup> + AC<sup>2</sup> = 2AD<sup>2</sup> + 2 · ${frac("1", "4")} BC<sup>2</sup>`,
+      `বা, <b>AB<sup>2</sup> + AC<sup>2</sup> = 2AD<sup>2</sup> + ${frac("1", "2")} BC<sup>2</sup></b>`
+    ]
+  },
+  {
+    title: "৫. AD² এর মান নির্ণয়",
+    caption: "প্রথম মধ্যমা AD এর বর্গের সমীকরণ",
+    svgMode: "onlyAD",
+    steps: [
+      `পক্ষান্তর করে পাই,<br>2AD<sup>2</sup> = AB<sup>2</sup> + AC<sup>2</sup> − ${frac("1", "2")} BC<sup>2</sup>`,
+      `বা, 2AD<sup>2</sup> = ${frac("2AB<sup>2</sup> + 2AC<sup>2</sup> − BC<sup>2</sup>", "2")}`,
+      `সুতরাং, <b>AD<sup>2</sup> = ${frac("2AB<sup>2</sup> + 2AC<sup>2</sup> − BC<sup>2</sup>", "4")}</b>`
+    ]
+  },
+  {
+    title: "৬. অনুরূপভাবে BE² ও CF² নির্ণয়",
+    caption: "অপর দুটি মধ্যমা BE (সবুজ) এবং CF (গোলাপি)",
+    svgMode: "otherMedians",
+    steps: [
+      `একইভাবে অপর দুটি মধ্যমার জন্য পাই:`,
+      `অনুরূপভাবে, <b>BE<sup>2</sup> = ${frac("2AB<sup>2</sup> + 2BC<sup>2</sup> − AC<sup>2</sup>", "4")}</b>`,
+      `এবং <b>CF<sup>2</sup> = ${frac("2BC<sup>2</sup> + 2AC<sup>2</sup> − AB<sup>2</sup>", "4")}</b>`
+    ]
+  },
+  {
+    title: "৭. তিনটি মধ্যমার বর্গের যোগফল",
+    caption: "AD², BE² ও CF² একত্রে যোগ করা হলো",
+    svgMode: "allMediansGlow",
+    steps: [
+      `এখন তিনটি মধ্যমার বর্গ যোগ করে পাই:`,
+      `<b>∴ AD<sup>2</sup> + BE<sup>2</sup> + CF<sup>2</sup> =</b><br>
+       ${frac("2AB<sup>2</sup> + 2AC<sup>2</sup> − BC<sup>2</sup>", "4")} + 
+       ${frac("2AB<sup>2</sup> + 2BC<sup>2</sup> − AC<sup>2</sup>", "4")} + 
+       ${frac("2BC<sup>2</sup> + 2AC<sup>2</sup> − AB<sup>2</sup>", "4")}`,
+      `লবগুলোর সদৃশ পদগুলো যোগ করলে: (4AB<sup>2</sup> − AB<sup>2</sup>) = 3AB<sup>2</sup> ইত্যাদি।`
+    ]
+  },
+  {
+    title: "৮. সমীকরণ (1) গঠন",
+    caption: "ত্রিভুজের মধ্যমাত্রয় ও বাহুত্রয়ের সম্পর্ক",
+    svgMode: "allMediansGlow",
+    steps: [
+      `যোগফল সরলীকরণ করে পাই:<br>AD<sup>2</sup> + BE<sup>2</sup> + CF<sup>2</sup> = ${frac("3(AB<sup>2</sup> + BC<sup>2</sup> + AC<sup>2</sup>)", "4")}`,
+      `উভয়পক্ষকে 4 দ্বারা গুণ করে পাই:`,
+      `<b>4(AD<sup>2</sup> + BE<sup>2</sup> + CF<sup>2</sup>) = 3(AB<sup>2</sup> + BC<sup>2</sup> + AC<sup>2</sup>) ....... (1)</b>`
+    ]
+  },
+  {
+    title: "৯. ভরকেন্দ্র G এর ২ : ১ অনুপাত ধর্ম",
+    caption: "ভরকেন্দ্র G মধ্যমা AD-কে ২ : ১ অনুপাতে বিভক্ত করে",
+    svgMode: "ratioAD",
+    steps: [
+      `আমরা জানি, ত্রিভুজের ভরকেন্দ্র <b>G</b> মধ্যমাত্রয়কে <b>2 : 1</b> অনুপাতে বিভক্ত করে।`,
+      `অর্থাৎ AD মধ্যমার মোট ৩ ভাগের ২ ভাগ হলো AG।`,
+      `এখন, <b>AG = ${frac("2", "3")} AD</b>`
+    ]
+  },
+  {
+    title: "১০. AG ও AD এর বর্গের সম্পর্ক",
+    caption: "4AD² এর পরিবর্তে 9AG² নির্ণয়",
+    svgMode: "ratioAD",
+    steps: [
+      `AG = ${frac("2", "3")} AD সমীকরণটি আড়াআড়ি গুণ করে পাই:`,
+      `বা, <b>3AG = 2AD</b>`,
+      `উভয়পক্ষকে বর্গ করে পাই:<br><b>∴ 9AG<sup>2</sup> = 4AD<sup>2</sup></b>`
+    ]
+  },
+  {
+    title: "১১. অনুরূপভাবে BG ও GC এর সম্পর্ক",
+    caption: "GA, GB এবং GC অংশগুলো হাইলাইট করা হয়েছে",
+    svgMode: "centroidSegments",
+    steps: [
+      `একইভাবে অপর দুটি মধ্যমার ক্ষেত্রেও পাই:`,
+      `অনুরূপভাবে, <b>9BG<sup>2</sup> = 4BE<sup>2</sup></b>`,
+      `এবং <b>9GC<sup>2</sup> = 4CF<sup>2</sup></b>`,
+      `[লক্ষ্য করুন: AG<sup>2</sup> = GA<sup>2</sup>, BG<sup>2</sup> = GB<sup>2</sup> এবং GC<sup>2</sup> একই নির্দেশ করে]`
+    ]
+  },
+  {
+    title: "১২. চূড়ান্ত প্রতিস্থাপন ও প্রমাণ",
+    caption: "সম্পূর্ণ জ্যামিতিক উপপাদ্যটি প্রমাণিত হলো!",
+    svgMode: "finalCelebration",
+    steps: [
+      `(1) নং সমীকরণ <b>4AD<sup>2</sup> + 4BE<sup>2</sup> + 4CF<sup>2</sup> = 3(AB<sup>2</sup> + BC<sup>2</sup> + AC<sup>2</sup>)</b>-এ মান বসিয়ে পাই:`,
+      `<b>3(AB<sup>2</sup> + BC<sup>2</sup> + CA<sup>2</sup>) = 9(GA<sup>2</sup> + GB<sup>2</sup> + GC<sup>2</sup>)</b>`,
+      `উভয়পক্ষকে 3 দ্বারা ভাগ করে পাই:<br><span style="color:#4ade80;font-size:1.22rem;">সুতরাং, AB<sup>2</sup> + BC<sup>2</sup> + CA<sup>2</sup> = 3(GA<sup>2</sup> + GB<sup>2</sup> + GC<sup>2</sup>). (প্রমাণিত)</span>`
+    ]
+  }
+];
+
+// Exact mathematical coordinates: A(195,45), B(60,285), C(345,285), D(202.5,285), E(270,165), F(127.5,165), G(200,205)
+function renderSVG(mode) {
+  const svg = document.getElementById("geoSvg");
+  let html = "";
+
+  const line = (x1,y1,x2,y2,color="#94a3b8",width=2.5,cls="") =>
+    `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${width}" stroke-linecap="round" class="${cls}"/>`;
+  const dot = (x,y,color="#fbbf24",r=4.5) =>
+    `<circle cx="${x}" cy="${y}" r="${r}" fill="${color}"/>`;
+  const txt = (x,y,t,color="#ffffff") =>
+    `<text x="${x}" y="${y}" class="svg-label" style="fill:${color}">${t}</text>`;
+
+  // Base Triangle
+  const baseColor = (mode === "finalCelebration") ? "#38bdf8" : "#cbd5e1";
+  html += line(195,45, 60,285, baseColor, 3, mode==="triangleOnly"?"draw-line":"");
+  html += line(60,285, 345,285, baseColor, 3, mode==="triangleOnly"?"draw-line":"");
+  html += line(345,285, 195,45, baseColor, 3, mode==="triangleOnly"?"draw-line":"");
+
+  // Mode specific overlays
+  if (mode === "allMedians" || mode === "allMediansGlow" || mode === "finalCelebration") {
+    const cls = mode === "allMedians" ? "draw-line" : "pulse-line";
+    html += line(195,45, 202.5,285, "#38bdf8", 2.5, cls);
+    html += line(60,285, 270,165, "#4ade80", 2.5, cls);
+    html += line(345,285, 127.5,165, "#f472b6", 2.5, cls);
+  }
+  if (mode === "apolloniusAD") {
+    html += line(195,45, 60,285, "#fbbf24", 4, "pulse-line");
+    html += line(195,45, 345,285, "#fbbf24", 4, "pulse-line");
+    html += line(195,45, 202.5,285, "#38bdf8", 4, "draw-line");
+    html += line(202.5,285, 345,285, "#f472b6", 4.5, "pulse-line");
+  }
+  if (mode === "midpointBC") {
+    html += line(195,45, 202.5,285, "#38bdf8", 2.5);
+    html += line(60,285, 345,285, "#4ade80", 4);
+    html += line(202.5,285, 345,285, "#fbbf24", 5, "pulse-line");
+  }
+  if (mode === "onlyAD") {
+    html += line(195,45, 202.5,285, "#38bdf8", 4.5, "pulse-line");
+  }
+  if (mode === "otherMedians") {
+    html += line(195,45, 202.5,285, "#64748b", 2);
+    html += line(60,285, 270,165, "#4ade80", 4, "pulse-line");
+    html += line(345,285, 127.5,165, "#f472b6", 4, "pulse-line");
+  }
+  if (mode === "ratioAD") {
+    html += line(60,285, 270,165, "#475569", 1.8);
+    html += line(345,285, 127.5,165, "#475569", 1.8);
+    html += line(195,45, 200,205, "#4ade80", 5, "pulse-line");
+    html += line(200,205, 202.5,285, "#fbbf24", 5);
+    html += txt(212, 135, "2", "#4ade80");
+    html += txt(212, 255, "1", "#fbbf24");
+  }
+  if (mode === "centroidSegments") {
+    html += line(195,45, 202.5,285, "#475569", 2);
+    html += line(60,285, 270,165, "#475569", 2);
+    html += line(345,285, 127.5,165, "#475569", 2);
+    html += line(195,45, 200,205, "#38bdf8", 4.5, "pulse-line");
+    html += line(60,285, 200,205, "#4ade80", 4.5, "pulse-line");
+    html += line(345,285, 200,205, "#f472b6", 4.5, "pulse-line");
+  }
+
+  // Vertices & Labels
+  html += dot(195,45,"#fbbf24") + txt(188,30,"A");
+  html += dot(60,285,"#fbbf24") + txt(38,295,"B");
+  html += dot(345,285,"#fbbf24") + txt(355,295,"C");
+
+  if (mode !== "triangleOnly") {
+    html += dot(202.5,285,"#38bdf8",4) + txt(196,312,"D","#38bdf8");
+  }
+  if (["allMedians","otherMedians","allMediansGlow","ratioAD","centroidSegments","finalCelebration"].includes(mode)) {
+    html += dot(270,165,"#4ade80",4) + txt(282,168,"E","#4ade80");
+    html += dot(127.5,165,"#f472b6",4) + txt(104,168,"F","#f472b6");
+    html += dot(200,205,"#fbbf24",6) + txt(208,200,"G","#fbbf24");
+  }
+
+  svg.innerHTML = html;
+}
+
+let currentSlide = 0;
+let autoTimer = null;
+
+function showSlide(index) {
+  currentSlide = index;
+  const s = slides[index];
+  document.getElementById("slideTitle").textContent = s.title;
+  document.getElementById("slideCounter").textContent = `স্লাইড ${index + 1} / ${slides.length}`;
+  document.getElementById("figCaption").textContent = s.caption;
+
+  const container = document.getElementById("stepsContainer");
+  container.innerHTML = "";
+  s.steps.forEach((stepHtml, i) => {
+    const div = document.createElement("div");
+    div.className = "step-item" + (index === 11 && i === 2 ? " success" : "");
+    div.style.animationDelay = `${i * 0.45}s`;
+    div.innerHTML = stepHtml;
+    container.appendChild(div);
+  });
+
+  renderSVG(s.svgMode);
+
+  document.getElementById("prevBtn").disabled = index === 0;
+  document.getElementById("nextBtn").disabled = index === slides.length - 1;
+
+  document.querySelectorAll(".dot").forEach((d, idx) => {
+    d.classList.toggle("active", idx === index);
+  });
+}
+
+function changeSlide(dir) {
+  const next = currentSlide + dir;
+  if (next >= 0 && next < slides.length) showSlide(next);
+}
+
+function toggleAutoPlay() {
+  const btn = document.getElementById("playBtn");
+  if (autoTimer) {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    btn.textContent = "▶ অটো-প্লে";
+  } else {
+    btn.textContent = "⏸ বিরতি";
+    autoTimer = setInterval(() => {
+      if (currentSlide < slides.length - 1) {
+        changeSlide(1);
+      } else {
+        toggleAutoPlay();
+      }
+    }, 4800);
+  }
+}
+
+// Init dots & keyboard shortcuts
+const dotsBox = document.getElementById("dotsContainer");
+slides.forEach((_, idx) => {
+  const d = document.createElement("div");
+  d.className = "dot";
+  d.textContent = idx + 1;
+  d.onclick = () => showSlide(idx);
+  dotsBox.appendChild(d);
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") changeSlide(1);
+  if (e.key === "ArrowLeft") changeSlide(-1);
+});
+
+showSlide(0);
+</script>
+</body>
+</html>
