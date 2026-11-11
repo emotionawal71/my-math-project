@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>৭ম শ্রেণি গণিত: ২য় অধ্যায় (অনুপাত ও শতকরা) - MCQ স্লাইড</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SutonnyMJ', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Presentation Screen Container */
+    #presentation-container {
+      width: 95vw;
+      max-width: 1250px;
+      height: 85vh;
+      background-color: #FFFFFF;
+      border: 4px solid #002B5B;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #002B5B;
+      padding-bottom: 15px;
+    }
+
+    .chapter-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #002B5B;
+    }
+
+    .slide-indicator {
+      font-size: 24px;
+      font-weight: 800;
+      background-color: #002B5B;
+      color: #FFFFFF;
+      padding: 6px 18px;
+      border-radius: 8px;
+    }
+
+    /* Slide Content Body */
+    .slide-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+    }
+
+    .badge-q {
+      background-color: #8B0000;
+      color: #FFFFFF;
+    }
+
+    .badge-ans {
+      background-color: #006400;
+      color: #FFFFFF;
+    }
+
+    .content-title {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 35px;
+      color: #000000;
+    }
+
+    /* MCQ Horizontal Grid Layout */
+    .options-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .option-card {
+      flex: 1 1 45%;
+      background-color: #F8F9FA;
+      border: 3px solid #000000;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #000000;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Explanation Styling */
+    .explanation-box {
+      background-color: #F4F8FA;
+      border-left: 8px solid #006400;
+      padding: 25px 30px;
+      border-radius: 6px;
+    }
+
+    .correct-ans {
+      font-size: 36px;
+      font-weight: 900;
+      color: #006400;
+      margin-bottom: 20px;
+    }
+
+    .exp-detail {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #111111;
+    }
+
+    /* Bottom Navigation Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid #E0E0E0;
+      padding-top: 20px;
+    }
+
+    .nav-btn {
+      background-color: #002B5B;
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 800;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-btn:hover {
+      background-color: #004085;
+    }
+
+    .nav-btn:disabled {
+      background-color: #CCCCCC;
+      cursor: not-allowed;
+    }
+
+    .shortcut-tip {
+      font-size: 16px;
+      color: #555555;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div id="presentation-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="chapter-title">৭ম শ্রেণি গণিত | ২য় অধ্যায়: অনুপাত ও শতকরা</div>
+    <div class="slide-indicator" id="slide-num">স্লাইড: ১ / ৩০</div>
+  </div>
+
+  <!-- Dynamic Slide Body -->
+  <div class="slide-body" id="slide-container">
+    <!-- Slide content will load here -->
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="controls">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">পূর্ববর্তী (Prev)</button>
+    <span class="shortcut-tip">কীবোর্ডের Left / Right arrow দিয়ে স্লাইড পরিবর্তন করা যায়</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">পরবর্তী (Next)</button>
+  </div>
+</div>
+
+<script>
+  // Complete 30 Slides Data (15 Questions + 15 Explanations)
+  const slides = [
+    // 1
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১",
+      title: "দুটি সমজাতীয় রাশির একটি অপরটির তুলনায় কত গুণ বা কত অংশ তা একটি ভগ্নাংশ দ্বারা প্রকাশ করাকে কী বলে?",
+      options: [
+        "(ক) সমানুপাত",
+        "(খ) অনুপাত",
+        "(গ) শতকরা",
+        "(ঘ) ভগ্নাংশ"
+      ]
+    },
+    // 2
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১",
+      correct: "সঠিক উত্তর: (খ) অনুপাত",
+      detail: "ব্যাখ্যা: একই জাতীয় বা সমজাতীয় দুটি রাশির পরিমাণের তুলনাকে একটি ভগ্নাংশ আকারে প্রকাশ করাকে অনুপাত বলে।"
+    },
+    // 3
+    {
+      type: "question",
+      badge: "প্রশ্ন - ২",
+      title: "অনুপাতের একক কোনটি?",
+      options: [
+        "(ক) মিটার",
+        "(খ) গ্রাম",
+        "(গ) কোনো একক নেই",
+        "(ঘ) বর্গমিটার"
+      ]
+    },
+    // 4
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ২",
+      correct: "সঠিক উত্তর: (গ) কোনো একক নেই",
+      detail: "ব্যাখ্যা: অনুপাত হলো দুটি সমজাতীয় রাশির তুলনা। ভাগ প্রক্রিয়ায় সমজাতীয় এককগুলো পরস্পর বাতিল হয়ে যায়, তাই অনুপাতের কোনো একক থাকে না।"
+    },
+    // 5
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৩",
+      title: "৫ : ৮ অনুপাতটিতে পূর্ব রাশি কোনটি?",
+      options: [
+        "(ক) ৫",
+        "(খ) ৮",
+        "(গ) ১৩",
+        "(ঘ) ৪০"
+      ]
+    },
+    // 6
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৩",
+      correct: "সঠিক উত্তর: (ক) ৫",
+      detail: "ব্যাখ্যা: সরল অনুপাতের প্রথম রাশিকে বলা হয় 'পূর্ব রাশি' এবং দ্বিতীয় রাশিকে বলা হয় 'উত্তর রাশি'। এখানে প্রথম রাশি ৫, তাই এটি পূর্ব রাশি।"
+    },
+    // 7
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৪",
+      title: "৪ : ৭ এর ব্যস্ত অনুপাত কোনটি?",
+      options: [
+        "(ক) ৭ : ৪",
+        "(খ) ৮ : ১৪",
+        "(গ) ২ : ৩",
+        "(ঘ) ৪ : ১১"
+      ]
+    },
+    // 8
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৪",
+      correct: "সঠিক উত্তর: (ক) ৭ : ৪",
+      detail: "ব্যাখ্যা: সরল অনুপাতের পূর্ব রাশিকে উত্তর রাশি এবং উত্তর রাশিকে পূর্ব রাশি করে প্রাপ্ত অনুপাতকে পূর্বের অনুপাতের ব্যস্ত অনুপাত বলে। সুতরাং ৪ : ৭ এর ব্যস্ত অনুপাত ৭ : ৪।"
+    },
+    // 9
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৫",
+      title: "যে সরল অনুপাতের পূর্ব রাশি ও উত্তর রাশি পরস্পর সমান, তাকে কী অনুপাত বলে?",
+      options: [
+        "(ক) গুরু অনুপাত",
+        "(খ) লঘু অনুপাত",
+        "(গ) একক অনুপাত",
+        "(ঘ) ব্যস্ত অনুপাত"
+      ]
+    },
+    // 10
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৫",
+      correct: "সঠিক উত্তর: (গ) একক অনুপাত",
+      detail: "ব্যাখ্যা: যে সরল অনুপাতের পূর্ব রাশি ও উত্তর রাশি উভয়ই সমান হয় (যেমন ১ : ১ বা ৫ : ৫), তাকে একক অনুপাত বলে।"
+    },
+    // 11
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৬",
+      title: "নিচের কোন অনুপাতটি একটি লঘু অনুপাত?",
+      options: [
+        "(ক) ৭ : ৩",
+        "(খ) ৯ : ৫",
+        "(গ) ৩ : ৭",
+        "(ঘ) ৪ : ৪"
+      ]
+    },
+    // 12
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৬",
+      correct: "সঠিক উত্তর: (গ) ৩ : ৭",
+      detail: "ব্যাখ্যা: যে সরল অনুপাতের পূর্ব রাশি উত্তর রাশির চেয়ে ছোট, তাকে লঘু অনুপাত বলে। এখানে ৩ : ৭ অনুপাতে পূর্ব রাশি (৩) < উত্তর রাশি (৭)।"
+    },
+    // 13
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৭",
+      title: "২ : ৩ এবং ৪ : ৫ এর মিশ্র অনুপাত কত?",
+      options: [
+        "(ক) ৬ : ৮",
+        "(খ) ৮ : ১৫",
+        "(গ) ১০ : ১২",
+        "(ঘ) ৫ : ৬"
+      ]
+    },
+    // 14
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৭",
+      correct: "সঠিক উত্তর: (খ) ৮ : ১৫",
+      detail: "ব্যাখ্যা: মিশ্র অনুপাত = (পূর্ব রাশিগুলোর গুণফল) : (উত্তর রাশিগুলোর গুণফল)। এখানে পূর্ব রাশিগুলোর গুণফল = ২ × ৪ = ৮ এবং উত্তর রাশিগুলোর গুণফল = ৩ × ৫ = ১৫। সুতরাং মিশ্র অনুপাত = ৮ : ১৫।"
+    },
+    // 15
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৮",
+      title: "সমানুপাতের ক্ষেত্রে নিচের কোন সম্পর্কটি সর্বদা সঠিক?",
+      options: [
+        "(ক) ১ম রাশি × ৪র্থ রাশি = ২য় রাশি × ৩য় রাশি",
+        "(খ) ১ম রাশি × ২য় রাশি = ৩য় রাশি × ৪র্থ রাশি",
+        "(গ) ১ম রাশি + ৪র্থ রাশি = ২য় রাশি + ৩য় রাশি",
+        "(ঘ) ১ম রাশি ÷ ৪র্থ রাশি = ২য় রাশি ÷ ৩য় রাশি"
+      ]
+    },
+    // 16
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৮",
+      correct: "সঠিক উত্তর: (ক) ১ম রাশি × ৪র্থ রাশি = ২য় রাশি × ৩য় রাশি",
+      detail: "ব্যাখ্যা: সমানুপাতের মৌলিক নিয়ম অনুযায়ী, প্রান্তীয় রাশি দুটির গুণফল সর্বদা মধ্য রাশি দুটির গুণফলের সমান হয়। অর্থাৎ, ১ম রাশি × ৪র্থ রাশি = ২য় রাশি × ৩য় রাশি।"
+    },
+    // 17
+    {
+      type: "question",
+      badge: "প্রশ্ন - ৯",
+      title: "৩, ৬ এবং ৭ এর চতুর্থ সমানুপাতী পদটি কত?",
+      options: [
+        "(ক) ১২",
+        "(খ) ১৪",
+        "(গ) ২১",
+        "(ঘ) ১৮"
+      ]
+    },
+    // 18
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ৯",
+      correct: "সঠিক উত্তর: (খ) ১৪",
+      detail: "ব্যাখ্যা: ৪র্থ রাশি = (২য় রাশি × ৩য় রাশি) ÷ ১ম রাশি = (৬ × ৭) ÷ ৩ = ৪২ ÷ ৩ = ১৪।"
+    },
+    // 19
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১০",
+      title: "২৫% কে সাধারণ ভগ্নাংশে প্রকাশ করলে কত হবে?",
+      options: [
+        "(ক) ১/২",
+        "(খ) ১/৩",
+        "(গ) ১/৪",
+        "(ঘ) ১/৫"
+      ]
+    },
+    // 20
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১০",
+      correct: "সঠিক উত্তর: (গ) ১/৪",
+      detail: "ব্যাখ্যা: শতকরা অর্থ প্রতি একশতে। অতএব ২৫% = ২৫/১০০। লব ও হরকে ২৫ দ্বারা ভাগ করলে পাওয়া যায় ১/৪।"
+    },
+    // 21
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১১",
+      title: "৩/৫ কে শতকরায় রূপান্তর করলে কত হবে?",
+      options: [
+        "(ক) ৩০%",
+        "(খ) ৫০%",
+        "(গ) ৬০%",
+        "(ঘ) ৭৫%"
+      ]
+    },
+    // 22
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১১",
+      correct: "সঠিক উত্তর: (গ) ৬০%",
+      detail: "ব্যাখ্যা: কোনো ভগ্নাংশকে শতকরায় নিতে ১০০% দিয়ে গুণ করতে হয়। সুতরাং (৩/৫ × ১০০)% = (৩ × ২০)% = ৬০%।"
+    },
+    // 23
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১২",
+      title: "১ : ৪ অনুপাতটিকে শতকরায় প্রকাশ করলে কত হবে?",
+      options: [
+        "(ক) ১০%",
+        "(খ) ২০%",
+        "(গ) ২৫%",
+        "(ঘ) ৪০%"
+      ]
+    },
+    // 24
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১২",
+      correct: "সঠিক উত্তর: (গ) ২৫%",
+      detail: "ব্যাখ্যা: ১ : ৪ = ১/৪। শতকরা রূপান্তর করতে: (১/৪ × ১০০)% = ২৫%।"
+    },
+    // 25
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৩",
+      title: "২০০ টাকার ১৫% সমান কত টাকা?",
+      options: [
+        "(ক) ১৫ টাকা",
+        "(খ) ৩০ টাকা",
+        "(গ) ৪৫ টাকা",
+        "(ঘ) ২০ টাকা"
+      ]
+    },
+    // 26
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৩",
+      correct: "সঠিক উত্তর: (খ) ৩০ টাকা",
+      detail: "ব্যাখ্যা: ২০০ টাকার ১৫% = ২০০ × (১৫/১০০) = ২ × ১৫ = ৩০ টাকা।"
+    },
+    // 27
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৪",
+      title: "৫০ টাকা পিতা ও পুত্রের মধ্যে ৩ : ২ অনুপাতে ভাগ করলে পুত্র কত টাকা পাবে?",
+      options: [
+        "(ক) ৩০ টাকা",
+        "(খ) ২০ টাকা",
+        "(গ) ২৫ টাকা",
+        "(ঘ) ১৫ টাকা"
+      ]
+    },
+    // 28
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৪",
+      correct: "সঠিক উত্তর: (খ) ২০ টাকা",
+      detail: "ব্যাখ্যা: অনুপাতের রাশিগুলোর যোগফল = ৩ + ২ = ৫। পুত্রের অংশ = মোট টাকার ২/৫ অংশ = ৫০ এর ২/৫ = ২০ টাকা।"
+    },
+    // 29
+    {
+      type: "question",
+      badge: "প্রশ্ন - ১৫",
+      title: "একটি শ্রেণিতে মোট ৫০ জন শিক্ষার্থীর মধ্যে ৬০% ছাত্রী। ঐ শ্রেণিতে ছাত্রের সংখ্যা কত?",
+      options: [
+        "(ক) ৩০ জন",
+        "(খ) ২০ জন",
+        "(গ) ২৫ জন",
+        "(ঘ) ৩৫ জন"
+      ]
+    },
+    // 30
+    {
+      type: "answer",
+      badge: "উত্তর ও ব্যাখ্যা - ১৫",
+      correct: "সঠিক উত্তর: (খ) ২০ জন",
+      detail: "ব্যাখ্যা: ছাত্রী সংখ্যা = ৫০ এর ৬০% = ৫০ × (৬০/১০০) = ৩০ জন। অতএব ছাত্রের সংখ্যা = ৫০ - ৩০ = ২০ জন। (অথবা, ছাত্রের শতকরা হার = ১০০% - ৬০% = ৪০%, ৫০ এর ৪০% = ২০ জন)।"
+    }
+  ];
+
+  // Bengali Numerals Converter
+  function toBengaliNumber(num) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bengaliDigits[d] || d).join('');
+  }
+
+  let currentSlide = 0;
+
+  function renderSlide() {
+    const slide = slides[currentSlide];
+    const container = document.getElementById("slide-container");
+    const slideNum = document.getElementById("slide-num");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    // Update Slide Counter
+    slideNum.innerText = "স্লাইড: " + toBengaliNumber(currentSlide + 1) + " / ৩০";
+
+    // Disable/Enable Nav Buttons
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === slides.length - 1;
+
+    // Render Question or Explanation
+    if (slide.type === "question") {
+      container.innerHTML = `
+        <div class="badge badge-q">${slide.badge}</div>
+        <div class="content-title">${slide.title}</div>
+        <div class="options-grid">
+          <div class="option-card">${slide.options[0]}</div>
+          <div class="option-card">${slide.options[1]}</div>
+          <div class="option-card">${slide.options[2]}</div>
+          <div class="option-card">${slide.options[3]}</div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="badge badge-ans">${slide.badge}</div>
+        <div class="explanation-box">
+          <div class="correct-ans">${slide.correct}</div>
+          <div class="exp-detail">${slide.detail}</div>
+        </div>
+      `;
+    }
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      renderSlide();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      renderSlide();
+    }
+  }
+
+  // Keyboard navigation support (Arrow Keys)
+  window.addEventListener("keydown", function(e) {
+    if (e.key === "ArrowRight" || e.key === "Space") {
+      nextSlide();
+    } else if (e.key === "ArrowLeft") {
+      prevSlide();
+    }
+  });
+
+  // Initial load
+  renderSlide();
+</script>
+
+</body>
+</html>
