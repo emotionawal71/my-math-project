@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জ্যামিতিক প্রমাণ: প্রশ্ন ০৬ (৮টি স্লাইড)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #000000;
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            font-weight: 700;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 20px;
+            line-height: 1.55;
+        }
+
+        /* Header Bar */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #000000;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #002D62;
+        }
+
+        .slide-badge {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #B30000;
+            padding: 6px 18px;
+            border: 3px solid #000000;
+            border-radius: 8px;
+        }
+
+        /* Main Presentation Layout */
+        .presentation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 22px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        /* Left SVG Panel */
+        .diagram-panel {
+            background-color: #FFFFFF;
+            border: 4px solid #002D62;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .svg-wrapper {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            background-color: #FFFFFF;
+            overflow: visible;
+        }
+
+        .diagram-caption {
+            width: 100%;
+            text-align: center;
+            font-size: 21px;
+            font-weight: 700;
+            color: #000000;
+            border-top: 3px solid #000000;
+            padding-top: 10px;
+            margin-top: 6px;
+        }
+
+        /* Right Content Panel */
+        .content-panel {
+            background-color: #FFFFFF;
+            border: 4px solid #000000;
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .slide-heading {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: #002D62;
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            border: 3px solid #000000;
+        }
+
+        .slide-body {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .math-box {
+            border: 3px solid #B30000;
+            background-color: #FFFFFF;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .math-box-green {
+            border: 3px solid #006622;
+            background-color: #FFFFFF;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .note-box {
+            border-left: 8px solid #4B0082;
+            border-top: 2px solid #000000;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 10px 14px;
+            font-size: 22px;
+            color: #000000;
+            background-color: #FFFFFF;
+        }
+
+        .highlight-red { color: #B30000; font-weight: 700; }
+        .highlight-navy { color: #002D62; font-weight: 700; }
+        .highlight-green { color: #006622; font-weight: 700; }
+        .highlight-purple { color: #4B0082; font-weight: 700; }
+
+        /* Animations */
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-text {
+            animation: fadeInSlide 0.35s ease-out forwards;
+        }
+
+        @keyframes drawLine {
+            from { stroke-dashoffset: 380; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        .draw-anim {
+            stroke-dasharray: 380;
+            animation: drawLine 0.75s ease-out forwards;
+        }
+
+        @keyframes pulseStroke {
+            0% { stroke-width: 5; }
+            50% { stroke-width: 8; }
+            100% { stroke-width: 5; }
+        }
+
+        .pulse-line {
+            animation: pulseStroke 1.4s infinite ease-in-out;
+        }
+
+        /* Footer Navigation Bar */
+        .controls-bar {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 4px solid #000000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            padding: 10px 22px;
+            border: 3px solid #000000;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #FFFFFF;
+            color: #000000;
+            transition: transform 0.1s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background-color: #002D62;
+            color: #FFFFFF;
+        }
+
+        .btn-reset {
+            background-color: #B30000;
+            color: #FFFFFF;
+        }
+
+        .btn:disabled {
+            background-color: #FFFFFF;
+            color: #000000;
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .slide-dots {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dot-btn {
+            font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+            width: 44px;
+            height: 44px;
+            font-size: 22px;
+            font-weight: 700;
+            border: 3px solid #000000;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+            color: #000000;
+            cursor: pointer;
+        }
+
+        .dot-btn.active {
+            background-color: #006622;
+            color: #FFFFFF;
+        }
+
+        @media (max-width: 960px) {
+            .presentation-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-title {
+                font-size: 26px;
+            }
+            .slide-heading {
+                font-size: 24px;
+            }
+            .slide-body, .math-box, .math-box-green {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header-bar">
+        <div class="main-title">উচ্চতর গণিত (নবম-দশম শ্রেণি) — প্রশ্ন ০৬ এর প্রমাণ</div>
+        <div class="slide-badge" id="slideCounter">স্লাইড ১ / ৮</div>
+    </header>
+
+    <!-- Main Presentation Container -->
+    <main class="presentation-grid">
+        <!-- Left: Geometric SVG Diagram -->
+        <section class="diagram-panel">
+            <div class="svg-wrapper">
+                <svg viewBox="0 0 500 415" id="geoSvg" aria-label="সমদ্বিবাহু ত্রিভুজ ABC এর জ্যামিতিক চিত্র">
+                    <!-- Highlighted Right Triangles -->
+                    <polygon id="polyAPD" points="250,50 175,310 250,310" fill="#006622" fill-opacity="0.11" stroke="none" style="display:none;" />
+                    <polygon id="polyABD" points="250,50 75,310 250,310" fill="#B30000" fill-opacity="0.10" stroke="none" style="display:none;" />
+
+                    <!-- Base Line BC -->
+                    <line id="lineBC" x1="75" y1="310" x2="425" y2="310" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+
+                    <!-- Highlighted Base Segments -->
+                    <line id="hlPD" x1="175" y1="310" x2="250" y2="310" stroke="#006622" stroke-width="7" style="display:none;" />
+                    <line id="hlBD" x1="75" y1="310" x2="250" y2="310" stroke="#B30000" stroke-width="7" style="display:none;" />
+                    <line id="hlBP" x1="75" y1="310" x2="175" y2="310" stroke="#B30000" stroke-width="7" style="display:none;" />
+                    <line id="hlPC" x1="175" y1="310" x2="425" y2="310" stroke="#006622" stroke-width="7" style="display:none;" />
+
+                    <!-- Equal Sides AB and AC -->
+                    <line id="lineAB" x1="250" y1="50" x2="75" y2="310" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+                    <line id="lineAC" x1="250" y1="50" x2="425" y2="310" stroke="#002D62" stroke-width="5" stroke-linecap="round" />
+
+                    <!-- Equal Side Tick Marks (AB = AC) -->
+                    <g id="ticksABAC" stroke="#002D62" stroke-width="4" stroke-linecap="round">
+                        <!-- Midpoint of AB is (162.5, 180) -->
+                        <line x1="151" y1="173" x2="174" y2="187" />
+                        <!-- Midpoint of AC is (337.5, 180) -->
+                        <line x1="349" y1="173" x2="326" y2="187" />
+                    </g>
+
+                    <!-- Equal Base Half Tick Marks (BD = CD) -->
+                    <g id="ticksBDCD" stroke="#4B0082" stroke-width="4" stroke-linecap="round" style="display:none;">
+                        <!-- On BD -->
+                        <line x1="122" y1="297" x2="122" y2="323" />
+                        <line x1="130" y1="297" x2="130" y2="323" />
+                        <!-- On CD -->
+                        <line x1="334" y1="297" x2="334" y2="323" />
+                        <line x1="342" y1="297" x2="342" y2="323" />
+                    </g>
+
+                    <!-- Construction Lines: AP and Perpendicular AD -->
+                    <line id="lineAP" x1="250" y1="50" x2="175" y2="310" stroke="#4B0082" stroke-width="5" stroke-linecap="round" style="display:none;" />
+                    <line id="lineAD" x1="250" y1="50" x2="250" y2="310" stroke="#B30000" stroke-width="5" stroke-linecap="round" style="display:none;" />
+
+                    <!-- Right Angle Marker at D (∠ADB = 90°) -->
+                    <g id="rightAngleD" style="display:none;">
+                        <polyline points="250,288 228,288 228,310" fill="none" stroke="#B30000" stroke-width="3.5" />
+                        <polyline points="250,288 272,288 272,310" fill="none" stroke="#B30000" stroke-width="3.5" />
+                    </g>
+
+                    <!-- Vertices / Points -->
+                    <circle cx="250" cy="50" r="7" fill="#000000" />
+                    <circle cx="75" cy="310" r="7" fill="#000000" />
+                    <circle id="ptP" cx="175" cy="310" r="7" fill="#4B0082" />
+                    <circle id="ptD" cx="250" cy="310" r="7" fill="#B30000" style="display:none;" />
+                    <circle cx="425" cy="310" r="7" fill="#000000" />
+
+                    <!-- Vertex Labels -->
+                    <text x="250" y="32" text-anchor="middle" font-size="26" font-weight="900" fill="#000000">A</text>
+                    <text x="65" y="348" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">B</text>
+                    <text x="175" y="348" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">P</text>
+                    <text id="lblD" x="250" y="348" text-anchor="middle" font-size="25" font-weight="900" fill="#000000" style="display:none;">D</text>
+                    <text x="432" y="348" text-anchor="middle" font-size="25" font-weight="900" fill="#000000">C</text>
+
+                    <!-- Bottom Visual Brackets for BP and PC (Slide 7 & 8) -->
+                    <g id="bracketBPPC" style="display:none;">
+                        <!-- Bracket BP -->
+                        <path d="M 75,360 L 75,374 L 172,374 L 172,360" fill="none" stroke="#B30000" stroke-width="3.5" />
+                        <text x="123" y="400" text-anchor="middle" font-size="21" font-weight="900" fill="#B30000">BP = BD − PD</text>
+
+                        <!-- Bracket PC -->
+                        <path d="M 178,360 L 178,374 L 425,374 L 425,360" fill="none" stroke="#006622" stroke-width="3.5" />
+                        <text x="302" y="400" text-anchor="middle" font-size="21" font-weight="900" fill="#006622">PC = PD + CD</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="diagram-caption" id="diagramCaption">
+                চিত্র: সমদ্বিবাহু △ABC যেখানে AB = AC এবং ভূমি BC-তে P একটি বিন্দু
+            </div>
+        </section>
+
+        <!-- Right: Step-by-Step Board Exam Proof -->
+        <section class="content-panel">
+            <div class="slide-heading" id="slideHeading">স্লাইড ১: প্রশ্ন ও মূল সমস্যা</div>
+            <div class="slide-body animate-text" id="slideBody">
+                <!-- Dynamic Slide Content injected via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <footer class="controls-bar">
+        <div class="nav-buttons">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)">❮ পূর্ববর্তী ধাপ</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="changeSlide(1)">পরবর্তী ধাপ ❯</button>
+            <button class="btn btn-reset" onclick="goToSlide(0)">পুনরায় শুরু ↺</button>
+        </div>
+        <div class="slide-dots" id="slideDots">
+            <!-- Slide Jump Buttons ১-৮ -->
+        </div>
+    </footer>
+
+    <script>
+        const banglaDigits = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮'];
+        let currentSlide = 0;
+
+        const slides = [
+            {
+                heading: "স্লাইড ১: প্রশ্ন ও সংকেত",
+                caption: "চিত্র: △ABC এর AB = AC এবং ভূমি BC এর উপর P যেকোনো বিন্দু",
+                html: `
+                    <div><span class="highlight-navy">প্রশ্ন ০৬:</span> △ABC এর <strong>AB = AC</strong>। ভূমি BC এর উপর P যেকোনো বিন্দু।</div>
+                    <div class="math-box">
+                        প্রমাণ করো যে,<br>
+                        <span class="highlight-red">AB² − AP² = BP.PC</span>
+                    </div>
+                    <div class="note-box">
+                        <span class="highlight-purple">[সংকেত]:</span> BC এর উপর AD লম্ব আঁক।<br>
+                        তাহলে, <strong>AB² = BD² + AD²</strong> এবং <strong>AP² = PD² + AD²</strong>।
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                }
+            },
+            {
+                heading: "স্লাইড ২: বিশেষ নির্বচন",
+                caption: "বিশেষ নির্বচন: সমদ্বিবাহু △ABC-এ AB = AC এবং P ভূমির উপর একটি বিন্দু",
+                html: `
+                    <div><span class="highlight-navy">সমাধান : বিশেষ নির্বচন :</span></div>
+                    <div>দেওয়া আছে, <strong>△ABC</strong> এর <span class="highlight-navy">AB = AC</span>।</div>
+                    <div>ভূমি <strong>BC</strong> এর উপর <strong>P</strong> যেকোনো বিন্দু।</div>
+                    <div class="math-box">
+                        প্রমাণ করতে হবে যে,<br>
+                        <span class="highlight-red">AB² − AP² = BP.PC.</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    setStroke('lineAB', '#B30000', 6);
+                    setStroke('lineAC', '#B30000', 6);
+                }
+            },
+            {
+                heading: "স্লাইড ৩: অঙ্কন",
+                caption: "অঙ্কন: AD ⊥ BC আঁকা হলো এবং A, P যোগ করা হলো",
+                html: `
+                    <div><span class="highlight-red">অঙ্কন :</span></div>
+                    <div class="math-box">
+                        <strong>A</strong> হতে ভূমি <strong>BC</strong>-এর উপর <span class="highlight-red">AD লম্ব</span> আঁকি<br>
+                        এবং <span class="highlight-purple">A, P</span> যোগ করি।
+                    </div>
+                    <div class="note-box">
+                        ফলে চিত্রে <strong>△APD</strong> এবং <strong>△ABD</strong> দুইটি সমকোণী ত্রিভুজ উৎপন্ন হলো (যেখানে ∠ADB = ৯০°)।
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(true);
+                }
+            },
+            {
+                heading: "স্লাইড ৪: প্রমাণ — সমীকরণ (1) গঠন",
+                caption: "সমকোণী ত্রিভুজ △APD-এ পিথাগোরাসের উপপাদ্য প্রয়োগ",
+                html: `
+                    <div><span class="highlight-green">প্রমাণ (ধাপ ১):</span></div>
+                    <div><strong>APD</strong> সমকোণী ত্রিভুজে (চিত্রে সবুজ অংশে অতিভুজ AP),</div>
+                    <div class="math-box-green">
+                        <span class="highlight-green">AP² = AD² + PD²</span> ....... (1)<br>
+                        <span style="font-size:21px;">[পিথাগোরাসের সূত্র অনুযায়ী]</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(false);
+                    document.getElementById('polyAPD').style.display = 'block';
+                    document.getElementById('hlPD').style.display = 'block';
+                    setStroke('lineAP', '#006622', 6.5, true);
+                    setStroke('lineAD', '#006622', 6);
+                }
+            },
+            {
+                heading: "স্লাইড ৫: প্রমাণ — সমীকরণ (2) গঠন",
+                caption: "সমকোণী ত্রিভুজ △ABD-এ পিথাগোরাসের উপপাদ্য প্রয়োগ",
+                html: `
+                    <div><span class="highlight-red">প্রমাণ (ধাপ ২):</span></div>
+                    <div>আবার, <strong>ABD</strong> সমকোণী ত্রিভুজে (চিত্রে লাল অংশে অতিভুজ AB),</div>
+                    <div class="math-box">
+                        <span class="highlight-red">AB² = AD² + BD²</span> ....... (2)<br>
+                        <span style="font-size:21px;">[পিথাগোরাসের সূত্র অনুযায়ী]</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(false);
+                    document.getElementById('polyABD').style.display = 'block';
+                    document.getElementById('hlBD').style.display = 'block';
+                    setStroke('lineAB', '#B30000', 6.5, true);
+                    setStroke('lineAD', '#B30000', 6);
+                    setStroke('lineAP', '#4B0082', 3.5);
+                }
+            },
+            {
+                heading: "স্লাইড ৬: সমীকরণ বিয়োগ ও উৎপাদকে বিশ্লেষণ",
+                caption: "(2) নং হতে (1) নং সমীকরণ বিয়োগ করে AD² অপসারণ",
+                html: `
+                    <div><strong>(2) নং হতে (1) নং বিয়োগ করে পাই,</strong></div>
+                    <div class="note-box">
+                        AB² − AP² = AD² + BD² − AD² − PD²<br>
+                        বা, <strong>AB² − AP² = BD² − PD²</strong>
+                    </div>
+                    <div class="math-box">
+                        বা, <span class="highlight-navy">AB² − AP² = (BD + PD) (BD − PD)</span><br>
+                        <span style="font-size:20px;">[বীজগণিতের a² − b² = (a + b)(a − b) সূত্র প্রয়োগ করে]</span>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(false);
+                    document.getElementById('hlBD').style.display = 'block';
+                    document.getElementById('hlPD').style.display = 'block';
+                }
+            },
+            {
+                heading: "স্লাইড ৭: সমদ্বিবাহু ত্রিভুজের ধর্ম প্রয়োগ (BD = CD)",
+                caption: "যেহেতু AB = AC এবং AD ⊥ BC, তাই D হলো BC-এর মধ্যবিন্দু (BD = CD)",
+                html: `
+                    <div class="note-box">
+                        সমদ্বিবাহু △ABC-এ AD ⊥ BC হওয়ায় <span class="highlight-purple">BD = CD</span>।<br>
+                        আবার চিত্রানুসারে, <span class="highlight-red">BD − PD = BP</span>।
+                    </div>
+                    <div>পূর্ববর্তী সমীকরণে মান বসিয়ে পাই:</div>
+                    <div class="math-box">
+                        বা, AB² − AP² = (BD + PD) (BD − PD)<br>
+                        বা, <span class="highlight-red">AB² − AP² = (CD + PD) . BP</span> &nbsp; <strong>[∵ BD = CD]</strong>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(false);
+                    document.getElementById('ticksBDCD').style.display = 'block';
+                    document.getElementById('hlBP').style.display = 'block';
+                    document.getElementById('bracketBPPC').style.display = 'block';
+                }
+            },
+            {
+                heading: "স্লাইড ৮: চূড়ান্ত প্রতিস্থাপন ও প্রমাণ",
+                caption: "চিত্রে CD + PD = PC বসিয়ে চূড়ান্ত প্রমাণ সম্পন্ন",
+                html: `
+                    <div>চিত্র হতে স্পষ্ট দেখা যায় যে, <span class="highlight-green">CD + PD = PC</span>।</div>
+                    <div class="note-box">
+                        বা, AB² − AP² = (CD + PD) . BP<br>
+                        বা, <strong>AB² − AP² = PC . BP</strong>
+                    </div>
+                    <div class="math-box-green">
+                        ∴ <span class="highlight-navy">AB² − AP²</span> = <span class="highlight-red">BP</span> · <span class="highlight-green">PC</span>. <strong>(প্রমাণিত)</strong>
+                    </div>
+                `,
+                updateDiagram: () => {
+                    resetDiagram();
+                    showConstruction(false);
+                    document.getElementById('hlBP').style.display = 'block';
+                    document.getElementById('hlPC').style.display = 'block';
+                    document.getElementById('bracketBPPC').style.display = 'block';
+                    setStroke('lineAB', '#002D62', 6);
+                    setStroke('lineAP', '#4B0082', 6);
+                }
+            }
+        ];
+
+        function resetDiagram() {
+            document.getElementById('polyAPD').style.display = 'none';
+            document.getElementById('polyABD').style.display = 'none';
+            document.getElementById('hlPD').style.display = 'none';
+            document.getElementById('hlBD').style.display = 'none';
+            document.getElementById('hlBP').style.display = 'none';
+            document.getElementById('hlPC').style.display = 'none';
+            document.getElementById('ticksBDCD').style.display = 'none';
+            document.getElementById('bracketBPPC').style.display = 'none';
+
+            document.getElementById('lineAP').style.display = 'none';
+            document.getElementById('lineAD').style.display = 'none';
+            document.getElementById('rightAngleD').style.display = 'none';
+            document.getElementById('ptD').style.display = 'none';
+            document.getElementById('lblD').style.display = 'none';
+
+            setStroke('lineAB', '#002D62', 5, false);
+            setStroke('lineAC', '#002D62', 5, false);
+            setStroke('lineBC', '#002D62', 5, false);
+
+            const ap = document.getElementById('lineAP');
+            const ad = document.getElementById('lineAD');
+            ap.classList.remove('draw-anim', 'pulse-line');
+            ad.classList.remove('draw-anim', 'pulse-line');
+        }
+
+        function showConstruction(animateDraw = false) {
+            const ap = document.getElementById('lineAP');
+            const ad = document.getElementById('lineAD');
+
+            ap.style.display = 'block';
+            ad.style.display = 'block';
+            document.getElementById('rightAngleD').style.display = 'block';
+            document.getElementById('ptD').style.display = 'block';
+            document.getElementById('lblD').style.display = 'block';
+
+            setStroke('lineAP', '#4B0082', 5, false);
+            setStroke('lineAD', '#B30000', 5, false);
+
+            ap.classList.remove('draw-anim');
+            ad.classList.remove('draw-anim');
+            if (animateDraw) {
+                void ap.offsetWidth;
+                void ad.offsetWidth;
+                ad.classList.add('draw-anim');
+                ap.classList.add('draw-anim');
+            }
+        }
+
+        function setStroke(id, color, width, pulse = false) {
+            const el = document.getElementById(id);
+            el.setAttribute('stroke', color);
+            el.setAttribute('stroke-width', width);
+            el.classList.remove('pulse-line');
+            if (pulse) {
+                void el.offsetWidth;
+                el.classList.add('pulse-line');
+            }
+        }
+
+        function initDots() {
+            const dotsContainer = document.getElementById('slideDots');
+            dotsContainer.innerHTML = '';
+            slides.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'dot-btn' + (idx === 0 ? ' active' : '');
+                btn.textContent = banglaDigits[idx];
+                btn.title = 'স্লাইড ' + banglaDigits[idx];
+                btn.onclick = () => goToSlide(idx);
+                dotsContainer.appendChild(btn);
+            });
+        }
+
+        function renderSlide() {
+            const slide = slides[currentSlide];
+            document.getElementById('slideCounter').textContent = `স্লাইড ${banglaDigits[currentSlide]} / ৮`;
+            document.getElementById('slideHeading').textContent = slide.heading;
+            document.getElementById('diagramCaption').textContent = slide.caption;
+
+            const bodyEl = document.getElementById('slideBody');
+            bodyEl.classList.remove('animate-text');
+            void bodyEl.offsetWidth;
+            bodyEl.innerHTML = slide.html;
+            bodyEl.classList.add('animate-text');
+
+            slide.updateDiagram();
+
+            document.getElementById('prevBtn').disabled = (currentSlide === 0);
+            document.getElementById('nextBtn').disabled = (currentSlide === slides.length - 1);
+
+            const dotBtns = document.querySelectorAll('.dot-btn');
+            dotBtns.forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        function changeSlide(step) {
+            const nextIndex = currentSlide + step;
+            if (nextIndex >= 0 && nextIndex < slides.length) {
+                currentSlide = nextIndex;
+                renderSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            renderSlide();
+        }
+
+        // Keyboard Support for Presenter / Laptop Arrow Keys
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                changeSlide(-1);
+            }
+        });
+
+        // Start Presentation
+        initDots();
+        renderSlide();
+    </script>
+</body>
+</html>
