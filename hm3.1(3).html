@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>জ্যামিতিক প্রমাণ: AB² = AD² + 3BD²</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+    header {
+      width: 100%;
+      max-width: 1100px;
+      text-align: center;
+      border-bottom: 4px solid #000000;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+    .main-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #002D62;
+      line-height: 1.3;
+    }
+    .sub-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #B30000;
+      margin-top: 4px;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: row;
+      gap: 25px;
+      flex: 1;
+      align-items: stretch;
+    }
+    .visual-pane {
+      flex: 1.05;
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .explanation-pane {
+      flex: 1.25;
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background-color: #002D62;
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .step-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: #000000;
+      margin-bottom: 14px;
+      border-left: 6px solid #B30000;
+      padding-left: 10px;
+      line-height: 1.3;
+    }
+    .step-content {
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #000000;
+    }
+    .step-content p {
+      margin-bottom: 10px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #EBEBEB;
+      padding: 5px 0;
+      font-size: 23px;
+      font-weight: 800;
+    }
+    .highlight-box {
+      background-color: #FFFFFF;
+      border: 3px dashed #002D62;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      color: #002D62;
+      line-height: 1.4;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 380px;
+    }
+    /* Controls Footer */
+    .controls {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0 5px 0;
+      margin-top: 15px;
+      border-top: 3px solid #000000;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+    }
+    button {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 10px 24px;
+      cursor: pointer;
+      border: 3px solid #000000;
+      border-radius: 8px;
+      background-color: #002D62;
+      color: #FFFFFF;
+      transition: all 0.15s ease-in-out;
+    }
+    button:hover:not(:disabled) {
+      background-color: #B30000;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background-color: #CCCCCC;
+      border-color: #888888;
+      color: #666666;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .reset-btn {
+      background-color: #4B0082;
+    }
+    .page-indicator {
+      font-size: 24px;
+      font-weight: 800;
+      color: #000000;
+    }
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+      .visual-pane, .explanation-pane {
+        width: 100%;
+      }
+      .main-title {
+        font-size: 26px;
+      }
+      .sub-title {
+        font-size: 20px;
+      }
+      .step-heading {
+        font-size: 22px;
+      }
+      .step-content {
+        font-size: 19px;
+      }
+      .calc-row {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="main-title">পিথাগোরাসের উপপাদ্যের বাস্তব প্রয়োগ</div>
+    <div class="sub-title">প্রমাণ: AB² = AD² + 3BD² | ৮টি ইন্টারেক্টিভ স্লাইড</div>
+  </header>
+
+  <main class="container">
+    <!-- Visual SVG Diagram Pane -->
+    <section class="visual-pane">
+      <svg id="geomSvg" viewBox="0 0 500 380">
+        <!-- Background shaded triangle for step highlights -->
+        <polygon id="polyACD" points="100,70 100,310 260,310" fill="none" />
+        <polygon id="polyACB" points="100,70 100,310 420,310" fill="none" />
+
+        <!-- Main Triangle ABC -->
+        <!-- AC (Perpendicular side) -->
+        <line id="lineAC" x1="100" y1="70" x2="100" y2="310" stroke="#002D62" stroke-width="4.5" />
+        <!-- CB (Base) -->
+        <line id="lineCB" x1="100" y1="310" x2="420" y2="310" stroke="#002D62" stroke-width="4.5" />
+        <!-- AB (Hypotenuse of main triangle) -->
+        <line id="lineAB" x1="100" y1="70" x2="420" y2="310" stroke="#002D62" stroke-width="4.5" />
+
+        <!-- Right Angle Marker at C -->
+        <rect id="rightAngleMark" x="100" y="286" width="24" height="24" fill="none" stroke="#000000" stroke-width="3" />
+
+        <!-- Auxiliary Line AD -->
+        <line id="lineAD" x1="100" y1="70" x2="260" y2="310" stroke="#B30000" stroke-width="4" stroke-dasharray="8,5" />
+
+        <!-- Midpoint Equality Tick Marks on CD and DB -->
+        <g id="midTicks" stroke="#006622" stroke-width="3.5" style="display:none;">
+          <!-- Tick on CD (midpoint at 180) -->
+          <line x1="180" y1="302" x2="180" y2="318" />
+          <!-- Tick on DB (midpoint at 340) -->
+          <line x1="340" y1="302" x2="340" y2="318" />
+        </g>
+
+        <!-- Vertices Point Dots -->
+        <circle cx="100" cy="70" r="7" fill="#002D62" />
+        <circle cx="100" cy="310" r="7" fill="#002D62" />
+        <circle cx="420" cy="310" r="7" fill="#002D62" />
+        <circle id="dotD" cx="260" cy="310" r="7" fill="#B30000" />
+
+        <!-- Vertex Labels -->
+        <text x="100" y="52" text-anchor="middle" font-size="26" font-weight="900" fill="#000000">A</text>
+        <text x="75" y="325" text-anchor="middle" font-size="26" font-weight="900" fill="#000000">C</text>
+        <text x="260" y="348" text-anchor="middle" font-size="26" font-weight="900" fill="#B30000">D</text>
+        <text x="442" y="325" text-anchor="middle" font-size="26" font-weight="900" fill="#000000">B</text>
+
+        <!-- Dynamic Indicator Text inside SVG -->
+        <text id="svgStatusText" x="250" y="30" text-anchor="middle" font-size="19" font-weight="800" fill="#002D62">
+          ∠C = ৯০° (সমকোণ)
+        </text>
+      </svg>
+    </section>
+
+    <!-- Content & Step Explanation Pane -->
+    <section class="explanation-pane">
+      <div id="slideBadge" class="slide-badge">ধাপ ১ / ৮</div>
+      <h2 id="stepTitle" class="step-heading">সাধারণ নির্বচন ও প্রতিজ্ঞা</h2>
+      <div id="stepContent" class="step-content">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div id="highlightBox" class="highlight-box" style="display:none;">
+        <!-- Injected math highlights -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Controls Footer -->
+  <footer class="controls">
+    <div class="btn-group">
+      <button id="prevBtn" onclick="prevSlide()" disabled>❮ পূর্ববর্তী ধাপ</button>
+      <button id="nextBtn" onclick="nextSlide()">পরবর্তী ধাপ ❯</button>
+    </div>
+    <div class="page-indicator" id="pageNumber">স্লাইড ১ / ৮</div>
+    <button class="reset-btn" onclick="goToSlide(0)">পুনরায় শুরু ↺</button>
+  </footer>
+
+  <script>
+    const slidesData = [
+      {
+        badge: "ধাপ ১ / ৮ : প্রশ্ন ও সাধারণ নির্বচন",
+        title: "সাধারণ নির্বচন (প্রতিজ্ঞা)",
+        content: `
+          <p><strong>প্রশ্ন:</strong> Δ ABC এর ∠C = ৯০° এবং BC এর মধ্যবিন্দু D; প্রমাণ করো যে, <strong>AB² = AD² + 3BD²</strong>।</p>
+          <p>• <strong>প্রদত্ত শর্ত ১:</strong> ত্রিভুজ ABC সমকোণী, যার C কোণটি সমকোণ (∠C = ৯০°)।</p>
+          <p>• <strong>প্রদত্ত শর্ত ২:</strong> D বিন্দুটি অতিভুজ নয়, বরং ভূমি BC বাহুর মধ্যবিন্দু।</p>
+          <p>• <strong>লক্ষ্য:</strong> পিথাগোরাসের উপপাদ্যের সাহায্যে সম্পর্কটি প্রমাণ করা।</p>
+        `,
+        highlight: "প্রমাণ করতে হবে: AB² = AD² + 3BD²",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'none';
+          document.getElementById('dotD').style.display = 'none';
+          document.querySelector('text[fill="#B30000"]').style.display = 'none';
+          document.getElementById('svgStatusText').textContent = "ΔABC এ ∠C = ৯০°";
+        }
+      },
+      {
+        badge: "ধাপ ২ / ৮ : বিশেষ নির্বচন",
+        title: "বিশেষ নির্বচন ও চিত্র পরিচিতি",
+        content: `
+          <p><strong>বিশেষ নির্বচন:</strong></p>
+          <p>দেওয়া আছে, Δ ABC এর ∠C = ৯০°।</p>
+          <p>BC বাহুর মধ্যবিন্দু D।</p>
+          <p>প্রমাণ করতে হবে যে, <strong>AB² = AD² + 3BD²</strong>।</p>
+        `,
+        highlight: "দেওয়া আছে: Δ ABC সমকোণী (∠C = ৯০°) এবং D হলো BC এর মধ্যবিন্দু।",
+        render: () => {
+          resetAll();
+          document.getElementById('dotD').style.display = 'block';
+          document.querySelector('text[fill="#B30000"]').style.display = 'block';
+          document.getElementById('lineAD').style.display = 'none';
+          document.getElementById('svgStatusText').textContent = "D হলো BC এর মধ্যবিন্দু";
+        }
+      },
+      {
+        badge: "ধাপ ৩ / ৮ : অঙ্কন",
+        title: "অঙ্কন (A ও D বিন্দু সংযোগ)",
+        content: `
+          <p><strong>অঙ্কন:</strong></p>
+          <p>• A ও D বিন্দু দুটি সরলরেখা দ্বারা যোগ করি।</p>
+          <p>• এর ফলে বাগানের বামপাশে নতুন একটি সমকোণী ত্রিভুজ <strong>Δ ACD</strong> গঠিত হলো।</p>
+          <p>• এই ত্রিভুজের অতিভুজ হলো AD এবং সমকোণ অপরিবর্তিত অর্থাৎ ∠C = ৯০°।</p>
+        `,
+        highlight: "অঙ্কন: A, D যোগ করি। ফলে সমকোণী ΔACD সৃষ্টি হলো।",
+        render: () => {
+          resetAll();
+          const ad = document.getElementById('lineAD');
+          ad.style.display = 'block';
+          ad.setAttribute('stroke', '#B30000');
+          ad.setAttribute('stroke-width', '4.5');
+          ad.removeAttribute('stroke-dasharray');
+          document.getElementById('svgStatusText').textContent = "A, D যুক্ত করা হলো";
+        }
+      },
+      {
+        badge: "ধাপ ৪ / ৮ : মধ্যবিন্দুর তাৎপর্য",
+        title: "মধ্যবিন্দু D এর সম্পর্ক বিশ্লেষণ",
+        content: `
+          <p>যেহেতু <strong>D বিন্দুটি BC এর মধ্যবিন্দু</strong>:</p>
+          <p class="calc-row"><span>অতএব, CD ও BD পরস্পর সমান:</span> <span>CD = BD</span></p>
+          <p class="calc-row"><span>সম্পূর্ণ বাহু BC = CD + BD</span> <span>= BD + BD = 2BD</span></p>
+          <p class="calc-row"><span>উভয়পক্ষে বর্গ করে পাই:</span> <span>BC² = (2BD)² = 4BD²</span></p>
+        `,
+        highlight: "সিদ্ধান্ত: CD = BD এবং BC² = 4BD²",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'block';
+          document.getElementById('midTicks').style.display = 'block';
+          document.getElementById('svgStatusText').textContent = "CD = BD এবং BC = 2BD";
+        }
+      },
+      {
+        badge: "ধাপ ৫ / ৮ : প্রমাণ - প্রথম সমকোণী ত্রিভুজ",
+        title: "ধাপ ১: Δ ACD সমকোণী ত্রিভুজে পিথাগোরাস",
+        content: `
+          <p>Δ ACD সমকোণী ত্রিভুজে অতিভুজ হলো AD এবং ∠C = ৯০°।</p>
+          <p>পিথাগোরাসের উপপাদ্য অনুযায়ী:</p>
+          <p class="calc-row"><span>অতিভুজ² = লম্ব² + ভূমি²</span> <span>AD² = AC² + CD²</span></p>
+          <p class="calc-row"><span>বা, [যেহেতু CD = BD]</span> <span>AD² = AC² + BD²</span></p>
+          <p class="calc-row"><span>পক্ষান্তর করে AC² পাই:</span> <span>AC² = AD² − BD² ...... (১)</span></p>
+        `,
+        highlight: "সমীকরণ (১): AC² = AD² − BD²",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'block';
+          document.getElementById('polyACD').setAttribute('fill', '#FFEAEA');
+          document.getElementById('lineAC').setAttribute('stroke', '#B30000');
+          document.getElementById('lineAD').setAttribute('stroke', '#B30000');
+          document.getElementById('svgStatusText').textContent = "ΔACD এ: AD² = AC² + CD²";
+        }
+      },
+      {
+        badge: "ধাপ ৬ / ৮ : প্রমাণ - মূল সমকোণী ত্রিভুজ",
+        title: "ধাপ ২: মূল Δ ACB সমকোণী ত্রিভুজে পিথাগোরাস",
+        content: `
+          <p>এখন সমগ্র সমকোণী ত্রিভুজ Δ ACB বিবেচনা করি:</p>
+          <p>এখানে অতিভুজ = AB এবং সমকোণ সংলগ্ন বাহুদ্বয় AC ও BC।</p>
+          <p>পিথাগোরাসের উপপাদ্য অনুসারে:</p>
+          <p class="calc-row"><span>অতিভুজ² = লম্ব² + ভূমি²</span> <span>AB² = AC² + BC²</span></p>
+        `,
+        highlight: "মূল সম্পর্ক: AB² = AC² + BC²",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'block';
+          document.getElementById('polyACB').setAttribute('fill', '#EBF3FF');
+          document.getElementById('lineAB').setAttribute('stroke', '#002D62');
+          document.getElementById('lineCB').setAttribute('stroke', '#002D62');
+          document.getElementById('svgStatusText').textContent = "ΔACB এ: AB² = AC² + BC²";
+        }
+      },
+      {
+        badge: "ধাপ ৭ / ৮ : মান প্রতিস্থাপন ও সরলীকরণ",
+        title: "ধাপ ৩: মান প্রতিস্থাপন ও বীজগাণিতিক সমাধান",
+        content: `
+          <p>আমরা জানি, <strong>AB² = AC² + BC²</strong></p>
+          <p class="calc-row"><span>BC = 2BD বসিয়ে:</span> <span>AB² = AC² + (2BD)²</span></p>
+          <p class="calc-row"><span>বর্গ সম্পন্ন করে:</span> <span>= AC² + 4BD²</span></p>
+          <p class="calc-row"><span>(১) হতে AC² = AD² − BD² বসিয়ে:</span> <span>= (AD² − BD²) + 4BD²</span></p>
+          <p class="calc-row"><span>সদৃশ পদ বিয়োগ করে:</span> <span>= AD² + 3BD²</span></p>
+        `,
+        highlight: "AB² = AD² − BD² + 4BD² = AD² + 3BD²",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'block';
+          document.getElementById('lineAB').setAttribute('stroke', '#006622');
+          document.getElementById('lineAD').setAttribute('stroke', '#B30000');
+          document.getElementById('svgStatusText').textContent = "মান প্রতিস্থাপন ও সরলীকরণ";
+        }
+      },
+      {
+        badge: "ধাপ ৮ / ৮ : চূড়ান্ত প্রমাণ ও সমাপ্তি",
+        title: "সিদ্ধান্ত ও সম্পূর্ণ প্রমাণ সংক্ষেপ",
+        content: `
+          <p>অতএব, চূড়ান্তভাবে প্রতিষ্ঠিত হলো:</p>
+          <div style="font-size: 26px; text-align: center; margin: 10px 0; color: #002D62;">
+            <strong>AB² = AD² + 3BD²</strong>
+          </div>
+          <p><strong>যুক্তি সারসংক্ষেপ:</strong></p>
+          <p>১. ΔACD থেকে: AC² = AD² − BD²</p>
+          <p>২. ΔACB থেকে: AB² = AC² + (2BD)² = AC² + 4BD²</p>
+          <p>৩. প্রতিস্থাপন: AB² = (AD² − BD²) + 4BD² = AD² + 3BD²।</p>
+        `,
+        highlight: "∴ AB² = AD² + 3BD² (প্রমাণিত)",
+        render: () => {
+          resetAll();
+          document.getElementById('lineAD').style.display = 'block';
+          document.getElementById('polyACD').setAttribute('fill', '#FFF5EB');
+          document.getElementById('lineAB').setAttribute('stroke', '#002D62');
+          document.getElementById('lineAD').setAttribute('stroke', '#B30000');
+          document.getElementById('svgStatusText').textContent = "AB² = AD² + 3BD² (প্রমাণিত)";
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function resetAll() {
+      document.getElementById('polyACD').setAttribute('fill', 'none');
+      document.getElementById('polyACB').setAttribute('fill', 'none');
+      document.getElementById('lineAC').setAttribute('stroke', '#002D62');
+      document.getElementById('lineCB').setAttribute('stroke', '#002D62');
+      document.getElementById('lineAB').setAttribute('stroke', '#002D62');
+      document.getElementById('lineAD').setAttribute('stroke', '#B30000');
+      document.getElementById('lineAD').style.display = 'block';
+      document.getElementById('midTicks').style.display = 'none';
+      document.getElementById('dotD').style.display = 'block';
+      document.querySelector('text[fill="#B30000"]').style.display = 'block';
+    }
+
+    function updateSlide() {
+      const data = slidesData[currentSlide];
+
+      document.getElementById('slideBadge').innerText = data.badge;
+      document.getElementById('stepTitle').innerText = data.title;
+      document.getElementById('stepContent').innerHTML = data.content;
+
+      const hlBox = document.getElementById('highlightBox');
+      if (data.highlight) {
+        hlBox.innerText = data.highlight;
+        hlBox.style.display = 'block';
+      } else {
+        hlBox.style.display = 'none';
+      }
+
+      const banglaDigits = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮'];
+      document.getElementById('pageNumber').innerText = `স্লাইড ${banglaDigits[currentSlide]} / ৮`;
+
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').disabled = (currentSlide === slidesData.length - 1);
+
+      data.render();
+    }
+
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    // Keyboard Arrow Controls for Teacher
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Initialize presentation
+    updateSlide();
+  </script>
+</body>
+</html>
