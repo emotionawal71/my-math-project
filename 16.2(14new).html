@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিমাপ - আয়তাকার বাগান ও রাস্তার ক্ষেত্রফল এবং ইটের হিসাব</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+    header {
+      width: 100%;
+      max-width: 1100px;
+      text-align: center;
+      border-bottom: 4px solid #000000;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+    .main-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #002D62;
+      line-height: 1.3;
+    }
+    .sub-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #B30000;
+      margin-top: 4px;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: row;
+      gap: 25px;
+      flex: 1;
+      align-items: stretch;
+    }
+    .visual-pane {
+      flex: 1.1;
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .explanation-pane {
+      flex: 1.2;
+      background: #FFFFFF;
+      border: 3px solid #000000;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background-color: #002D62;
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .step-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: #000000;
+      margin-bottom: 14px;
+      border-left: 6px solid #B30000;
+      padding-left: 10px;
+      line-height: 1.3;
+    }
+    .step-content {
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #000000;
+    }
+    .step-content p {
+      margin-bottom: 12px;
+    }
+    .highlight-box {
+      background-color: #FFFFFF;
+      border: 3px dashed #002D62;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 24px;
+      font-weight: 800;
+      color: #002D62;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #E0E0E0;
+      padding: 4px 0;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 380px;
+    }
+    /* Controls Footer */
+    .controls {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0 5px 0;
+      margin-top: 15px;
+      border-top: 3px solid #000000;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+    }
+    button {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 10px 24px;
+      cursor: pointer;
+      border: 3px solid #000000;
+      border-radius: 8px;
+      background-color: #002D62;
+      color: #FFFFFF;
+      transition: all 0.15s ease-in-out;
+    }
+    button:hover:not(:disabled) {
+      background-color: #B30000;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background-color: #CCCCCC;
+      border-color: #888888;
+      color: #666666;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .reset-btn {
+      background-color: #4B0082;
+    }
+    .page-indicator {
+      font-size: 24px;
+      font-weight: 800;
+      color: #000000;
+    }
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+      .visual-pane, .explanation-pane {
+        width: 100%;
+      }
+      .main-title {
+        font-size: 26px;
+      }
+      .sub-title {
+        font-size: 20px;
+      }
+      .step-heading {
+        font-size: 22px;
+      }
+      .step-content {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="main-title">আয়তাকার বাগান ও রাস্তার ক্ষেত্রফল এবং ইটের হিসাব</div>
+    <div class="sub-title">এনসিটিবি পাঠ্যবই সমাধান | ১০টি শিক্ষণ স্লাইড এনিমেশন</div>
+  </header>
+
+  <main class="container">
+    <!-- Visual Dynamic Diagram Pane -->
+    <section class="visual-pane">
+      <svg id="geomSvg" viewBox="0 0 520 380">
+        <!-- Background Definitions -->
+        <defs>
+          <pattern id="brickPattern" width="20" height="10" patternUnits="userSpaceOnUse">
+            <rect width="20" height="10" fill="#FFFFFF" stroke="#B30000" stroke-width="1.5"/>
+            <line x1="10" y1="0" x2="10" y2="10" stroke="#B30000" stroke-width="1.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Garden Outer Rectangle: 150m x 100m (aspect 420 x 280) -->
+        <rect id="gardenRect" x="50" y="50" width="420" height="280" fill="#FFFFFF" stroke="#002D62" stroke-width="5" />
+
+        <!-- Road Horizontal (দৈর্ঘ্য বরাবর): y = 50 + (280/2 - 12) = 178, h = 24 -->
+        <rect id="roadHoriz" x="50" y="178" width="420" height="24" fill="#E8F0FE" stroke="#002D62" stroke-width="3" />
+
+        <!-- Road Vertical (প্রস্থ বরাবর): x = 50 + (420/2 - 12) = 248, w = 24 -->
+        <rect id="roadVert" x="248" y="50" width="24" height="280" fill="#E8F0FE" stroke="#002D62" stroke-width="3" />
+
+        <!-- Center Intersection (কমন অংশ): 24 x 24 -->
+        <rect id="roadCenter" x="248" y="178" width="24" height="24" fill="#FFFFFF" stroke="#B30000" stroke-width="3" />
+
+        <!-- Dimension Lines & Annotations -->
+        <!-- Top Length Dimension (150 m) -->
+        <g id="dimLength">
+          <line x1="50" y1="30" x2="470" y2="30" stroke="#000000" stroke-width="3.5" />
+          <line x1="50" y1="20" x2="50" y2="40" stroke="#000000" stroke-width="3.5" />
+          <line x1="470" y1="20" x2="470" y2="40" stroke="#000000" stroke-width="3.5" />
+          <text x="260" y="24" text-anchor="middle" font-size="22" font-weight="800" fill="#000000">দৈর্ঘ্য = ১৫০ মিটার</text>
+        </g>
+
+        <!-- Left Width Dimension (100 m) -->
+        <g id="dimWidth">
+          <line x1="30" y1="50" x2="30" y2="330" stroke="#000000" stroke-width="3.5" />
+          <line x1="20" y1="50" x2="40" y2="50" stroke="#000000" stroke-width="3.5" />
+          <line x1="20" y1="330" x2="40" y2="330" stroke="#000000" stroke-width="3.5" />
+          <text x="22" y="195" text-anchor="middle" transform="rotate(-90 22 195)" font-size="22" font-weight="800" fill="#000000">প্রস্থ = ১০০ মিটার</text>
+        </g>
+
+        <!-- Road Width Callout right side -->
+        <g id="roadWidthLabel">
+          <line x1="475" y1="178" x2="505" y2="178" stroke="#B30000" stroke-width="2.5"/>
+          <line x1="475" y1="202" x2="505" y2="202" stroke="#B30000" stroke-width="2.5"/>
+          <path d="M 495 168 L 495 212" stroke="#B30000" stroke-width="2.5"/>
+          <text x="440" y="228" font-size="19" font-weight="800" fill="#B30000">৩ মি. চওড়া</text>
+        </g>
+
+        <!-- Center Intersection Indicator Arrow & Label -->
+        <g id="intersectionLabel" style="display:none;">
+          <circle cx="260" cy="190" r="18" fill="none" stroke="#B30000" stroke-width="4" stroke-dasharray="4,3"/>
+          <path d="M 278 190 L 370 140" stroke="#B30000" stroke-width="3.5" marker-end="url(#arrow)" />
+          <text x="375" y="135" font-size="20" font-weight="800" fill="#B30000">ছেদবিন্দু (৩ মি. × ৩ মি.)</text>
+          <text x="375" y="160" font-size="19" font-weight="700" fill="#000000">উভয় রাস্তায় ২ বার গণনা</text>
+        </g>
+
+        <!-- Brick visual icon (used in step 7, 8, 9) -->
+        <g id="brickVisual" style="display:none;" transform="translate(140, 240)">
+          <rect x="0" y="0" width="130" height="65" fill="#FFEAEA" stroke="#B30000" stroke-width="4" rx="4"/>
+          <text x="65" y="32" text-anchor="middle" font-size="20" font-weight="800" fill="#B30000">১টি ইট</text>
+          <text x="65" y="54" text-anchor="middle" font-size="17" font-weight="700" fill="#000000">২৫ সেমি × ১২.৫ সেমি</text>
+        </g>
+      </svg>
+    </section>
+
+    <!-- Content & Explanation Pane -->
+    <section class="explanation-pane">
+      <div id="slideBadge" class="slide-badge">ধাপ ১ / ১০</div>
+      <h2 id="stepTitle" class="step-heading">উদ্দীপক ও সমস্যা পরিচিতি</h2>
+      <div id="stepContent" class="step-content">
+        <!-- Dynamic injected via JS -->
+      </div>
+      <div id="highlightBox" class="highlight-box" style="display:none;">
+        <!-- Injected calculation summary -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Controls Footer -->
+  <footer class="controls">
+    <div class="btn-group">
+      <button id="prevBtn" onclick="prevSlide()" disabled>❮ পূর্ববর্তী ধাপ</button>
+      <button id="nextBtn" onclick="nextSlide()">পরবর্তী ধাপ ❯</button>
+    </div>
+    <div class="page-indicator" id="pageNumber">স্লাইড ১ / ১০</div>
+    <button class="reset-btn" onclick="goToSlide(0)">পুনরায় শুরু ↺</button>
+  </footer>
+
+  <script>
+    const slidesData = [
+      {
+        badge: "ধাপ ১ / ১০ : উদ্দীপক পরিচিতি",
+        title: "উদ্দীপক পর্যালোচনা ও তথ্য বিশ্লেষণ",
+        content: `
+          <p>• একটি আয়তাকার ফুলের বাগানের <strong>দৈর্ঘ্য = ১৫০ মিটার</strong> এবং <strong>প্রস্থ = ১০০ মিটার</strong>।</p>
+          <p>• বাগানটি পরিচর্যা করার জন্য এর ঠিক মাঝ বরাবর <strong>৩ মিটার চওড়া</strong> দৈর্ঘ্য ও প্রস্থমুখী দুটি রাস্তা পরস্পরকে লম্বভাবে ছেদ করেছে।</p>
+          <p>• <strong>উদ্দেশ্য:</strong> (ক) চিত্রাঙ্কন, (খ) রাস্তার প্রকৃত ক্ষেত্রফল এবং (গ) পাকা করার প্রয়োজনীয় ইটের সংখ্যা নির্ণয়।</p>
+        `,
+        highlight: "মূল পরিমাপ: দৈর্ঘ্য ১৫০ মি., প্রস্থ ১০০ মি., রাস্তার বিস্তার ৩ মি.",
+        render: () => {
+          resetSvg();
+          setGardenOutline('#002D62', 5, '#FFFFFF');
+          setRoads('#E8F0FE', '#E8F0FE', '#FFFFFF');
+        }
+      },
+      {
+        badge: "ধাপ ২ / ১০ : প্রশ্ন (ক) এর সমাধান",
+        title: "(ক) তথ্যের আলোকে চিত্রাঙ্কন ও সংক্ষিপ্ত বিবরণ",
+        content: `
+          <p><strong>চিত্রের বিবরণ:</strong></p>
+          <p>• চিত্রে একটি আয়তাকার ফুলের বাগান দেখানো হলো যার দৈর্ঘ্য ১৫০ মিটার ও প্রস্থ ১০০ মিটার।</p>
+          <p>• বাগানের ঠিক মাঝখান দিয়ে পরস্পরছেদী ৩ মিটার চওড়া দৈর্ঘ্য ও প্রস্থ বরাবর দুটি রাস্তা নির্দেশিত হয়েছে।</p>
+        `,
+        highlight: "পরীক্ষার খাতায় স্কেল ও পেন্সিল দিয়ে রূপরেখাটি পরিষ্কারভাবে আঁকতে হবে।",
+        render: () => {
+          resetSvg();
+          setGardenOutline('#002D62', 5, '#F9FBFF');
+          setRoads('#D0E1FD', '#D0E1FD', '#B0CEFC');
+          document.getElementById('roadWidthLabel').style.display = 'block';
+        }
+      },
+      {
+        badge: "ধাপ ৩ / ১০ : প্রশ্ন (খ) - দৈর্ঘ্য বরাবর রাস্তা",
+        title: "(খ) দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল নির্ণয়",
+        content: `
+          <p>• বাগানটির দৈর্ঘ্য = ১৫০ মিটার এবং রাস্তার বিস্তার (চওড়া) = ৩ মিটার।</p>
+          <p>• দৈর্ঘ্য বরাবর রাস্তাটি পুরো বাগানের দৈর্ঘ্য পর্যন্ত বিস্তৃত।</p>
+          <p class="calc-row"><span>দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল</span> <span>= (১৫০ × ৩) বর্গমিটার</span></p>
+        `,
+        highlight: "দৈর্ঘ্য বরাবর রাস্তার ক্ষেত্রফল = ৪৫০ বর্গমিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('roadHoriz').setAttribute('fill', '#002D62');
+          document.getElementById('roadVert').setAttribute('fill', '#FFFFFF');
+          document.getElementById('roadCenter').setAttribute('fill', '#002D62');
+        }
+      },
+      {
+        badge: "ধাপ ৪ / ১০ : প্রশ্ন (খ) - প্রস্থ বরাবর রাস্তা",
+        title: "(খ) প্রস্থ বরাবর রাস্তার ক্ষেত্রফল নির্ণয়",
+        content: `
+          <p>• বাগানটির প্রস্থ = ১০০ মিটার এবং রাস্তার বিস্তার = ৩ মিটার।</p>
+          <p>• প্রস্থ বরাবর রাস্তাটি বাগানের সম্পূর্ণ প্রস্থ জুড়ে বিস্তৃত।</p>
+          <p class="calc-row"><span>প্রস্থ বরাবর রাস্তার ক্ষেত্রফল</span> <span>= (১০০ × ৩) বর্গমিটার</span></p>
+        `,
+        highlight: "প্রস্থ বরাবর রাস্তার ক্ষেত্রফল = ৩০০ বর্গমিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('roadHoriz').setAttribute('fill', '#FFFFFF');
+          document.getElementById('roadVert').setAttribute('fill', '#006622');
+          document.getElementById('roadCenter').setAttribute('fill', '#006622');
+        }
+      },
+      {
+        badge: "ধাপ ৫ / ১০ : প্রশ্ন (খ) - সাধারণ/ছেদকৃত অংশ",
+        title: "(খ) রাস্তা দুটির সাধারণ (ছেদকৃত) অংশের ক্ষেত্রফল",
+        content: `
+          <p>• লক্ষ্য করি, দুটি রাস্তা বাগানের কেন্দ্রস্থলে পরস্পরকে ছেদ করেছে।</p>
+          <p>• এই ছেদকৃত অংশটি ৩ মিটার দৈর্ঘ্য ও ৩ মিটার প্রস্থবিশিষ্ট একটি বর্গক্ষেত্র।</p>
+          <p>• উভয় রাস্তার ক্ষেত্রফল যোগ করলে এই মাঝের অংশটি <strong>দুইবার</strong> গণনা করা হয়ে যায়।</p>
+          <p class="calc-row"><span>ছেদ অংশের ক্ষেত্রফল</span> <span>= (৩ × ৩) = ৯ বর্গমিটার</span></p>
+        `,
+        highlight: "ছেদকৃত অংশ (অতিরিক্ত গণনাকৃত ক্ষেত্রফল) = ৯ বর্গমিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('roadHoriz').setAttribute('fill', '#E8F0FE');
+          document.getElementById('roadVert').setAttribute('fill', '#E8F0FE');
+          document.getElementById('roadCenter').setAttribute('fill', '#B30000');
+          document.getElementById('intersectionLabel').style.display = 'block';
+        }
+      },
+      {
+        badge: "ধাপ ৬ / ১০ : প্রশ্ন (খ) - সম্পূর্ণ রাস্তার ক্ষেত্রফল",
+        title: "(খ) রাস্তার প্রকৃত মোট ক্ষেত্রফল নির্ধারণ",
+        content: `
+          <p>• দুই রাস্তার ক্ষেত্রফলের যোগফল = ৪৫০ + ৩০০ = ৭৫০ বর্গমিটার।</p>
+          <p>• অতিরিক্ত একবার গণনাকৃত মাঝের বর্গাকার অংশটি বিয়োগ করতে হবে:</p>
+          <p class="calc-row"><span>প্রকৃত রাস্তার ক্ষেত্রফল</span> <span>= (৪৫০ + ৩০০) − ৯ বর্গমিটার</span></p>
+          <p class="calc-row"><span></span> <span>= ৭৫০ − ৯ বর্গমিটার</span></p>
+        `,
+        highlight: "উত্তর (খ): রাস্তার ক্ষেত্রফল = ৭৪১ বর্গমিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('roadHoriz').setAttribute('fill', '#B0CEFC');
+          document.getElementById('roadVert').setAttribute('fill', '#B0CEFC');
+          document.getElementById('roadCenter').setAttribute('fill', '#4B0082');
+        }
+      },
+      {
+        badge: "ধাপ ৭ / ১০ : প্রশ্ন (গ) - ইটের পরিমাপ ও রূপান্তর",
+        title: "(গ) ইটের পরিমাপকে মিটারে রূপান্তর",
+        content: `
+          <p>রাস্তার ক্ষেত্রফল মিটারে থাকায় ইটের পরিমাপকেও (সে.মি. হতে) মিটারে রূপান্তর করতে হবে:</p>
+          <p>আমরা জানি, <strong>১ মিটার = ১০০ সে.মি.</strong></p>
+          <p class="calc-row"><span>প্রতিটি ইটের দৈর্ঘ্য</span> <span>= ২৫ সে.মি. = ২৫ ÷ ১০০ = ০.২৫ মিটার</span></p>
+          <p class="calc-row"><span>প্রতিটি ইটের প্রস্থ</span> <span>= ১২.৫ সে.মি. = ১২.৫ ÷ ১০০ = ০.১২৫ মিটার</span></p>
+        `,
+        highlight: "ইটের পরিমাপ: দৈর্ঘ্য = ০.২৫ মিটার, প্রস্থ = ০.১২৫ মিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('brickVisual').style.display = 'block';
+        }
+      },
+      {
+        badge: "ধাপ ৮ / ১০ : প্রশ্ন (গ) - একটি ইটের ক্ষেত্রফল",
+        title: "(গ) একটি ইটের পৃষ্ঠতলের ক্ষেত্রফল নির্ণয়",
+        content: `
+          <p>ইটটি একটি আয়তাকার তল বিশিষ্ট:</p>
+          <p>• ১টি ইটের ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ</p>
+          <p class="calc-row"><span>১টি ইটের ক্ষেত্রফল</span> <span>= (০.২৫ × ০.১২৫) বর্গমিটার</span></p>
+          <p class="calc-row"><span></span> <span>= ০.০৩১২৫ বর্গমিটার</span></p>
+        `,
+        highlight: "প্রতিটি ইটের ক্ষেত্রফল = ০.০৩১২৫ বর্গমিটার",
+        render: () => {
+          resetSvg();
+          document.getElementById('brickVisual').style.display = 'block';
+          setRoads('#E8F0FE', '#E8F0FE', '#D0E1FD');
+        }
+      },
+      {
+        badge: "ধাপ ৯ / ১০ : প্রশ্ন (গ) - প্রয়োজনীয় ইটের সংখ্যা",
+        title: "(গ) রাস্তা পাকা করতে প্রয়োজনীয় মোট ইট",
+        content: `
+          <p>রাস্তাটি সম্পূর্ণ পাকা করতে প্রয়োজনীয় মোট ইটের সংখ্যা:</p>
+          <p class="calc-row"><span>ইটের সংখ্যা</span> <span>= রাস্তার মোট ক্ষেত্রফল ÷ একটি ইটের ক্ষেত্রফল</span></p>
+          <p class="calc-row"><span>ইটের সংখ্যা</span> <span>= ৭৪১ ÷ ০.০৩১২৫ টি</span></p>
+          <p class="calc-row"><span></span> <span>= ২৩,৭১২ টি</span></p>
+        `,
+        highlight: "উত্তর (গ): রাস্তাটি পাকা করতে মোট ২৩,৭১২ টি ইট লাগবে।",
+        render: () => {
+          resetSvg();
+          document.getElementById('roadHoriz').setAttribute('fill', '#FFEAEA');
+          document.getElementById('roadVert').setAttribute('fill', '#FFEAEA');
+          document.getElementById('roadCenter').setAttribute('fill', '#FFEAEA');
+          document.getElementById('brickVisual').style.display = 'block';
+        }
+      },
+      {
+        badge: "ধাপ ১০ / ১০ : পূর্ণাঙ্গ সমাধান সংক্ষেপ",
+        title: "একনজরে সম্পূর্ণ সৃজনশীল সমাধান",
+        content: `
+          <p><strong>(ক) চিত্রাঙ্কন:</strong> বাগানের দৈর্ঘ্য ১৫০ মি., প্রস্থ ১০০ মি. এবং ৩ মি. চওড়া দুটি মধ্যবর্তী পরস্পরছেদী রাস্তা।</p>
+          <p><strong>(খ) রাস্তার ক্ষেত্রফল:</strong><br>
+          (১৫০ × ৩) + (১০০ × ৩) − (৩ × ৩) = ৪৫০ + ৩০০ − ৯ = <strong>৭৪১ বর্গমিটার</strong>।</p>
+          <p><strong>(গ) মোট ইটের সংখ্যা:</strong><br>
+          ১টি ইটের ক্ষেত্রফল = ০.২৫ মি. × ০.১২৫ মি. = ০.০৩১২৫ বর্গমিটার।<br>
+          ইটের সংখ্যা = ৭৪১ ÷ ০.০৩১২৫ = <strong>২৩,৭১২ টি</strong>।</p>
+        `,
+        highlight: "চূড়ান্ত উত্তর: খ. ৭৪১ বর্গমিটার এবং গ. ২৩,৭১২ টি ইট।",
+        render: () => {
+          resetSvg();
+          setGardenOutline('#002D62', 5, '#F0F7FF');
+          setRoads('#B0CEFC', '#B0CEFC', '#002D62');
+          document.getElementById('intersectionLabel').style.display = 'none';
+        }
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function resetSvg() {
+      document.getElementById('intersectionLabel').style.display = 'none';
+      document.getElementById('brickVisual').style.display = 'none';
+      document.getElementById('roadWidthLabel').style.display = 'block';
+    }
+
+    function setGardenOutline(stroke, strokeWidth, fill) {
+      const g = document.getElementById('gardenRect');
+      g.setAttribute('stroke', stroke);
+      g.setAttribute('stroke-width', strokeWidth);
+      g.setAttribute('fill', fill);
+    }
+
+    function setRoads(horizFill, vertFill, centerFill) {
+      document.getElementById('roadHoriz').setAttribute('fill', horizFill);
+      document.getElementById('roadVert').setAttribute('fill', vertFill);
+      document.getElementById('roadCenter').setAttribute('fill', centerFill);
+    }
+
+    function updateSlide() {
+      const data = slidesData[currentSlide];
+
+      document.getElementById('slideBadge').innerText = data.badge;
+      document.getElementById('stepTitle').innerText = data.title;
+      document.getElementById('stepContent').innerHTML = data.content;
+
+      const hlBox = document.getElementById('highlightBox');
+      if (data.highlight) {
+        hlBox.innerText = data.highlight;
+        hlBox.style.display = 'block';
+      } else {
+        hlBox.style.display = 'none';
+      }
+
+      const banglaDigits = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '১০'];
+      document.getElementById('pageNumber').innerText = `স্লাইড ${banglaDigits[currentSlide]} / ১০`;
+
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').disabled = (currentSlide === slidesData.length - 1);
+
+      data.render();
+    }
+
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    // Keyboard Arrow Controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Initialize
+    updateSlide();
+  </script>
+</body>
+</html>
