@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>রম্বসের অপর কর্ণ ও ক্ষেত্রফল নির্ণয় - ১০টি স্লাইড</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kalpurush', 'SutonnyMJ', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Main Container */
+    #presentation-container {
+      width: 95vw;
+      max-width: 1200px;
+      height: 88vh;
+      background-color: #FFFFFF;
+      border: 4px solid #002B5B;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 35px 45px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #002B5B;
+      padding-bottom: 12px;
+    }
+
+    .chapter-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #002B5B;
+    }
+
+    .slide-indicator {
+      font-size: 22px;
+      font-weight: 800;
+      background-color: #002B5B;
+      color: #FFFFFF;
+      padding: 6px 20px;
+      border-radius: 8px;
+    }
+
+    /* Slide Dynamic Content Area */
+    .slide-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 15px 0;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 22px;
+      font-weight: 800;
+      background-color: #8B0000;
+      color: #FFFFFF;
+      padding: 6px 18px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .step-badge.success {
+      background-color: #006400;
+    }
+
+    .slide-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.4;
+      color: #000000;
+      margin-bottom: 15px;
+    }
+
+    /* Content Box */
+    .content-box {
+      background-color: #F8F9FA;
+      border-left: 8px solid #002B5B;
+      padding: 22px 30px;
+      border-radius: 6px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #111111;
+    }
+
+    .math-step {
+      font-size: 32px;
+      font-weight: 800;
+      color: #002B5B;
+      margin: 8px 0;
+    }
+
+    .highlight-box {
+      background-color: #EBF3FA;
+      border: 2px dashed #002B5B;
+      padding: 12px 25px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #8B0000;
+    }
+
+    /* Diagram Section */
+    .diagram-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .diagram-text {
+      flex: 1.2;
+      font-size: 26px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .svg-container {
+      flex: 0.8;
+      display: flex;
+      justify-content: center;
+      background-color: #FAFBFD;
+      padding: 10px;
+      border: 2px solid #D0D7DE;
+      border-radius: 8px;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid #E0E0E0;
+      padding-top: 15px;
+    }
+
+    .nav-btn {
+      background-color: #002B5B;
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 800;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-btn:hover {
+      background-color: #004085;
+    }
+
+    .nav-btn:disabled {
+      background-color: #CCCCCC;
+      cursor: not-allowed;
+    }
+
+    .tip-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #555555;
+    }
+  </style>
+</head>
+<body>
+
+<div id="presentation-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="chapter-title">পরিমিতি | রম্বসের অপর কর্ণ ও ক্ষেত্রফল নির্ণয়</div>
+    <div class="slide-indicator" id="slide-num">স্লাইড: ১ / ১০</div>
+  </div>
+
+  <!-- Dynamic Content -->
+  <div class="slide-body" id="slide-content">
+    <!-- Loaded via JavaScript -->
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="controls">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()">পূর্ববর্তী (Prev)</button>
+    <span class="tip-text">কীবোর্ডের Left / Right arrow চেপে স্লাইড পরিবর্তন করুন</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">পরবর্তী (Next)</button>
+  </div>
+</div>
+
+<script>
+  // Clean SVG Vector Diagram of Rhombus
+  const svgDiagram = `
+    <svg width="380" height="250" viewBox="0 0 400 260">
+      <!-- Rhombus ABCD -->
+      <polygon points="60,130 200,225 340,130 200,35" fill="#F4F8FA" stroke="#002B5B" stroke-width="4" />
+      
+      <!-- Diagonals AC and BD -->
+      <line x1="60" y1="130" x2="340" y2="130" stroke="#006400" stroke-width="3" stroke-dasharray="5" />
+      <line x1="200" y1="35" x2="200" y2="225" stroke="#8B0000" stroke-width="3" />
+
+      <!-- Right Angle at O -->
+      <rect x="200" y="115" width="15" height="15" fill="none" stroke="#333" stroke-width="2" />
+
+      <!-- Labels -->
+      <text x="35" y="135" font-size="22" font-weight="bold">A</text>
+      <text x="195" y="250" font-size="22" font-weight="bold">B</text>
+      <text x="355" y="135" font-size="22" font-weight="bold">C</text>
+      <text x="195" y="25" font-size="22" font-weight="bold">D</text>
+      <text x="210" y="125" font-size="20" font-weight="bold" fill="#002B5B">O</text>
+
+      <!-- Dimension Labels -->
+      <text x="110" y="195" font-size="18" font-weight="bold" fill="#002B5B">৪৫ সে.মি.</text>
+      <text x="208" y="180" font-size="17" font-weight="bold" fill="#8B0000">২৭</text>
+    </svg>
+  `;
+
+  // 10 Slides Data
+  const slides = [
+    // Slide 1
+    {
+      badge: "প্রশ্ন ও উদ্দেশ্য",
+      isSuccess: false,
+      title: "মূল সমস্যা ও প্রদত্ত তথ্যসমূহ:",
+      html: `
+        <div class="content-box">
+          <p style="font-size: 32px; color: #8B0000; margin-bottom: 15px;">
+            <strong>প্রশ্ন:</strong> একটি রম্বসের পরিসীমা ১৮০ সে.মি. এবং ক্ষুদ্রতম কর্ণটি ৫৪ সে.মি.। এর অপর কর্ণ এবং ক্ষেত্রফল নির্ণয় কর।
+          </p>
+          <hr style="margin: 15px 0; border: 1px solid #CCC;">
+          <p>• দেওয়া আছে: রম্বসের পরিসীমা = ১৮০ সে.মি.</p>
+          <p>• ক্ষুদ্রতম কর্ণ: BD = ৫৪ সে.মি.</p>
+          <p>• লক্ষ্য: (১) অপর কর্ণ AC এর দৈর্ঘ্য এবং (২) রম্বসটির ক্ষেত্রফল নির্ণয় করা।</p>
+        </div>
+      `
+    },
+
+    // Slide 2
+    {
+      badge: "চিত্র ও বৈশিষ্ট্য",
+      isSuccess: false,
+      title: "রম্বসের জ্যামিতিক বৈশিষ্ট্য পর্যবেক্ষণ:",
+      html: `
+        <div class="diagram-wrapper">
+          <div class="diagram-text">
+            <p>• মনে করি, ABCD একটি রম্বস যার চারটি বাহুই সমান (AB = BC = CD = DA)।</p>
+            <p>• রম্বসের AC ও BD কর্ণদ্বয় পরস্পরকে <strong>O</strong> বিন্দুতে ছেদ করেছে।</p>
+            <p>• <strong>গুরুত্বপূর্ণ উপপাদ্য:</strong> রম্বসের কর্ণদ্বয় পরস্পরকে <em>সমকোণে সমদ্বিখণ্ডিত</em> করে।</p>
+          </div>
+          <div class="svg-container">
+            ${svgDiagram}
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 3
+    {
+      badge: "ধাপ - ১",
+      isSuccess: false,
+      title: "রম্বসের এক বাহুর দৈর্ঘ্য নির্ণয়:",
+      html: `
+        <div class="content-box">
+          <p>যেহেতু রম্বসের ৪টি বাহুর দৈর্ঘ্য পরস্পর সমান, তাই পরিসীমাকে ৪ দিয়ে ভাগ করলে প্রতিটি বাহুর দৈর্ঘ্য পাওয়া যাবে।</p>
+          <div class="math-step">রম্বসের বাহুর দৈর্ঘ্য, AB = পরিসীমা / ৪</div>
+          <div class="math-step">= ১৮০ / ৪ সে.মি.</div>
+          <div class="highlight-box" style="color: #006400;">
+            ∴ বাহুর দৈর্ঘ্য, AB = ৪৫ সে.মি.
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 4
+    {
+      badge: "ধাপ - ২",
+      isSuccess: false,
+      title: "অর্ধ-কর্ণ OB এর মান নির্ণয়:",
+      html: `
+        <div class="content-box">
+          <p>আমরা জানি, রম্বসের কর্ণদ্বয় পরস্পরকে সমদ্বিখণ্ডিত করে।</p>
+          <p>সুতরাং, O বিন্দুটি BD কর্ণের মধ্যবিন্দু:</p>
+          <div class="math-step">∴ OB = BD / ২</div>
+          <div class="math-step">= ৫৪ / ২ সে.মি.</div>
+          <div class="highlight-box" style="color: #002B5B;">
+            ∴ OB = ২৭ সে.মি.
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 5
+    {
+      badge: "ধাপ - ৩",
+      isSuccess: false,
+      title: "সমকোণী ত্রিভুজ AOB তে পিথাগোরাসের উপপাদ্য:",
+      html: `
+        <div class="content-box">
+          <p>যেহেতু কর্ণদ্বয় পরস্পরকে সমকোণে ছেদ করে, তাই ∠AOB = ৯০° (সমকোণ)।</p>
+          <p>অতএব, ত্রিভুজ AOB একটি সমকোণী ত্রিভুজ যার অতিভুজ হলো বাহু AB।</p>
+          <p>পিথাগোরাসের উপপাদ্য অনুযায়ী:</p>
+          <div class="math-step">AB^২ = OB^২ + OA^২</div>
+          <div class="math-step">বা, OA^২ = AB^২ - OB^২</div>
+        </div>
+      `
+    },
+
+    // Slide 6
+    {
+      badge: "ধাপ - ৪",
+      isSuccess: false,
+      title: "মান বসিয়ে OA^২ এর মান গণনা:",
+      html: `
+        <div class="content-box">
+          <p>AB = ৪৫ সে.মি. এবং OB = ২৭ সে.মি. বসিয়ে পাই:</p>
+          <div class="math-step">বা, OA^২ = (৪৫)^২ - (২৭)^২</div>
+          <div class="math-step">বা, OA^২ = ২০২৫ - ৭২৯</div>
+          <div class="highlight-box" style="color: #002B5B;">
+            ∴ OA^২ = ১২৯৬
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 7
+    {
+      badge: "ধাপ - ৫",
+      isSuccess: false,
+      title: "অর্ধ-কর্ণ OA এর দৈর্ঘ্য নির্ণয়:",
+      html: `
+        <div class="content-box">
+          <p>উভয় পক্ষে বর্গমূল করে পাই:</p>
+          <div class="math-step">বা, OA = √(১২৯৬)</div>
+          <p>যেহেতু ৩৬ × ৩৬ = ১২৯৬, তাই:</p>
+          <div class="highlight-box" style="color: #006400;">
+            ∴ OA = ৩৬ সে.মি.
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 8
+    {
+      badge: "ধাপ - ৬",
+      isSuccess: false,
+      title: "অপর কর্ণ AC এর পূর্ণ দৈর্ঘ্য নির্ণয়:",
+      html: `
+        <div class="content-box">
+          <p>আমরা জানি, কর্ণ AC এর অর্ধেক অংশ হলো OA।</p>
+          <div class="math-step">অপর কর্ণ, AC = ২ × OA</div>
+          <div class="math-step">= ২ × ৩৬ সে.মি.</div>
+          <div class="highlight-box" style="font-size: 34px; color: #006400; text-align: center;">
+            ∴ অপর কর্ণ, AC = ৭২ সে.মি.
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 9
+    {
+      badge: "ধাপ - ৭",
+      isSuccess: false,
+      title: "রম্বসের ক্ষেত্রফল নির্ণয়:",
+      html: `
+        <div class="content-box">
+          <p>আমরা জানি, রম্বসের ক্ষেত্রফল = ১/২ × (কর্ণদ্বয়ের গুণফল)</p>
+          <div class="math-step">ক্ষেত্রফল = ১/২ × AC × BD</div>
+          <div class="math-step">= ১/২ × ৭২ × ৫৪ বর্গ সে.মি.</div>
+          <div class="math-step">= ৩৬ × ৫৪ বর্গ সে.মি.</div>
+          <div class="highlight-box" style="font-size: 34px; color: #006400; text-align: center;">
+            ∴ রম্বসের ক্ষেত্রফল = ১৯৪৪ বর্গ সে.মি.
+          </div>
+        </div>
+      `
+    },
+
+    // Slide 10
+    {
+      badge: "ফলাফল ও সারসংক্ষেপ",
+      isSuccess: true,
+      title: "চূড়ান্ত ফলাফল ও সমাধানের ধাপসমূহ:",
+      html: `
+        <div class="content-box">
+          <div class="math-step" style="color: #006400; font-size: 32px;">
+            উত্তর: অপর কর্ণটি ৭২ সে.মি. এবং ক্ষেত্রফল ১৯৪৪ বর্গ সে.মি.
+          </div>
+          <hr style="margin: 15px 0; border: 1px solid #CCC;">
+          <p><strong>ধাপগুলোর সারসংক্ষেপ:</strong></p>
+          <p>১. পরিসীমা ÷ ৪ ➔ বাহু AB = ৪৫ সে.মি.</p>
+          <p>২. কর্ণ BD ÷ ২ ➔ OB = ২৭ সে.মি.</p>
+          <p>৩. পিথাগোরাস দিয়ে ➔ OA = ৩৬ সে.মি.</p>
+          <p>৪. ২ × OA ➔ অপর কর্ণ AC = ৭২ সে.মি.</p>
+          <p>৫. ১/২ × কর্ণদ্বয়ের গুণফল ➔ ক্ষেত্রফল = ১৯৪৪ বর্গ সে.মি.</p>
+        </div>
+      `
+    }
+  ];
+
+  // Convert English numbers to Bengali numerals
+  function toBengaliNumber(num) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return num.toString().split('').map(d => bengaliDigits[d] || d).join('');
+  }
+
+  let currentSlide = 0;
+
+  function renderSlide() {
+    const slide = slides[currentSlide];
+    const container = document.getElementById("slide-content");
+    const slideNum = document.getElementById("slide-num");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    // Update Counter
+    slideNum.innerText = "স্লাইড: " + toBengaliNumber(currentSlide + 1) + " / ১০";
+
+    // Update Navigation Buttons
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === slides.length - 1;
+
+    // Render HTML
+    container.innerHTML = `
+      <div class="step-badge ${slide.isSuccess ? 'success' : ''}">${slide.badge}</div>
+      <div class="slide-title">${slide.title}</div>
+      ${slide.html}
+    `;
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      renderSlide();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      renderSlide();
+    }
+  }
+
+  // Keyboard Navigation Support
+  window.addEventListener("keydown", function(e) {
+    if (e.key === "ArrowRight" || e.key === "Space") {
+      nextSlide();
+    } else if (e.key === "ArrowLeft") {
+      prevSlide();
+    }
+  });
+
+  // Initial load
+  renderSlide();
+</script>
+
+</body>
+</html>
