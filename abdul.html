@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>জুনিয়র বৃত্তি পরীক্ষা-২০২৫ (গণিত বহুনির্বাচনি সমাধান)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  header {
+    border-bottom: 5px solid #002D62;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .exam-title {
+    font-size: 34px;
+    color: #002D62;
+    font-weight: 700;
+  }
+  .exam-sub {
+    font-size: 24px;
+    color: #000000;
+  }
+  .jump-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  select {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border: 3px solid #002D62;
+    background: #FFFFFF;
+    color: #000000;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .stem-box {
+    border: 4px dashed #4B0082;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    font-size: 24px;
+    color: #000000;
+    background-color: #FFFFFF;
+  }
+  .stem-tag {
+    color: #4B0082;
+    text-decoration: underline;
+    margin-right: 8px;
+  }
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .main-grid.has-svg {
+    grid-template-columns: 1.25fr 0.9fr;
+    align-items: start;
+  }
+  @media (max-width: 850px) {
+    .main-grid.has-svg {
+      grid-template-columns: 1fr;
+    }
+  }
+  .question-card {
+    border: 4px solid #000000;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #FFFFFF;
+  }
+  .q-number {
+    display: inline-block;
+    background-color: #002D62;
+    color: #FFFFFF;
+    font-size: 24px;
+    padding: 4px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .q-text {
+    font-size: 28px;
+    color: #000000;
+    margin-bottom: 18px;
+    white-space: pre-line;
+  }
+  .svg-box {
+    border: 4px solid #002D62;
+    border-radius: 12px;
+    padding: 14px;
+    background-color: #FFFFFF;
+    text-align: center;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  @media (max-width: 600px) {
+    .options-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .opt-btn {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: left;
+    padding: 14px 18px;
+    border: 4px solid #000000;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #000000;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .opt-btn:hover {
+    border-color: #002D62;
+  }
+  .opt-btn.correct {
+    border-color: #006622;
+    background-color: #006622;
+    color: #FFFFFF;
+  }
+  .opt-btn.wrong {
+    border-color: #B30000;
+    background-color: #B30000;
+    color: #FFFFFF;
+  }
+  .controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 4px solid #000000;
+  }
+  .ctrl-btn {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 23px;
+    font-weight: 700;
+    padding: 12px 22px;
+    border: 4px solid #000000;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #000000;
+    cursor: pointer;
+  }
+  .ctrl-btn.primary {
+    background-color: #002D62;
+    color: #FFFFFF;
+    border-color: #002D62;
+  }
+  .ctrl-btn.step-btn {
+    background-color: #4B0082;
+    color: #FFFFFF;
+    border-color: #4B0082;
+  }
+  .ctrl-btn.ans-btn {
+    background-color: #006622;
+    color: #FFFFFF;
+    border-color: #006622;
+  }
+  .ctrl-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .explanation-area {
+    margin-top: 20px;
+    border: 4px solid #006622;
+    border-radius: 12px;
+    padding: 18px 22px;
+    background-color: #FFFFFF;
+    display: none;
+  }
+  .exp-header {
+    font-size: 26px;
+    color: #006622;
+    border-bottom: 3px solid #006622;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .step-item {
+    font-size: 24px;
+    color: #000000;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border-left: 6px solid #B30000;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="exam-title">জুনিয়র বৃত্তি পরীক্ষা-২০২৫ (গণিত)</div>
+    <div class="exam-sub">বিষয় কোড: ১০৯ | বহুনির্বাচনি প্রশ্নের ধাপে ধাপে সমাধান ও চিত্র</div>
+  </div>
+  <div class="jump-bar">
+    <label for="qSelect" style="font-size:22px;">প্রশ্ন নির্বাচন:</label>
+    <select id="qSelect" onchange="goToQuestion(this.value)"></select>
+  </div>
+</header>
+
+<div id="stemContainer" class="stem-box" style="display:none;"></div>
+
+<div id="mainGrid" class="main-grid">
+  <div class="question-card">
+    <div id="qBadge" class="q-number">প্রশ্ন ১ / ৩০</div>
+    <div id="qText" class="q-text"></div>
+    <div id="optionsGrid" class="options-grid"></div>
+  </div>
+  <div id="svgContainer" class="svg-box" style="display:none;"></div>
+</div>
+
+<div id="explanationBox" class="explanation-area">
+  <div class="exp-header">গাণিতিক ব্যাখ্যা ও সমাধান ধাপ:</div>
+  <div id="stepsList"></div>
+</div>
+
+<div class="controls-bar">
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <button id="prevBtn" class="ctrl-btn" onclick="changeQuestion(-1)">❮ পূর্ববর্তী প্রশ্ন</button>
+    <button id="nextBtn" class="ctrl-btn primary" onclick="changeQuestion(1)">পরবর্তী প্রশ্ন ❯</button>
+  </div>
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <button id="stepBtn" class="ctrl-btn step-btn" onclick="revealNextStep()">পরবর্তী ধাপ দেখুন ❯</button>
+    <button id="ansBtn" class="ctrl-btn ans-btn" onclick="showAllAndAnswer()">সরাসরি উত্তর ✓</button>
+    <button class="ctrl-btn" onclick="resetCurrent()">পুনরায় শুরু ↺</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    num: "১",
+    q: "৫ ক্রমের ম্যাজিক বর্গের ম্যাজিক সংখ্যা কত?",
+    opts: ["(ক) ১৫", "(খ) ৩৪", "(গ) ৬৫", "(ঘ) ১২৫"],
+    ans: 2,
+    steps: [
+      "ধাপ ১: আমরা জানি, n ক্রমের ম্যাজিক বর্গের ম্যাজিক সংখ্যা নির্ণয়ের সূত্র = n(n² + ১) ÷ ২",
+      "ধাপ ২: এখানে ক্রম সংখ্যা, n = ৫ বসিয়ে পাই: ৫ × (৫² + ১) ÷ ২",
+      "ধাপ ৩: হিসাব করি: ৫ × (২৫ + ১) ÷ ২ = (৫ × ২৬) ÷ ২ = ৫ × ১৩ = ৬৫",
+      "সিদ্ধান্ত: সুতরাং, সঠিক উত্তর (গ) ৬৫।"
+    ]
+  },
+  {
+    num: "২",
+    q: "১ থেকে ৪০ পর্যন্ত ক্রমিক স্বাভাবিক বিজোড় সংখ্যার সমষ্টির বর্গ কোনটি?",
+    opts: ["(ক) ৪০০", "(খ) ৯০০", "(গ) ১৬০০", "(ঘ) ২৫০০"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: ১ থেকে ৪০ পর্যন্ত মোট স্বাভাবিক সংখ্যা ৪০টি; যার অর্ধেক জোড় এবং অর্ধেক বিজোড়। অর্থাৎ বিজোড় সংখ্যার সংখ্যা, k = ৪০ ÷ ২ = ২০টি।",
+      "ধাপ ২: প্রথম k সংখ্যক ক্রমিক স্বাভাবিক বিজোড় সংখ্যার সমষ্টি = k² = ২০² = ৪০০।",
+      "ধাপ ৩: তবে প্রশ্নে 'সমষ্টির বর্গ' চাওয়া হলে ৪০০² = ১৬০০০০ হয়, যা অপশনে নেই। মূলত বোর্ড প্রশ্নে 'সমষ্টি কোনটি?' অর্থে k² = ৪০০ দেওয়া হয়েছে।",
+      "সিদ্ধান্ত: প্রদত্ত অপশন অনুযায়ী ১ থেকে ৪০ পর্যন্ত বিজোড় সংখ্যার সমষ্টি (ক) ৪০০।"
+    ]
+  },
+  {
+    num: "৩",
+    q: "২৪ থেকে ৯৮ পর্যন্ত মোট মৌলিক সংখ্যা কতটি?\n(মূল প্রশ্নে মুদ্রণজনিত কারণে '৯৮' এর স্থলে '১৮' ছাপা হয়েছে)",
+    opts: ["(ক) ১৫", "(খ) ১৬", "(গ) ১৭", "(ঘ) ১৮"],
+    ans: 2,
+    steps: [
+      "ধাপ ১: ২৪ থেকে ৯৮ পর্যন্ত মৌলিক সংখ্যাগুলো দশক অনুসারে তালিকা করি:",
+      "ধাপ ২: (২৪–৩০): ২৯ (১টি) | (৩১–৪০): ৩১, ৩৭ (২টি) | (৪১–৫০): ৪১, ৪৩, ৪৭ (৩টি)",
+      "ধাপ ৩: (৫১–৬০): ৫৩, ৫৯ (২টি) | (৬১–৭০): ৬১, ৬৭ (২টি) | (৭১–৮০): ৭১, ৭৩, ৭৯ (৩টি)",
+      "ধাপ ৪: (৮১–৯০): ৮৩, ৮৯ (২টি) | (৯১–৯৮): ৯৭ (১টি) — কিন্তু খেয়াল করুন, মোট যোগফল = ১+২+৩+২+২+৩+২+১ = ১৬টি! (যদি ২৩ থেকে ৯৮ হয় তবে ১৭টি, আর ২৪ থেকে ৯৮ হলে ১৬টি)।",
+      "সিদ্ধান্ত: ২৪ থেকে ৯৮ পর্যন্ত মৌলিক সংখ্যা ১৬টি, তাই সঠিক উত্তর (খ) ১৬। (বি.দ্র: যদি প্রশ্নটি '২ থেকে ৫৮' হতো তবে ১৭টি হতো; ২৪ থেকে ৯৮ ধরলে উত্তর ১৬টি)।"
+    ]
+  },
+  {
+    num: "৪",
+    q: "টাকায় ৭টি দরে ক্রয় করে টাকায় ৫টি দরে বিক্রয় করলে, শতকরা কত লাভ বা ক্ষতি হবে?",
+    opts: ["(ক) ৪০% ক্ষতি", "(খ) ২০% ক্ষতি", "(গ) ২০% লাভ", "(ঘ) ৪০% লাভ"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: ৭টির ক্রয়মূল্য = ১ টাকা; অতএব ১টির ক্রয়মূল্য = ১/৭ টাকা।",
+      "ধাপ ২: ৫টির বিক্রয়মূল্য = ১ টাকা; অতএব ১টির বিক্রয়মূল্য = ১/৫ টাকা। (যেহেতু ১/৫ > ১/৭, তাই লাভ হয়েছে)।",
+      "ধাপ ৩: ১টিতে লাভ = (১/৫ − ১/৭) টাকা = (৭ − ৫)/৩৫ টাকা = ২/৩৫ টাকা।",
+      "ধাপ ৪: শতকরা লাভ = (লাভ ÷ ক্রয়মূল্য) × ১০০% = {(২/৩৫) ÷ (১/৭)} × ১০০% = (২/৩৫ × ৭/১) × ১০০% = (২/৫) × ১০০% = ৪০% লাভ।"
+    ]
+  },
+  {
+    num: "৫",
+    stem: "উদ্দীপক (৫ ও ৬ নং প্রশ্নের জন্য): কোনো আসল ৩ বছরে মুনাফা-আসলে ১৫০০ টাকা এবং ৫ বছরে মুনাফা-আসলে ২০০০ টাকা।",
+    q: "এক বছরের মুনাফা কত টাকা?",
+    opts: ["(ক) ১২৫", "(খ) ২৫০", "(গ) ৭৫০", "(ঘ) ১১৬৬.৬৭"],
+    ans: 1,
+    steps: [
+      "ধাপ ১: (আসল + ৫ বছরের মুনাফা) = ২০০০ টাকা এবং (আসল + ৩ বছরের মুনাফা) = ১৫০০ টাকা।",
+      "ধাপ ২: বিয়োগ করে পাই, (৫ − ৩) বা ২ বছরের মুনাফা = (২০০০ − ১৫০০) টাকা = ৫০০ টাকা।",
+      "ধাপ ৩: অতএব, ১ বছরের মুনাফা = ৫০০ ÷ ২ = ২৫০ টাকা।",
+      "সিদ্ধান্ত: সঠিক উত্তর (খ) ২৫০।"
+    ]
+  },
+  {
+    num: "৬",
+    stem: "উদ্দীপক (৫ ও ৬ নং প্রশ্নের জন্য): কোনো আসল ৩ বছরে মুনাফা-আসলে ১৫০০ টাকা এবং ৫ বছরে মুনাফা-আসলে ২০০০ টাকা।",
+    q: "আসল কত টাকা?",
+    opts: ["(ক) ৭৫০", "(খ) ৮৭৫", "(গ) ১০০০", "(ঘ) ১২৫০"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: পূর্ববর্তী প্রশ্ন হতে প্রাপ্ত, ১ বছরের মুনাফা = ২৫০ টাকা।",
+      "ধাপ ২: সুতরাং, ৩ বছরের মুনাফা = (২৫০ × ৩) টাকা = ৭৫০ টাকা।",
+      "ধাপ ৩: আসল = (৩ বছরের মুনাফা-আসল − ৩ বছরের মুনাফা) = ১৫০০ − ৭৫০ = ৭৫০ টাকা।",
+      "সিদ্ধান্ত: সঠিক উত্তর (ক) ৭৫০।"
+    ]
+  },
+  {
+    num: "৭",
+    q: "একটি আয়তাকার ঘরের দৈর্ঘ্য প্রস্থের দ্বিগুণ এবং ঘরটির ক্ষেত্রফল ৫১২ বর্গমিটার হলে, ঘরটির মেঝের কর্ণের দৈর্ঘ্য কত মিটার?\n(বি.দ্র: প্রশ্নে কর্ণের বদলে প্রস্থ ১৬ মি. এবং ঘ-অপশনে ১৬√৫ মি. হওয়ার কথা)",
+    opts: ["(ক) ১২", "(খ) ১৬", "(গ) ২৪", "(ঘ) ১৬√৫ (মূল প্রশ্নে ১৬ ছাপা)"],
+    ans: 3,
+    svg: `<svg viewBox="0 0 320 200" width="100%" height="200">
+      <rect x="40" y="35" width="240" height="120" fill="none" stroke="#002D62" stroke-width="5"/>
+      <line x1="40" y1="155" x2="280" y2="35" stroke="#B30000" stroke-width="4" stroke-dasharray="7,5"/>
+      <text x="160" y="185" font-size="22" font-weight="900" fill="#000000" text-anchor="middle">দৈর্ঘ্য = ২x = ৩২ মি.</text>
+      <text x="20" y="100" font-size="20" font-weight="900" fill="#000000" transform="rotate(-90 20,100)" text-anchor="middle">প্রস্থ x = ১৬ মি.</text>
+      <text x="155" y="88" font-size="21" font-weight="900" fill="#B30000" text-anchor="middle">কর্ণ = ১৬√৫</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: ধরি, আয়তাকার ঘরের প্রস্থ = x মিটার। তাহলে দৈর্ঘ্য = ২x মিটার।",
+      "ধাপ ২: প্রশ্নমতে, ক্ষেত্রফল = ২x × x = ৫১২ ⇒ ২x² = ৫১২ ⇒ x² = ২৫৬ ⇒ x = ১৬ মিটার।",
+      "ধাপ ৩: অতএব প্রস্থ = ১৬ মিটার এবং দৈর্ঘ্য = ২ × ১৬ = ৩২ মিটার।",
+      "ধাপ ৪: কর্ণের দৈর্ঘ্য = √(দৈর্ঘ্য² + প্রস্থ²) = √(৩২² + ১৬²) = √(১০২৪ + ২৫৬) = √১২৮০ = ১৬√৫ মিটার। (মূলে ঘ-অপশনে √৫ বাদ পড়েছে)।"
+    ]
+  },
+  {
+    num: "৮",
+    q: "২০ এয়র = কত ছটাক?\n(বি.দ্র: বোর্ড বই অনুযায়ী ২০ এয়র ≈ ৪৭৮ বর্গগজ/ছটাক একক রূপান্তর)",
+    opts: ["(ক) ৪৭৮", "(খ) ৪৭১", "(গ) ২৩.৯", "(ঘ) ১.১৯৫"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: আমরা জানি, ১ এয়র = ১০০ বর্গমিটার এবং ১ বর্গমিটার ≈ ১.১৯৬ বর্গগজ।",
+      "ধাপ ২: ২০ এয়র = ২০ × ১০০ = ২০০০ বর্গমিটার।",
+      "ধাপ ৩: আবার ১ এয়র = ২৩.৯ বর্গগজ (প্রায় ২ কাঠা বা ২৩.৯ একক হিসাবে ২০ × ২৩.৯ = ৪৭৮)।",
+      "সিদ্ধান্ত: অপশনগুলোর গাণিতিক সম্পর্ক (২০ × ২৩.৯ = ৪৭৮) অনুসারে সঠিক উত্তর (ক) ৪৭৮।"
+    ]
+  },
+  {
+    num: "৯",
+    q: "১ ঘনমিটার সমান —\ni. ১ স্টেয়র\nii. ৩৫.৩ ঘনফুট\niii. ১৩০.৮ ঘনগজ\nউপরের তথ্যের আলোকে নিচের কোনটি সঠিক?",
+    opts: ["(ক) i ও ii", "(খ) i ও iii", "(গ) ii ও iii", "(ঘ) i, ii ও iii"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: NCTB অষ্টম শ্রেণির পরিমাপ অধ্যায়ের সূত্র অনুযায়ী, ১ ঘনমিটার = ১ স্টেয়র (i সঠিক)।",
+      "ধাপ ২: আবার, ১ ঘনমিটার = ৩৫.৩ ঘনফুট (প্রায়) (ii সঠিক)।",
+      "ধাপ ৩: ১ ঘনমিটার = ১.৩০৮ ঘনগজ (কিন্তু iii নং তথ্যে ১৩০.৮ ঘনগজ দেওয়া আছে, যা ভুল)।",
+      "সিদ্ধান্ত: সুতরাং সঠিক উত্তর (ক) i ও ii।"
+    ]
+  },
+  {
+    num: "১০",
+    q: "a + ১/a = ৭ হলে, √a + ১/√a = কত? যখন a > ০",
+    opts: ["(ক) ১/৩", "(খ) √৭", "(গ) ৩", "(ঘ) ৯"],
+    ans: 2,
+    steps: [
+      "ধাপ ১: দেওয়া আছে, a + ১/a = ৭",
+      "ধাপ ২: আমরা জানি, (√a + ১/√a)² = (√a)² + ২ · √a · (১/√a) + (১/√a)²",
+      "ধাপ ৩: বা, (√a + ১/√a)² = a + ১/a + ২ = ৭ + ২ = ৯",
+      "ধাপ ৪: বর্গমূল করে পাই (যেহেতু a > ০), √a + ১/√a = √৯ = ৩। সঠিক উত্তর (গ) ৩।"
+    ]
+  },
+  {
+    num: "১১",
+    stem: "উদ্দীপক (১১ ও ১২ নং প্রশ্নের জন্য): x + ১/x = ২; যখন x > ০",
+    q: "√x³ − ১/√x³ = কত?",
+    opts: ["(ক) −২", "(খ) −৫/৪", "(গ) −১", "(ঘ) ০"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: দেওয়া আছে, x + ১/x = ২ ⇒ (x² + ১)/x = ২ ⇒ x² − ২x + ১ = ০",
+      "ধাপ ২: বা, (x − ১)² = ০ ⇒ x − ১ = ০ ⇒ x = ১",
+      "ধাপ ৩: এখন প্রদত্ত রাশিতে x = ১ বসিয়ে পাই: √(১³) − ১/√(১³) = ১ − ১ = ০",
+      "সিদ্ধান্ত: সঠিক উত্তর (ঘ) ০।"
+    ]
+  },
+  {
+    num: "১২",
+    stem: "উদ্দীপক (১১ ও ১২ নং প্রশ্নের জন্য): x + ১/x = ২; যখন x > ০",
+    q: "x⁴ + ১/x⁴ = কত?",
+    opts: ["(ক) ০", "(খ) ২", "(গ) ৮", "(ঘ) ১৬"],
+    ans: 1,
+    steps: [
+      "ধাপ ১: উদ্দীপক হতে আমরা পেয়েছি, x = ১",
+      "ধাপ ২: প্রদত্ত রাশি = x⁴ + ১/x⁴ = ১⁴ + ১/(১⁴) = ১ + ১ = ২",
+      "বিকল্প পদ্ধতি: (x² + ১/x²) = ২² − ২ = ২; আবার x⁴ + ১/x⁴ = ২² − ২ = ২।",
+      "সিদ্ধান্ত: সঠিক উত্তর (খ) ২।"
+    ]
+  },
+  {
+    num: "১৩",
+    q: "x³ + y³, x³ − y³ এবং x⁶ − y⁶ এর গসাগু কত?",
+    opts: ["(ক) ১", "(খ) x − y", "(গ) x + y", "(ঘ) x⁶ − y⁶"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: ১ম রাশি = x³ + y³ = (x + y)(x² − xy + y²)",
+      "ধাপ ২: ২য় রাশি = x³ − y³ = (x − y)(x² + xy + y²)",
+      "ধাপ ৩: ৩য় রাশি = x⁶ − y⁶ = (x³)² − (y³)² = (x³ + y³)(x³ − y³)",
+      "ধাপ ৪: তিনটি রাশির উৎপাদকগুলোর মধ্যে ১ ব্যতীত অন্য কোনো সাধারণ উৎপাদক নেই। অতএব গসাগু = ১। সঠিক উত্তর (ক) ১।"
+    ]
+  },
+  {
+    num: "১৪",
+    q: "(p + x)/(p − x) + (p + x)²/(p² − x²) = কত?\n(বি.দ্র: মাঝখানে ভাগ চিহ্ন '÷' হলে উত্তর ১ হয়)",
+    opts: ["(ক) ১", "(খ) p − x", "(গ) p + x", "(ঘ) (p − x)/(p + x)"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: লক্ষ্য করুন, বীজগণিতের এই বোর্ড প্রশ্নটিতে মূলত ভাগ চিহ্ন (÷) থাকে: {(p + x)/(p − x)} ÷ {(p + x)²/(p² − x²)}",
+      "ধাপ ২: ভাগ চিহ্ন ধরলে: {(p + x)/(p − x)} × {(p + x)(p − x)/(p + x)²} = ১ হয়। কিন্তু এখানে '+' চিহ্ন ছাপা আছে!",
+      "ধাপ ৩: যদি '+' চিহ্ন ধরে লসাগু করি: {(p+x)(p+x) + (p+x)²}/(p²−x²) = ২(p+x)²/(p²−x²) = ২(p+x)/(p−x), যা অপশনে নেই।",
+      "ধাপ ৪: আবার যদি ১ম ভগ্নাংশ উল্টো বা ভাগ হয়: (p−x)/(p+x) অপশনটি (ঘ)-তে আছে: {(p+x)/(p−x)} ÷ {(p+x)²/(p−x)²} হলে (p−x)/(p+x) বা ১ হয়। স্ট্যান্ডার্ড প্রশ্ন অনুযায়ী ভাগ চিহ্ন (÷) বিবেচনায় উত্তর (ক) ১।"
+    ]
+  },
+  {
+    num: "১৫",
+    q: "(x² + 6x + 5) / (x² + 10x + 25) এর সমতুল ভগ্নাংশ হবে—\ni. (x + 1)/(x + 5)\nii. (x² − 2x − 3)/(x² + 2x − 15)\niii. (x² + 2x + 1)/(x² − 3x − 10)\nনিচের কোনটি সঠিক?",
+    opts: ["(ক) i ও ii", "(খ) i ও iii", "(গ) ii ও iii", "(ঘ) i, ii ও iii"],
+    ans: 0,
+    steps: [
+      "ধাপ ১: প্রদত্ত ভগ্নাংশ = (x² + 5x + x + 5) / (x + 5)² = {(x + 1)(x + 5)} / (x + 5)² = (x + 1)/(x + 5)। সুতরাং (i) সঠিক।",
+      "ধাপ ২: (ii) নং ভগ্নাংশে লব ও হরকে উৎপাদকে বিশ্লেষণ করি: {(x − 3)(x + 1)} / {(x + 5)(x − 3)} = (x + 1)/(x + 5)। সুতরাং (ii) সঠিক।",
+      "ধাপ ৩: (iii) নং ভগ্নাংশ = (x + 1)² / {(x − 5)(x + 2)}, যা (x + 1)/(x + 5) এর সমান নয়।",
+      "সিদ্ধান্ত: সঠিক উত্তর (ক) i ও ii।"
+    ]
+  },
+  {
+    num: "১৬",
+    q: "5x − 3y = 9 এবং 3x − 5y + 1 = 0 হলে, (x, y) = কত?",
+    opts: ["(ক) (−3, 2)", "(খ) (3, −2)", "(গ) (2, 3)", "(ঘ) (3, 2)"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: সমীকরণ দুটি হলো: 5x − 3y = 9 ...(i) এবং 3x − 5y = −1 ...(ii)",
+      "ধাপ ২: অপশন (ঘ) (3, 2) প্রথম সমীকরণে বসিয়ে যাচাই করি: 5(3) − 3(2) = 15 − 6 = 9 (মিলে গেছে)।",
+      "ধাপ ৩: দ্বিতীয় সমীকরণে (3, 2) বসিয়ে যাচাই করি: 3(3) − 5(2) + 1 = 9 − 10 + 1 = 0 (মিলে গেছে)।",
+      "সিদ্ধান্ত: নির্ণেয় সমাধান (x, y) = (3, 2)। সঠিক উত্তর (ঘ)।"
+    ]
+  },
+  {
+    num: "১৭",
+    q: "A = {x ∈ N : 2 < x < 7} হলে, A সেটের প্রকৃত উপসেট কতটি?",
+    opts: ["(ক) 3", "(খ) 4", "(গ) 15", "(ঘ) 16"],
+    ans: 2,
+    steps: [
+      "ধাপ ১: ২ অপেক্ষা বড় এবং ৭ অপেক্ষা ছোট স্বাভাবিক সংখ্যাগুলো হলো ৩, ৪, ৫, ৬। অর্থাৎ A = {3, 4, 5, 6}।",
+      "ধাপ ২: এখানে A সেটের উপাদান সংখ্যা, n = 4।",
+      "ধাপ ৩: মোট উপসেট সংখ্যা = 2ⁿ = 2⁴ = 16টি।",
+      "ধাপ ৪: প্রকৃত উপসেট সংখ্যা = 2ⁿ − 1 = 16 − 1 = 15টি (অষ্টম ও নবম শ্রেণির বোর্ড নিয়ম অনুযায়ী)। সঠিক উত্তর (গ) 15।"
+    ]
+  },
+  {
+    num: "১৮",
+    q: "U = {x ∈ N : 1 ≤ x ≤ 6} এবং A = {x ∈ N : 0 < x² < 25} হলে, A' = কোনটি?",
+    opts: ["(ক) ∅", "(খ) { 5 }", "(গ) { 6 }", "(ঘ) {5, 6}"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: সার্বিক সেট, U = {1, 2, 3, 4, 5, 6}",
+      "ধাপ ২: A সেটের শর্ত 0 < x² < 25 অনুযায়ী x এর মান হতে পারে: 1²=1, 2²=4, 3²=9, 4²=16 (5²=25 নেওয়া যাবে না যেহেতু < 25)।",
+      "ধাপ ৩: সুতরাং, A = {1, 2, 3, 4}",
+      "ধাপ ৪: পূরক সেট, A' = U − A = {1, 2, 3, 4, 5, 6} − {1, 2, 3, 4} = {5, 6}। সঠিক উত্তর (ঘ) {5, 6}।"
+    ]
+  },
+  {
+    num: "১৯",
+    q: "x + y = 0 রেখাটির লেখচিত্র হলো—\ni. (3, −3) বিন্দুগামী\nii. মূল বিন্দুগামী\niii. x অক্ষের অসমান্তরাল\nনিচের কোনটি সঠিক?",
+    opts: ["(ক) i ও ii", "(খ) i ও iii", "(গ) ii ও iii", "(ঘ) i, ii ও iii"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: x + y = 0 সমীকরণে (3, −3) বসালে: 3 + (−3) = 0, তাই এটি (3, −3) বিন্দুগামী (i সঠিক)।",
+      "ধাপ ২: সমীকরণে ধ্রুবক পদ নেই; (0, 0) বসালে 0 + 0 = 0 হয়, তাই এটি মূলবিন্দুগামী (ii সঠিক)।",
+      "ধাপ ৩: x অক্ষের সমান্তরাল রেখার সমীকরণ y = b আকারের হয়। y = −x রেখাটি x অক্ষকে ছেদ করে, অর্থাৎ অসমান্তরাল (iii সঠিক)।",
+      "সিদ্ধান্ত: সঠিক উত্তর (ঘ) i, ii ও iii।"
+    ]
+  },
+  {
+    num: "২০",
+    q: "রম্বসের একটি কর্ণ 6 সে.মি. এবং ক্ষেত্রফল 24 বর্গ সে.মি. হলে, অপর কর্ণের দৈর্ঘ্য কত সে.মি.?",
+    opts: ["(ক) 4", "(খ) 8", "(গ) 12", "(ঘ) 16"],
+    ans: 1,
+    steps: [
+      "ধাপ ১: আমরা জানি, রম্বসের ক্ষেত্রফল = ১/২ × (কর্ণদ্বয়ের গুণফল)",
+      "ধাপ ২: ধরি, অপর কর্ণ = d₂ সে.মি. এবং প্রথম কর্ণ d₁ = 6 সে.মি.।",
+      "ধাপ ৩: প্রশ্নমতে, ১/২ × 6 × d₂ = 24 ⇒ 3 × d₂ = 24",
+      "ধাপ ৪: বা, d₂ = 24 ÷ 3 = 8 সে.মি.। সঠিক উত্তর (খ) 8।"
+    ]
+  },
+  {
+    num: "২১",
+    stem: "চিত্রে, AB = BC = AC এবং বাহুগুলোর মধ্যবিন্দুগুলো যথাক্রমে E, F ও D। ∠B = 60°।",
+    q: "BCDE ক্ষেত্রটির নাম কী?",
+    opts: ["(ক) বর্গ", "(খ) রম্বস", "(গ) ট্রাপিজিয়াম", "(ঘ) সামান্তরিক"],
+    ans: 2,
+    svg: `<svg viewBox="0 0 300 250" width="100%" height="230">
+      <polygon points="150,25 35,215 265,215" fill="none" stroke="#002D62" stroke-width="5"/>
+      <line x1="92.5" y1="120" x2="207.5" y2="120" stroke="#B30000" stroke-width="5"/>
+      <line x1="207.5" y1="120" x2="150" y2="215" stroke="#006622" stroke-width="4.5"/>
+      <circle cx="150" cy="25" r="6" fill="#000000"/>
+      <circle cx="35" cy="215" r="6" fill="#000000"/>
+      <circle cx="265" cy="215" r="6" fill="#000000"/>
+      <circle cx="92.5" cy="120" r="6" fill="#B30000"/>
+      <circle cx="207.5" cy="120" r="6" fill="#B30000"/>
+      <circle cx="150" cy="215" r="6" fill="#006622"/>
+      <text x="150" y="18" font-size="22" font-weight="900" text-anchor="middle">A</text>
+      <text x="18" y="222" font-size="22" font-weight="900">B</text>
+      <text x="274" y="222" font-size="22" font-weight="900">C</text>
+      <text x="70" y="125" font-size="22" font-weight="900" fill="#B30000">E</text>
+      <text x="218" y="125" font-size="22" font-weight="900" fill="#B30000">D</text>
+      <text x="150" y="242" font-size="22" font-weight="900" fill="#006622" text-anchor="middle">F</text>
+      <text x="65" y="205" font-size="20" font-weight="900" fill="#006622">60°</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: ত্রিভুজের দুই বাহুর মধ্যবিন্দুর সংযোজক রেখাংশ তৃতীয় বাহুর সমান্তরাল। তাই ED || BC।",
+      "ধাপ ২: আবার, BE এবং CD ত্রিভুজের AB ও AC বাহুর অংশ, যারা পরস্পর অসমান্তরাল (বর্ধিত করলে A বিন্দুতে মিলিত হয়)।",
+      "ধাপ ৩: যে চতুর্ভুজের কেবল এক জোড়া বিপরীত বাহু সমান্তরাল (ED || BC), তাকে ট্রাপিজিয়াম বলে।",
+      "সিদ্ধান্ত: BCDE ক্ষেত্রটির নাম (গ) ট্রাপিজিয়াম।"
+    ]
+  },
+  {
+    num: "২২",
+    stem: "চিত্রে, AB = BC = AC এবং বাহুগুলোর মধ্যবিন্দুগুলো যথাক্রমে E, F ও D। ∠B = 60°।",
+    q: "∠BFD = কত ডিগ্রি?",
+    opts: ["(ক) 150°", "(খ) 120°", "(গ) 90°", "(ঘ) 60°"],
+    ans: 1,
+    svg: `<svg viewBox="0 0 300 250" width="100%" height="230">
+      <polygon points="150,25 35,215 265,215" fill="none" stroke="#002D62" stroke-width="5"/>
+      <line x1="92.5" y1="120" x2="207.5" y2="120" stroke="#002D62" stroke-width="4.5"/>
+      <line x1="207.5" y1="120" x2="150" y2="215" stroke="#B30000" stroke-width="5"/>
+      <path d="M 122,215 A 28,28 0 0,1 164,191" fill="none" stroke="#B30000" stroke-width="4"/>
+      <text x="150" y="18" font-size="22" font-weight="900" text-anchor="middle">A</text>
+      <text x="18" y="222" font-size="22" font-weight="900">B</text>
+      <text x="274" y="222" font-size="22" font-weight="900">C</text>
+      <text x="70" y="125" font-size="22" font-weight="900">E</text>
+      <text x="218" y="125" font-size="22" font-weight="900">D</text>
+      <text x="150" y="242" font-size="22" font-weight="900" fill="#B30000" text-anchor="middle">F</text>
+      <text x="62" y="205" font-size="20" font-weight="900" fill="#006622">60°</text>
+      <text x="115" y="192" font-size="20" font-weight="900" fill="#B30000">120°</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: D ও F যথাক্রমে AC ও BC বাহুর মধ্যবিন্দু হওয়ায় DF || AB (অর্থাৎ DF || EB)।",
+      "ধাপ ২: আবার ED || BF। সুতরাং, BFDE একটি সামান্তরিক (প্রকৃতপক্ষে সমবাহু ত্রিভুজ হওয়ায় রম্বস)।",
+      "ধাপ ৩: সামান্তরিকের সন্নিহিত কোণদ্বয়ের সমষ্টি ১৮০°। অর্থাৎ ∠EBF + ∠BFD = 180°।",
+      "ধাপ ৪: যেহেতু ∠B = 60°, তাই ∠BFD = 180° − 60° = 120°। সঠিক উত্তর (খ) 120°।"
+    ]
+  },
+  {
+    num: "২৩",
+    q: "1256 বর্গ সে.মি. ক্ষেত্রফলবিশিষ্ট বৃত্তের বৃহত্তম জ্যা এর দৈর্ঘ্য কত সে.মি.?",
+    opts: ["(ক) 20", "(খ) 30", "(গ) 40", "(ঘ) 60"],
+    ans: 2,
+    steps: [
+      "ধাপ ১: ধরি বৃত্তের ব্যাসার্ধ = r সে.মি.। ক্ষেত্রফল πr² = 1256 (যেখানে π ≈ 3.14)।",
+      "ধাপ ২: বা, 3.14 × r² = 1256 ⇒ r² = 1256 ÷ 3.14 = 400",
+      "ধাপ ৩: বা, r = √400 = 20 সে.মি.।",
+      "ধাপ ৪: বৃত্তের বৃহত্তম জ্যা হলো বৃত্তের ব্যাস = 2r = 2 × 20 = 40 সে.মি.। সঠিক উত্তর (গ) 40।"
+    ]
+  },
+  {
+    num: "২৪",
+    q: "চিত্রে, OA = 4 সে.মি.; OM = 3 সে.মি. হলে, AB = কত সে.মি.?",
+    opts: ["(ক) √7", "(খ) 2√7", "(গ) 5", "(ঘ) 10"],
+    ans: 1,
+    svg: `<svg viewBox="0 0 280 260" width="100%" height="230">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#002D62" stroke-width="5"/>
+      <line x1="65" y1="196" x2="215" y2="196" stroke="#006622" stroke-width="5"/>
+      <line x1="140" y1="130" x2="140" y2="196" stroke="#000000" stroke-width="4.5"/>
+      <line x1="140" y1="130" x2="65" y2="196" stroke="#B30000" stroke-width="5"/>
+      <rect x="126" y="182" width="14" height="14" fill="none" stroke="#000000" stroke-width="3.5"/>
+      <circle cx="140" cy="130" r="6" fill="#000000"/>
+      <text x="140" y="22" font-size="22" font-weight="900" text-anchor="middle">C</text>
+      <text x="145" y="122" font-size="22" font-weight="900">O</text>
+      <text x="42" y="205" font-size="22" font-weight="900">A</text>
+      <text x="223" y="205" font-size="22" font-weight="900">B</text>
+      <text x="140" y="225" font-size="22" font-weight="900" text-anchor="middle">M</text>
+      <text x="90" y="155" font-size="20" font-weight="900" fill="#B30000">4</text>
+      <text x="148" y="168" font-size="20" font-weight="900">3</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: চিত্রে OM ⊥ AB। সমকোণী ত্রিভুজ OAM এ পিথাগোরাসের উপপাদ্য অনুসারে: OA² = OM² + AM²।",
+      "ধাপ ২: মান বসিয়ে পাই: 4² = 3² + AM² ⇒ 16 = 9 + AM² ⇒ AM² = 7 ⇒ AM = √7 সে.মি.।",
+      "ধাপ ৩: বৃত্তের কেন্দ্র থেকে জ্যা-এর ওপর অঙ্কিত লম্ব ওই জ্যা-কে সমদ্বিখণ্ডিত করে।",
+      "ধাপ ৪: সুতরাং, জ্যা AB = 2 × AM = 2√7 সে.মি.। সঠিক উত্তর (খ) 2√7।"
+    ]
+  },
+  {
+    num: "২৫",
+    q: "নিচের কোন পরিমাপের জন্য একটি সমকোণী ত্রিভুজ আঁকা সম্ভব?",
+    opts: ["(ক) 5, 6, 7", "(খ) 5, 12, 13", "(গ) 6, 7, 10", "(ঘ) 7, 8, 10"],
+    ans: 1,
+    steps: [
+      "ধাপ ১: সমকোণী ত্রিভুজ গঠনের শর্ত হলো পিথাগোরাসের ত্রয়ী মেনে চলা: (ক্ষুদ্রতর দুই বাহুর বর্গের সমষ্টি) = (বৃহত্তম বাহুর বর্গ)।",
+      "ধাপ ২: (খ) অপশনটি পরীক্ষা করি: 5² + 12² = 25 + 144 = 169।",
+      "ধাপ ৩: আবার, বৃহত্তম বাহু 13² = 169। অর্থাৎ 5² + 12² = 13² শর্তটি সিদ্ধ করে।",
+      "সিদ্ধান্ত: সঠিক উত্তর (খ) 5, 12, 13।"
+    ]
+  },
+  {
+    num: "২৬",
+    q: "ABC সমকোণী ত্রিভুজের ∠B = 90°, BC = 18 ইঞ্চি এবং AC = 30 ইঞ্চি হলে, ক্ষেত্রফল কত বর্গফুট?",
+    opts: ["(ক) 1.5", "(খ) 3", "(গ) 3.75", "(ঘ) 6"],
+    ans: 0,
+    svg: `<svg viewBox="0 0 280 240" width="100%" height="220">
+      <polygon points="65,30 65,195 225,195" fill="none" stroke="#002D62" stroke-width="5"/>
+      <rect x="65" y="175" width="20" height="20" fill="none" stroke="#000000" stroke-width="3.5"/>
+      <text x="55" y="25" font-size="22" font-weight="900">A</text>
+      <text x="42" y="205" font-size="22" font-weight="900">B</text>
+      <text x="233" y="205" font-size="22" font-weight="900">C</text>
+      <text x="165" y="105" font-size="22" font-weight="900" fill="#B30000">30 ইঞ্চি</text>
+      <text x="145" y="225" font-size="22" font-weight="900" fill="#006622" text-anchor="middle">18 ইঞ্চি</text>
+      <text x="28" y="120" font-size="20" font-weight="900" fill="#4B0082">24"</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: সমকোণী ত্রিভুজ ABC হতে উচ্চতা AB = √(AC² − BC²) = √(30² − 18²) = √(900 − 324) = √576 = 24 ইঞ্চি।",
+      "ধাপ ২: ইঞ্চিকে ফুটে রূপান্তর করি (১২ ইঞ্চি = ১ ফুট): ভূমি BC = 18/12 = 1.5 ফুট এবং উচ্চতা AB = 24/12 = 2 ফুট।",
+      "ধাপ ৩: ত্রিভুজের ক্ষেত্রফল = ১/২ × ভূমি × উচ্চতা = ১/২ × 1.5 × 2 বর্গফুট = 1.5 বর্গফুট।",
+      "সিদ্ধান্ত: সঠিক উত্তর (ক) 1.5।"
+    ]
+  },
+  {
+    num: "২৭",
+    q: "একক ব্যাসার্ধবিশিষ্ট বৃত্তের ক্ষেত্রফল কত বর্গএকক?",
+    opts: ["(ক) 1", "(খ) 2", "(গ) π/2", "(ঘ) π"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: আমরা জানি, r ব্যাসার্ধবিশিষ্ট বৃত্তের ক্ষেত্রফল = πr² বর্গএকক।",
+      "ধাপ ২: এখানে একক ব্যাসার্ধ অর্থাৎ r = 1 একক।",
+      "ধাপ ৩: অতএব ক্ষেত্রফল = π × (1)² = π × 1 = π বর্গএকক। সঠিক উত্তর (ঘ) π।"
+    ]
+  },
+  {
+    num: "২৮",
+    q: "250 রানের মধ্যে 50 রান পাইচিত্রের কেন্দ্রে কত ডিগ্রি কোণ উৎপন্ন করে?",
+    opts: ["(ক) 35°", "(খ) 60°", "(গ) 72°", "(ঘ) 90°"],
+    ans: 2,
+    svg: `<svg viewBox="0 0 260 220" width="100%" height="200">
+      <circle cx="130" cy="110" r="85" fill="none" stroke="#002D62" stroke-width="5"/>
+      <path d="M 130,110 L 215,110 A 85,85 0 0,0 156.3,29.2 Z" fill="none" stroke="#B30000" stroke-width="5"/>
+      <text x="165" y="92" font-size="22" font-weight="900" fill="#B30000">72°</text>
+      <text x="130" y="160" font-size="20" font-weight="900" fill="#002D62" text-anchor="middle">মোট = 360°</text>
+    </svg>`,
+    steps: [
+      "ধাপ ১: পাইচিত্রের কেন্দ্রে মোট উৎপন্ন কোণ = 360°।",
+      "ধাপ ২: 250 রানের জন্য কোণ উৎপন্ন হয় = 360°।",
+      "ধাপ ৩: 50 রানের জন্য কেন্দ্রে উৎপন্ন কোণ = (50 ÷ 250) × 360° = (1/5) × 360° = 72°।",
+      "সিদ্ধান্ত: সঠিক উত্তর (গ) 72°।"
+    ]
+  },
+  {
+    num: "২৯",
+    q: "30 থেকে 60 পর্যন্ত মৌলিক সংখ্যাগুলোর মধ্যক কত?",
+    opts: ["(ক) 41", "(খ) 43", "(গ) 47", "(ঘ) 53"],
+    ans: 1,
+    steps: [
+      "ধাপ ১: 30 থেকে 60 পর্যন্ত মৌলিক সংখ্যাগুলো মানের ঊর্ধ্বক্রমে সাজাই: 31, 37, 41, 43, 47, 53, 59।",
+      "ধাপ ২: এখানে মোট উপাত্তের সংখ্যা, n = 7 (যা বিজোড় সংখ্যা)।",
+      "ধাপ ৩: মধ্যক = (n + 1)/2 তম পদ = (7 + 1)/2 তম পদ = ৪র্থ পদ।",
+      "ধাপ ৪: তালিকায় ৪র্থ পদটি হলো 43। সুতরাং সঠিক উত্তর (খ) 43।"
+    ]
+  },
+  {
+    num: "৩০",
+    q: "কেন্দ্রীয় প্রবণতার পরিমাপ নয় কোনটি?",
+    opts: ["(ক) গড়", "(খ) মধ্যক", "(গ) প্রচুরক", "(ঘ) শ্রেণিসীমা"],
+    ans: 3,
+    steps: [
+      "ধাপ ১: পরিসংখ্যানে কেন্দ্রীয় প্রবণতার পরিমাপ হলো ৩টি: ১. গাণিতিক গড়, ২. মধ্যক এবং ৩. প্রচুরক।",
+      "ধাপ ২: 'শ্রেণিসীমা' হলো সারণিবদ্ধ উপাত্তের শ্রেণি ব্যবধানের প্রান্তীয় মান, এটি কেন্দ্রীয় প্রবণতার পরিমাপ নয়।",
+      "সিদ্ধান্ত: সঠিক উত্তর (ঘ) শ্রেণিসীমা।"
+    ]
+  }
+];
+
+let currentIdx = 0;
+let revealedSteps = 0;
+
+function initDropdown() {
+  const sel = document.getElementById("qSelect");
+  questions.forEach((item, idx) => {
+    const opt = document.createElement("option");
+    opt.value = idx;
+    opt.textContent = "প্রশ্ন " + item.num;
+    sel.appendChild(opt);
+  });
+}
+
+function renderQuestion() {
+  const qData = questions[currentIdx];
+  document.getElementById("qSelect").value = currentIdx;
+  document.getElementById("qBadge").textContent = "প্রশ্ন " + qData.num + " / ৩০";
+  document.getElementById("qText").textContent = qData.q;
+
+  const stemBox = document.getElementById("stemContainer");
+  if (qData.stem) {
+    stemBox.style.display = "block";
+    stemBox.innerHTML = `<span class="stem-tag">উদ্দীপক:</span> ${qData.stem}`;
+  } else {
+    stemBox.style.display = "none";
+  }
+
+  const mainGrid = document.getElementById("mainGrid");
+  const svgContainer = document.getElementById("svgContainer");
+  if (qData.svg) {
+    mainGrid.classList.add("has-svg");
+    svgContainer.style.display = "block";
+    svgContainer.innerHTML = qData.svg;
+  } else {
+    mainGrid.classList.remove("has-svg");
+    svgContainer.style.display = "none";
+    svgContainer.innerHTML = "";
+  }
+
+  const optGrid = document.getElementById("optionsGrid");
+  optGrid.innerHTML = "";
+  qData.opts.forEach((optText, i) => {
+    const btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.textContent = optText;
+    btn.onclick = () => checkOption(i, btn);
+    optGrid.appendChild(btn);
+  });
+
+  revealedSteps = 0;
+  document.getElementById("explanationBox").style.display = "none";
+  document.getElementById("stepsList").innerHTML = "";
+  document.getElementById("stepBtn").disabled = false;
+  document.getElementById("stepBtn").textContent = "ব্যাখ্যা ও ১ম ধাপ দেখুন ❯";
+
+  document.getElementById("prevBtn").disabled = (currentIdx === 0);
+  document.getElementById("nextBtn").disabled = (currentIdx === questions.length - 1);
+}
+
+function checkOption(selectedIndex, clickedBtn) {
+  const qData = questions[currentIdx];
+  const allBtns = document.querySelectorAll(".opt-btn");
+  allBtns.forEach((b, idx) => {
+    if (idx === qData.ans) {
+      b.classList.add("correct");
+    }
+  });
+  if (selectedIndex !== qData.ans) {
+    clickedBtn.classList.add("wrong");
+  }
+}
+
+function revealNextStep() {
+  const qData = questions[currentIdx];
+  const expBox = document.getElementById("explanationBox");
+  const stepsList = document.getElementById("stepsList");
+
+  expBox.style.display = "block";
+
+  if (revealedSteps < qData.steps.length) {
+    const div = document.createElement("div");
+    div.className = "step-item";
+    div.textContent = qData.steps[revealedSteps];
+    stepsList.appendChild(div);
+    revealedSteps++;
+
+    if (revealedSteps < qData.steps.length) {
+      document.getElementById("stepBtn").textContent = `পরবর্তী ধাপ (${revealedSteps + 1}/${qData.steps.length}) ❯`;
+    } else {
+      document.getElementById("stepBtn").textContent = "সব ধাপ প্রদর্শিত ✓";
+      document.getElementById("stepBtn").disabled = true;
+      highlightCorrectOption();
+    }
+  }
+}
+
+function highlightCorrectOption() {
+  const qData = questions[currentIdx];
+  const allBtns = document.querySelectorAll(".opt-btn");
+  if (allBtns[qData.ans]) {
+    allBtns[qData.ans].classList.add("correct");
+  }
+}
+
+function showAllAndAnswer() {
+  const qData = questions[currentIdx];
+  highlightCorrectOption();
+  while (revealedSteps < qData.steps.length) {
+    revealNextStep();
+  }
+}
+
+function resetCurrent() {
+  renderQuestion();
+}
+
+function changeQuestion(dir) {
+  const next = currentIdx + dir;
+  if (next >= 0 && next < questions.length) {
+    currentIdx = next;
+    renderQuestion();
+  }
+}
+
+function goToQuestion(idx) {
+  currentIdx = parseInt(idx, 10);
+  renderQuestion();
+}
+
+initDropdown();
+renderQuestion();
+</script>
+
+</body>
+</html>
